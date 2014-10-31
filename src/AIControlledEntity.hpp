@@ -17,6 +17,13 @@ extern IndexesIndex indexes; ///< Indexes of the game
     *   \brief Contains all the classes and structures concerning entities and AI
     */
 
+/**
+* \addtogroup both Shared
+* \brief Compounds shared between client and server
+* \ingroup server client
+* @{
+*/
+
    /**
 	*	\brief Informations received from server to create premade entities
 	*/
@@ -31,6 +38,13 @@ struct EntityInformations
 						knownSpells; ///< Known spells of the entity
 	CombatEffects 		effects; ///< Current effects of the entity
 };
+
+/// @}
+
+/**
+* \addtogroup client
+* @{
+*/
 
    /**
     *   \brief An entity that fight during the game, either ally or enemy
@@ -359,5 +373,7 @@ protected:
 
 	WeaponEffects weaponEffects; ///< Weapon characteristics of the entity
 };
+
+/// @}
 
 #endif // AICONTROLLEDENTITY_HPP_INCLUDED

@@ -23,6 +23,14 @@ extern IndexesIndex indexes; ///< Indexes of the game
 	*	\brief Contains classes and functions associated to combats
 	*/
 
+
+
+/**
+* \addtogroup client Client side
+* \brief Coumpounds used in the client application
+* @{
+*/
+
    /**
 	* 	\brief Entity for combat
 	* 	\details Contains extra variables and pointers to be used in combat
@@ -774,6 +782,8 @@ protected:
 
 	sf::Mutex 					onlineMutex; ///< Mutex protecting calls to onlinePort
 };
+
+/// @}
 
 #endif // COMBAT_HPP_INCLUDED
 

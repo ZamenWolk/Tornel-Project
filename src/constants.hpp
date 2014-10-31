@@ -10,9 +10,21 @@
 	*	\brief Contains all the preprocessor definitions
 	*/
 
+/**
+* \addtogroup client
+* @{
+*/
+
 #define WINDOW_HEIGHT 600 ///< Height of the game window in pixels
 
 #define WINDOW_WIDTH 1067 ///< Width of the window in pixels
+
+/// @}
+
+/**
+* \addtogroup both
+* @{
+*/
 
 #define OLD_EXPERIENCE_TO_LEVEL ExponentialFunction(true, 0.9996, 11485.0, 100.0, 0.0, 4000.0) ///< Function converting the number of experience points to the level
 #define EXPERIENCE_TO_LEVEL ExponentialFunction(true, 0.99996, 114900.0, 100.1, 0.0, 40000.0) ///< New function to convert the experience to the level (Still waiting for approval)
@@ -65,6 +77,13 @@ enum SpecialAttribute{  NO_SPECIAL = 0, ///< Nothing special
                         CRITICAL = 5, ///< Critical output for interaction
                         };
 
+/// @}
+
+/**
+* \addtogroup client
+* @{
+*/
+
    /**
 	* 	\brief Lists all possible ways to control a team during fights
 	*/
@@ -98,6 +117,13 @@ enum EquipementType{HELMET, ///< Head equipement
 					WEAPON, ///< Weapon equipement
 					};
 
+/// @}
+
+/**
+* \addtogroup both
+* @{
+*/
+
    /**
     *   \brief Lists possible types of informations sent between server and client
     */
@@ -115,9 +141,10 @@ enum SentInfosType{ FIGHT_INTERACTION = 0, ///< Interaction sent to the server t
 struct VersionNumber
 {
    /**
-    *   \param[in] status_b Status of the game
-    *   \param[in] major_b Major number of the game version
-    *   \param[in] minor_b Minor number of the game version
+    *   \param[in] status Status of the game
+    *   \param[in] major Major number of the game version
+    *   \param[in] minor Minor number of the game version
+	*   \param[in] patch Patch number of the game version
     */
 
     VersionNumber(  std::string status,
@@ -154,10 +181,10 @@ struct VersionNumber
 struct InteractionInfos
 {
    /**
-    *   \param[in] attackerID_b ID of the attacker
-    *   \param[in] targetID_b ID of the target
-    *   \param[in] type_b Type of the interaction
-    *   \param[in] spellName_b Name of the spell, if used
+    *   \param[in] attackerID ID of the attacker
+    *   \param[in] targetID ID of the target
+    *   \param[in] type Type of the interaction
+    *   \param[in] spellName Name of the spell, if used
     */
 
     InteractionInfos(   sf::Uint32 attackerID,
@@ -192,5 +219,7 @@ struct InteractionInfos
 	*/
 
 void errorReport(std::string errorMessage, bool isFatal = 1);
+
+/// @}
 
 #endif // CONSTANTS_HPP_INCLUDED

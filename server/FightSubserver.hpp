@@ -17,6 +17,12 @@
 #include "structures.hpp"
 #include "../version.hpp"
 
+/**
+* \addtogroup server Server side
+* \brief Compounds used in the server application
+* @{
+*/
+
    /**
     *   \brief Subserver handling a fight between 2 clients
     */
@@ -230,3 +236,5 @@ bool findOpenSubserver(std::vector<FightSubserver*> &serverVector,
                        FightSubserver** returnedSubserver);
 
 #endif // FIGHTSUBSERVER_HPP_INCLUDED
+
+/// @}

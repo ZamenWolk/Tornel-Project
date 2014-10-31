@@ -10,6 +10,11 @@
 #include <vector>
 #include <functional>
 
+/**
+* \addtogroup server
+* @{
+*/
+
    /**
     *   \brief Input thread functor. Creates a prompt for the user to type in commands
     */
@@ -20,6 +25,7 @@ public:
 
    /**
     *   \param[in] subservers Subservers concerned by the commands typed
+	*   \param[in] stopServer Reference to the main thread's stopServer variable
     */
 
    inputFonctor(std::vector<FightSubserver *> *subservers, bool &stopServer) :
@@ -71,5 +77,7 @@ private:
     std::vector<FightSubserver*> 	*subservers; ///< Subservers concerned by the commands typed
 	bool 							&stopServer; ///< Reference to the main thread's stopping server variable
 };
+
+/// @}
 
 #endif // FONCTOR_HPP_INCLUDED

@@ -11,6 +11,11 @@
 #include "../src/constants.hpp"
 #include "../src/AIControlledEntity.hpp"
 
+/**
+* \addtogroup server
+* @{
+*/
+
    /**
     *   \brief Structure keeping data from the different communications from the client to the server
     */
@@ -58,5 +63,7 @@ struct EventsStructure
     bool                            event_team1; ///< Which team does the event concern. true if the event concerns team1, false if team2
     VersionNumber                   versEv_number; ///< Version number sent from the client
 };
+
+/// @}
 
 #endif // STRUCTURES_HPP_INCLUDED

@@ -16,6 +16,11 @@ struct EntityInformations;
     *   \brief Contains all the operators of the program
     */
 
+/**
+* \addtogroup both
+* @{
+*/
+
    /**
     *   \brief Completion of the packet with a Skill
     *	\param[out] packet Packet to complete
@@ -199,5 +204,7 @@ template <typename T> sf::Packet& createPacket(sf::Packet &packet,const T &infos
 	   errorReport("The type of info sent does not match the type of variable");
    }
 }
+
+/// @}
 
 #endif // OPERATORS_HPP_INCLUDED

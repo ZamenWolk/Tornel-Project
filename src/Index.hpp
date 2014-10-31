@@ -15,6 +15,11 @@
     *   \brief Contains all the classes and structures to form indexes
     */
 
+/**
+* \addtogroup both
+* @{
+*/
+
    /**
 	*	\brief Member of characters index
 	*/
@@ -491,5 +496,7 @@ private:
 	}
 
 };
+
+/// @}
 
 #endif // INDEX_HPP_INCLUDED

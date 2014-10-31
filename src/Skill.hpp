@@ -11,6 +11,11 @@
     *   \brief Contains the struct Skill and the LevellingSkill structure
     */
 
+/**
+* \addtogroup both
+* @{
+*/
+
    /**
     *   \brief A skill usable by fighters
     *   \details Defined by an animation and a base damage
@@ -70,5 +75,7 @@ struct LevelingSkill
 	Skill*  skill; ///< Skill the class is built around
     int     learnLevel; ///< Level at which the skill is learnt
 };
+
+/// @}
 
 #endif // SKILL_HPP_INCLUDED

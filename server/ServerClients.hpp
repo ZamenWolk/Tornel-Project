@@ -8,6 +8,11 @@
 
 #include <SFML/Network.hpp>
 
+/**
+* \addtogroup server
+* @{
+*/
+
    /**
     *   \brief Enhanced version of a TCP socket
     *   \details Has extra functions to know if the socket is connected, and automatic handling of a SocketSelector
@@ -70,5 +75,7 @@ protected:
     bool 				isFree; ///< Is the Socket free or not
     sf::SocketSelector  *socketSelector; ///< SocketSelector the Socket is in
 };
+
+/// @}
 
 #endif // SERVERCLIENTS_HPP_INCLUDED

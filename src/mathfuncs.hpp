@@ -8,6 +8,11 @@
     *   \brief Contains class declaration for maths functions
     */
 
+/**
+* \addtogroup both
+* @{
+*/
+
    /**
     *   \brief Parent class of all the math functions classes
     */
@@ -430,5 +435,7 @@ protected:
 			horizontalTranslater, ///< Horizontal translater of the function
 			verticalTranslater; ///< Vertical translater of the function
 };
+
+/// @}
 
 #endif // MATHFUNCS_HPP_INCLUDED

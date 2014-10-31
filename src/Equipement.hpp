@@ -11,6 +11,11 @@
     *   \brief Contains all the classes and structures of Equipement
     */
 
+/**
+* \addtogroup client
+* @{
+*/
+
    /**
     *   \brief All effects of an equipement on the person who wears it
 	*
@@ -160,6 +165,13 @@ struct WeaponEffects
 	sf::Time cooldownTime; ///< Cooldown time of the weapon
 };
 
+/// @}
+
+/**
+* \addtogroup both
+* @{
+*/
+
    /**
     *   \brief Fusion of Effects and WeaponEffects for combat purposes
     */
@@ -217,6 +229,13 @@ struct CombatEffects : public Effects, public WeaponEffects
 
 	}
 };
+
+/// @}
+
+/**
+* \addtogroup both
+* @{
+*/
 
    /**
 	*	\brief An equipement
@@ -331,5 +350,7 @@ protected:
 	WeaponEffects weaponEffects; ///< Weapon part of the effects given by the weapon
 
 };
+
+/// @}
 
 #endif // EQUIPEMENT_HPP_INCLUDED

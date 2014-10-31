@@ -18,6 +18,11 @@ extern IndexesIndex indexes; ///< Indexes of the game
     *   \brief Contains the Hero class
     */
 
+/**
+* \addtogroup client
+* @{
+*/
+
    /**
     *   \brief A character controlled by the player
     *   \details Is part of the main team
@@ -220,5 +225,7 @@ protected:
 				*leggings, ///< Leggings the hero is wearing
 				*boots; ///< Boots the hero is wearing
 };
+
+/// @}
 
 #endif // HERO_HPP_INCLUDED
