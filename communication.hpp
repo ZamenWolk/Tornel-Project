@@ -11,7 +11,7 @@
 class Skill;
 
 /**
-* \file ccommunication.hpp
+* \file communication.hpp
 * \brief Contains all the functions and enums for the communication between client and server
 */
 
