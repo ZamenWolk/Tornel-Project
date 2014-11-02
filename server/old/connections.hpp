@@ -7,10 +7,13 @@
 #include "FightSubserver.hpp"
 #include "ServerClients.hpp"
 
-   /**
-    *   \todo Finish handling of received informations and receiving of pre-combat data
-    */
+/**
+*   \todo Finish handling of received informations and receiving of pre-combat data
+*/
 
-void connectionHandler(std::vector<FightSubserver*> &subservers, std::vector<ServerClient*> &clientsVector, sf::SocketSelector *selector, sf::TcpListener *listener);
+void connectionHandler(std::vector<FightSubserver *> &subservers,
+					   std::vector<ServerClient *> &clientsVector,
+					   sf::SocketSelector *selector,
+					   sf::TcpListener *listener);
 
 #endif // CONNECTIONS_HPP_INCLUDED

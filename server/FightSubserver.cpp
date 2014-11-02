@@ -2,16 +2,16 @@
 
 #include "FightSubserver.hpp"
 
-bool findOpenSubserver(std::vector<FightSubserver*> &serverVector, FightSubserver **returnedSubserver)
+bool findOpenSubserver(std::vector<FightSubserver *> &serverVector, FightSubserver **returnedSubserver)
 {
-    for (int i = 0; i < serverVector.size(); i++)
-    {
-        if(!(serverVector.operator[](i)->isFull()))
-        {
-            *returnedSubserver = serverVector.operator[](i);
-            return true;
-        }
-    }
+	for (int i = 0; i < serverVector.size(); i++)
+	{
+		if (!(serverVector.operator[](i)->isFull()))
+		{
+			*returnedSubserver = serverVector[i];
+			return true;
+		}
+	}
 
-    return false;
+	return false;
 }

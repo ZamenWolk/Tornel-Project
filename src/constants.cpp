@@ -14,25 +14,25 @@ sf::Clock mainClock;
 
 void errorReport(string errorMessage, bool isFatal)
 {
-	time_t rawtime;
+	time_t    rawtime;
 	struct tm *timeinfo;
-	char buffer [100];
-	string output("");
-	ofstream errlog("errlog.txt", ios::app);
+	char      buffer[100];
+	string    output("");
+	ofstream  errlog("errlog.txt", ios::app);
 
-    //Creates the time string
-	time (&rawtime);
+	//Creates the time string
+	time(&rawtime);
 	timeinfo = localtime(&rawtime);
-	strftime (buffer,100,"[%d/%m/%y %H:%M]",timeinfo);
+	strftime(buffer, 100, "[%d/%m/%y %H:%M]", timeinfo);
 
-    //Creates the error message string
+	//Creates the error message string
 	output = " ";
 	output += errorMessage;
 
-    //Prints the strings in the console and the error log file
+	//Prints the strings in the console and the error log file
 	cerr << buffer << output << endl;
 	errlog << buffer << output << endl;
 
-    if (isFatal)
-        exit(EXIT_FAILURE);
+	if (isFatal)
+		exit(EXIT_FAILURE);
 }

@@ -6,98 +6,97 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
-   /**
-    *   \file LevelMap.hpp
-    *   \brief Contains the LevelMap class
-    */
+/**
+*   \file LevelMap.hpp
+*   \brief Contains the LevelMap class
+*/
 
-   /**
-    *   \brief Map in the game, without any moving element
-    */
+/**
+*   \brief Map in the game, without any moving element
+*/
 
 class LevelMap : public sf::Drawable, public sf::Transformable
 {
 public:
 
-    LevelMap();
-    ~LevelMap();
+	LevelMap();
 
-   /**
-    *   \brief Load and texturisation of the static map
-    *   \details Combination of loadMapArray and texturingMap
-    *   \param filePath Path to the file containing the map datas.
-    *   \param tileset Path to the tileset used for the map.
-    *   \param tileSize Size of one tile on the map and on tne tileset, often declared as a constant in the appropriate file
-    */
+	~LevelMap();
 
-    bool mapWork(const std::string& filePath, const std::string& tileset, const sf::Vector2u tileSize);
+	/**
+	*   \brief Load and texturisation of the static map
+	*   \details Combination of loadMapArray and texturingMap
+	*   \param filePath Path to the file containing the map datas.
+	*   \param tileset Path to the tileset used for the map.
+	*   \param tileSize Size of one tile on the map and on tne tileset, often declared as a constant in the appropriate file
+	*/
 
-   /**
-    *   \brief Extraction of the array of data for the static map. Declaration of the dynamic 1D array containing the map datas.
-    *   \warning Utilisation of this function alone is not recommended. Use mapWork instead.
-    *   \param filePath Path to the file containing the datas
-    */
+	bool mapWork(const std::string &filePath, const std::string &tileset, const sf::Vector2u tileSize);
 
-    bool loadMapArray(const std::string& filePath);
+	/**
+	*   \brief Extraction of the array of data for the static map. Declaration of the dynamic 1D array containing the map datas.
+	*   \warning Utilisation of this function alone is not recommended. Use mapWork instead.
+	*   \param filePath Path to the file containing the datas
+	*/
 
-   /**
-    *   \brief Transformation of the map datas in the dynamic array into a real texture.
-    *   \warning Utilisation of this function alone is not recommended. Use mapWork instead.
-    *   \param tileset Path to the tileset used for the datas.
-    *   \param tilesize Size of a tile in the map and in the tileset. Constant defined in the constant.hpp file often used
-    */
+	bool loadMapArray(const std::string &filePath);
 
-    bool texturingMap(const std::string& tileset, const sf::Vector2u tileSize);
+	/**
+	*   \brief Transformation of the map datas in the dynamic array into a real texture.
+	*   \warning Utilisation of this function alone is not recommended. Use mapWork instead.
+	*   \param tileset Path to the tileset used for the datas.
+	*   \param tilesize Size of a tile in the map and in the tileset. Constant defined in the constant.hpp file often used
+	*/
 
-   /**
-    *   \brief Addition of a solid block number into the solidBlock array.
-    *   \param blocknumber Number of the solid block in the map datas to be added into the solidBlock array
-    */
+	bool texturingMap(const std::string &tileset, const sf::Vector2u tileSize);
 
-    bool addSolidBlock(const int blockNumber);
+	/**
+	*   \brief Addition of a solid block number into the solidBlock array.
+	*   \param blocknumber Number of the solid block in the map datas to be added into the solidBlock array
+	*/
 
-   /**
-    *   \return Array containig the static map datas
-    */
+	bool addSolidBlock(const int blockNumber);
 
-    int* getMapArray() const;
+	/**
+	*   \return Array containig the static map datas
+	*/
 
-   /**
-    *   \return Map width
-    */
+	int *getMapArray() const;
 
-    int getMapWidth() const;
+	/**
+	*   \return Map width
+	*/
 
-   /**
-    *   \return Map height
-    */
+	int getMapWidth() const;
 
-    int getMapHeight() const;
+	/**
+	*   \return Map height
+	*/
 
-   /**
-    *   \return Index of all the block types considered solid
-    */
+	int getMapHeight() const;
 
-    std::vector<int> getSolidBlock() const;
+	/**
+	*   \return Index of all the block types considered solid
+	*/
+
+	std::vector<int> getSolidBlock() const;
 
 private:
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
-    {
-        states.transform *= getTransform();
+	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const
+	{
+		states.transform *= getTransform();
 
-        states.texture = &m_tileset;
+		states.texture = &m_tileset;
 
-        target.draw(m_vertices, states);
-    }
+		target.draw(m_vertices, states);
+	}
 
-    sf::VertexArray     m_vertices;
-    sf::Texture         m_tileset;
-    int                 *m_mapArray,
-                        m_mapWidth,
-                        m_mapHeight;
+	sf::VertexArray m_vertices;
+	sf::Texture     m_tileset;
+	int             *m_mapArray, m_mapWidth, m_mapHeight;
 
-    std::vector<int> m_solidBlock;
+	std::vector<int> m_solidBlock;
 };
 
 #endif // CLASSES_HPP_INCLUDED

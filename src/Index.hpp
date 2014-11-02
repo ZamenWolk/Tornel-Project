@@ -10,24 +10,24 @@
 #include "Equipement.hpp"
 #include "mathfuncs.hpp"
 
-   /**
-    *   \file Index.hpp
-    *   \brief Contains all the classes and structures to form indexes
-    */
+/**
+*   \file Index.hpp
+*   \brief Contains all the classes and structures to form indexes
+*/
 
 /**
 * \addtogroup both
 * @{
 */
 
-   /**
-	*	\brief Member of characters index
-	*/
+/**
+*	\brief Member of characters index
+*/
 
 struct IndexMember
 {
 
-   /**
+	/**
 	*	\param[in] name Name of the class
 	*	\param[in] maxLifeIncrement Evolution followed by the index member's life
 	*	\param[in] maxManaIncrement Evolution followed by the index member's mana
@@ -39,53 +39,53 @@ struct IndexMember
 	*	\param[in] learnableSkills All the skills the class can learn
 	*/
 
-	IndexMember(	std::string name,
-					ThirdPowerFunction maxLifeIncrement,
-					ThirdPowerFunction maxManaIncrement,
-					ThirdPowerFunction maxStaminaIncrement,
-					ThirdPowerFunction strengthIncrement,
-					ThirdPowerFunction wisdomIncrement,
-					ThirdPowerFunction toughnessIncrement,
-					ThirdPowerFunction mentalResistanceIncrement,
-					std::vector<LevelingSkill> learnableSkills):
-						name(name),
-						maxLifeIncrement(maxLifeIncrement),
-						maxManaIncrement(maxManaIncrement),
-						maxStaminaIncrement(maxStaminaIncrement),
-						strengthIncrement(strengthIncrement),
-						wisdomIncrement(wisdomIncrement),
-						toughnessIncrement(toughnessIncrement),
-						mentalResistanceIncrement(mentalResistanceIncrement),
-						learnableSkills(learnableSkills)
+	IndexMember(std::string name,
+				ThirdPowerFunction maxLifeIncrement,
+				ThirdPowerFunction maxManaIncrement,
+				ThirdPowerFunction maxStaminaIncrement,
+				ThirdPowerFunction strengthIncrement,
+				ThirdPowerFunction wisdomIncrement,
+				ThirdPowerFunction toughnessIncrement,
+				ThirdPowerFunction mentalResistanceIncrement,
+				std::vector<LevelingSkill> learnableSkills) :
+			name(name),
+			maxLifeIncrement(maxLifeIncrement),
+			maxManaIncrement(maxManaIncrement),
+			maxStaminaIncrement(maxStaminaIncrement),
+			strengthIncrement(strengthIncrement),
+			wisdomIncrement(wisdomIncrement),
+			toughnessIncrement(toughnessIncrement),
+			mentalResistanceIncrement(mentalResistanceIncrement),
+			learnableSkills(learnableSkills)
 	{
 
 	}
 
-    /// \return name of the member
-    std::string getName() const
-    {
-    	return name;
-    }
+	/// \return name of the member
+	std::string getName() const
+	{
+		return name;
+	}
 
-    std::string 				name; ///< Name of the class
-    ThirdPowerFunction 			maxLifeIncrement, ///< Evolution followed by the index member's life
-								maxManaIncrement, ///< Evolution followed by the index member's mana
-								maxStaminaIncrement, ///< Evolution followed by the index member's stamina
-								strengthIncrement, ///< Evolution followed by the index member's strength
-								wisdomIncrement, ///< Evolution followed by the index member's wisdom
-								toughnessIncrement, ///< Evolution followed by the index member's toughness
-								mentalResistanceIncrement; ///< Evolution followed by the index member's mental resistance
-    std::vector<LevelingSkill> learnableSkills; ///< All the skills the class can learn through the levels
+	std::string        name; ///< Name of the class
+	ThirdPowerFunction maxLifeIncrement, ///< Evolution followed by the index member's life
+					   maxManaIncrement, ///< Evolution followed by the index member's mana
+					   maxStaminaIncrement, ///< Evolution followed by the index member's stamina
+					   strengthIncrement, ///< Evolution followed by the index member's strength
+					   wisdomIncrement, ///< Evolution followed by the index member's wisdom
+					   toughnessIncrement, ///< Evolution followed by the index member's toughness
+							   mentalResistanceIncrement; ///< Evolution followed by the index member's mental resistance
+	std::vector<LevelingSkill> learnableSkills; ///< All the skills the class can learn through the levels
 };
 
-   /**
-	*	\brief Member of monsters index
-	*/
+/**
+*	\brief Member of monsters index
+*/
 
 struct MonsterMember : public IndexMember
 {
 
-   /**
+	/**
 	*	\param[in] name Name of the class
 	*	\param[in] maxLifeIncrement Evolution followed by the index member's life
 	*	\param[in] maxManaIncrement Evolution followed by the index member's mana
@@ -98,27 +98,26 @@ struct MonsterMember : public IndexMember
 	*	\param[in] effects Basic attacks' informations
 	*/
 
-	MonsterMember(	std::string name,
-					ThirdPowerFunction maxLifeIncrement,
-					ThirdPowerFunction maxManaIncrement,
-					ThirdPowerFunction maxStaminaIncrement,
-					ThirdPowerFunction strengthIncrement,
-					ThirdPowerFunction wisdomIncrement,
-					ThirdPowerFunction toughnessIncrement,
-					ThirdPowerFunction mentalResistanceIncrement,
-					std::vector<LevelingSkill> learnableSkills,
-					WeaponEffects effects):
+	MonsterMember(std::string name,
+				  ThirdPowerFunction maxLifeIncrement,
+				  ThirdPowerFunction maxManaIncrement,
+				  ThirdPowerFunction maxStaminaIncrement,
+				  ThirdPowerFunction strengthIncrement,
+				  ThirdPowerFunction wisdomIncrement,
+				  ThirdPowerFunction toughnessIncrement,
+				  ThirdPowerFunction mentalResistanceIncrement,
+				  std::vector<LevelingSkill> learnableSkills,
+				  WeaponEffects effects) :
 
-						IndexMember(name,
-									maxLifeIncrement,
-									maxManaIncrement,
-									maxStaminaIncrement,
-									strengthIncrement,
-									wisdomIncrement,
-									toughnessIncrement,
-									mentalResistanceIncrement,
-									learnableSkills),
-						effects(effects)
+			IndexMember(name,
+						maxLifeIncrement,
+						maxManaIncrement,
+						maxStaminaIncrement,
+						strengthIncrement,
+						wisdomIncrement,
+						toughnessIncrement,
+						mentalResistanceIncrement,
+						learnableSkills), effects(effects)
 	{
 
 	}
@@ -126,32 +125,32 @@ struct MonsterMember : public IndexMember
 	WeaponEffects effects; ///< Basic attacks' informations
 };
 
-   /**
-    *   \brief Contains the characteristics of a certain kind of thing in the game
-    */
+/**
+*   \brief Contains the characteristics of a certain kind of thing in the game
+*/
 
-template<class T> class Index
+template<class T>
+class Index
 {
 
 public:
 
-    /// \param[in] identifier Name of the index for use in the error reports
-	Index(std::string identifier):
-		index(),
-		identifier(identifier)
+	/// \param[in] identifier Name of the index for use in the error reports
+	Index(std::string identifier) :
+			index(), identifier(identifier)
 	{
 
 	}
 
-   /**
-    * 	\brief Checks if the name searched for exists in the index
-    * 	\param[in] searchName Name to check
-    * 	\return true if the name exists
-    */
+	/**
+	* 	\brief Checks if the name searched for exists in the index
+	* 	\param[in] searchName Name to check
+	* 	\return true if the name exists
+	*/
 
-    T* searchByName(std::string searchName)
-    {
-		for (typename std::vector<T>::iterator it= index.begin(); it != index.end(); it++)
+	T *searchByName(std::string searchName)
+	{
+		for (typename std::vector<T>::iterator it = index.begin(); it != index.end(); it++)
 		{
 			if (it->name() == searchName)
 			{
@@ -161,18 +160,18 @@ public:
 
 		std::string errorMessage(searchName + " doesn't exist in the " + identifier + " index");
 
-        errorReport(errorMessage);
+		errorReport(errorMessage);
 		return &index[0];
 	}
 
-   /**
+	/**
 	*	\param[in] searchEntry name of the name to search for
 	*	\return true if the entry given exists in the index
 	*/
 
 	bool doesEntryExist(std::string searchEntry)
 	{
-		for (typename std::vector<T>::iterator it= index.begin(); it != index.end(); it++)
+		for (typename std::vector<T>::iterator it = index.begin(); it != index.end(); it++)
 		{
 			if (it->name() == searchEntry)
 			{
@@ -183,14 +182,14 @@ public:
 		return false;
 	}
 
-   /**
-    * 	\brief Add an entry into the index
-    * 	\param[in] entryToAdd Entry to add to the index
-    *	\return True if the entry is in the index after the function
-    */
+	/**
+	* 	\brief Add an entry into the index
+	* 	\param[in] entryToAdd Entry to add to the index
+	*	\return True if the entry is in the index after the function
+	*/
 
-    bool addEntry(T entryToAdd)
-    {
+	bool addEntry(T entryToAdd)
+	{
 		if (!doesEntryExist(entryToAdd.name()))
 		{
 			index.push_back(entryToAdd);
@@ -201,35 +200,35 @@ public:
 
 protected:
 
-    std::vector<T> 		index; ///< Index of all the entries
-    const std::string identifier; ///< Name of the index
+	std::vector<T>    index; ///< Index of all the entries
+	const std::string identifier; ///< Name of the index
 };
 
-   /**
-    *   \brief Index class with more functions, most notably handling types (i.e. for weapons)
-    */
+/**
+*   \brief Index class with more functions, most notably handling types (i.e. for weapons)
+*/
 
-template<class T> class EquipementIndex : public Index<T>
+template<class T>
+class EquipementIndex : public Index<T>
 {
 
 public:
 
-    /// \param[in] identifier Name of the index for use in the error reports
-	EquipementIndex(std::string identifier):
-				Index<T>(identifier),
-				typeIndex()
+	/// \param[in] identifier Name of the index for use in the error reports
+	EquipementIndex(std::string identifier) :
+			Index<T>(identifier), typeIndex()
 	{
 
 	}
 
-   /**
+	/**
 	*	\param[in] searchType name of the type to search for
 	*	\return true if the type given exists in the index
 	*/
 
 	bool doesTypeExist(std::string searchType)
 	{
-		for (std::vector<std::string>::iterator it= typeIndex.begin(); it != typeIndex.end(); it++)
+		for (std::vector<std::string>::iterator it = typeIndex.begin(); it != typeIndex.end(); it++)
 		{
 			if (*it == searchType)
 			{
@@ -240,7 +239,7 @@ public:
 		return false;
 	}
 
-   /**
+	/**
 	*	\brief Adds the type given in argument to the index
 	*	\param[in] typeToAdd type to add to the index
 	*	\return true if type exists in the index after the function
@@ -262,23 +261,22 @@ protected:
 	std::vector<std::string> typeIndex; ///< Index of all the types of entries
 };
 
-   /**
-    * \brief Class grouping all the indexes of the game with all the data of equipements, classes and skills
-    */
+/**
+* \brief Class grouping all the indexes of the game with all the data of equipements, classes and skills
+*/
 
 struct IndexesIndex
 {
-    IndexesIndex():
-                heroClassIndex("Hero classes"),
-                monsterIndex("Monsters"),
-                skillIndex("Skill"),
-                weaponIndex("Weapon"),
-                helmetIndex("Helmet"),
-                chestplateIndex("Chestplate"),
-                leggingsIndex("Leggings"),
-                bootsIndex("Boots")
-
-    {
+	IndexesIndex() :
+			heroClassIndex("Hero classes"),
+			monsterIndex("Monsters"),
+			skillIndex("Skill"),
+			weaponIndex("Weapon"),
+			helmetIndex("Helmet"),
+			chestplateIndex("Chestplate"),
+			leggingsIndex("Leggings"),
+			bootsIndex("Boots")
+	{
 		heroClassInit();
 		monsterInit();
 		spellInit();
@@ -288,27 +286,27 @@ struct IndexesIndex
 		chestplateInit();
 		leggingsInit();
 		bootsInit();
-    }
+	}
 
-    Index<IndexMember> 			    heroClassIndex; ///< Index of hero classes
+	Index<IndexMember> heroClassIndex; ///< Index of hero classes
 
-    Index<MonsterMember>		    monsterIndex; ///< Index of monsters
+	Index<MonsterMember> monsterIndex; ///< Index of monsters
 
-    Index<Skill>                    skillIndex; ///< Index of skills
+	Index<Skill> skillIndex; ///< Index of skills
 
-    EquipementIndex<Weapon>		    weaponIndex; ///< Index of weapons
+	EquipementIndex<Weapon> weaponIndex; ///< Index of weapons
 
-    EquipementIndex<Equipement>		helmetIndex, ///< Index of helmets
-                                    chestplateIndex, ///< Index of chestplates
-									leggingsIndex, ///< Index of leggings
-									bootsIndex; ///< Index of boots
+	EquipementIndex<Equipement> helmetIndex, ///< Index of helmets
+								chestplateIndex, ///< Index of chestplates
+								leggingsIndex, ///< Index of leggings
+								bootsIndex; ///< Index of boots
 
-    thor::ActionMap<std::string>	keyboardMap; ///< Map of all the controls in-game
+	thor::ActionMap<std::string> keyboardMap; ///< Map of all the controls in-game
 
 private:
-   /**
-   	* \brief Initializer of the index of hero classes
-   	*/
+	/**
+	* \brief Initializer of the index of hero classes
+	*/
 	void heroClassInit()
 	{
 		heroClassIndex.addEntry(IndexMember("default",
@@ -478,21 +476,21 @@ private:
 	void mapsInit()
 	{
 		keyboardMap["characterMenu"] = thor::Action(sf::Keyboard::A, thor::Action::PressOnce);
-		keyboardMap["targetMenu"] = thor::Action(sf::Keyboard::Z, thor::Action::PressOnce);
-		keyboardMap["abilityMenu"] = thor::Action(sf::Keyboard::E, thor::Action::PressOnce);
-		keyboardMap["spellMenu"] = thor::Action(sf::Keyboard::R, thor::Action::PressOnce);
-		keyboardMap["weaponAttack"] = thor::Action(sf::Keyboard::D, thor::Action::PressOnce);
-		keyboardMap["mainMenu"] = thor::Action(sf::Keyboard::Numpad8, thor::Action::PressOnce);
-		keyboardMap["precPage"] = thor::Action(sf::Keyboard::Numpad7, thor::Action::PressOnce);
-		keyboardMap["nextPage"] = thor::Action(sf::Keyboard::Numpad9, thor::Action::PressOnce);
-		keyboardMap["selector1"] = thor::Action(sf::Keyboard::Numpad4, thor::Action::PressOnce);
-		keyboardMap["selector2"] = thor::Action(sf::Keyboard::Numpad5, thor::Action::PressOnce);
-		keyboardMap["selector3"] = thor::Action(sf::Keyboard::Numpad6, thor::Action::PressOnce);
-		keyboardMap["selector4"] = thor::Action(sf::Keyboard::Numpad1, thor::Action::PressOnce);
-		keyboardMap["selector5"] = thor::Action(sf::Keyboard::Numpad2, thor::Action::PressOnce);
-		keyboardMap["selector6"] = thor::Action(sf::Keyboard::Numpad3, thor::Action::PressOnce);
-		keyboardMap["charSelector"] = keyboardMap["selector1"] || keyboardMap["selector2"] || keyboardMap["selector3"] || keyboardMap["selector4"] || keyboardMap["selector5"];
-		keyboardMap["selector"] = keyboardMap["selector6"] || keyboardMap["charSelector"];
+		keyboardMap["targetMenu"]    = thor::Action(sf::Keyboard::Z, thor::Action::PressOnce);
+		keyboardMap["abilityMenu"]   = thor::Action(sf::Keyboard::E, thor::Action::PressOnce);
+		keyboardMap["spellMenu"]     = thor::Action(sf::Keyboard::R, thor::Action::PressOnce);
+		keyboardMap["weaponAttack"]  = thor::Action(sf::Keyboard::D, thor::Action::PressOnce);
+		keyboardMap["mainMenu"]      = thor::Action(sf::Keyboard::Numpad8, thor::Action::PressOnce);
+		keyboardMap["precPage"]      = thor::Action(sf::Keyboard::Numpad7, thor::Action::PressOnce);
+		keyboardMap["nextPage"]      = thor::Action(sf::Keyboard::Numpad9, thor::Action::PressOnce);
+		keyboardMap["selector1"]     = thor::Action(sf::Keyboard::Numpad4, thor::Action::PressOnce);
+		keyboardMap["selector2"]     = thor::Action(sf::Keyboard::Numpad5, thor::Action::PressOnce);
+		keyboardMap["selector3"]     = thor::Action(sf::Keyboard::Numpad6, thor::Action::PressOnce);
+		keyboardMap["selector4"]     = thor::Action(sf::Keyboard::Numpad1, thor::Action::PressOnce);
+		keyboardMap["selector5"]     = thor::Action(sf::Keyboard::Numpad2, thor::Action::PressOnce);
+		keyboardMap["selector6"]     = thor::Action(sf::Keyboard::Numpad3, thor::Action::PressOnce);
+		keyboardMap["charSelector"]  = keyboardMap["selector1"] || keyboardMap["selector2"] || keyboardMap["selector3"] || keyboardMap["selector4"] || keyboardMap["selector5"];
+		keyboardMap["selector"]      = keyboardMap["selector6"] || keyboardMap["charSelector"];
 	}
 
 };
