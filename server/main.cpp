@@ -4,6 +4,7 @@
 #include "../src/operators.hpp"
 #include "FightSubserver.hpp"
 #include "fonctor.hpp"
+#include "../communication.hpp"
 
 using namespace std;
 using namespace sf;
@@ -32,8 +33,8 @@ int main()
 
 	for (vector<FightSubserver *>::iterator it = subservers.begin(); it != subservers.end(); it++)
 	{
-		clientsVector.push_back(&(*it)->m_clients[0]);
-		clientsVector.push_back(&(*it)->m_clients[1]);
+		clientsVector.push_back(&(*it)->clients[0]);
+		clientsVector.push_back(&(*it)->clients[1]);
 	}
 
 	selector.add(listener);

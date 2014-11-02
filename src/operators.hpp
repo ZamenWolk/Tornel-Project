@@ -5,6 +5,7 @@
 #include <typeinfo>
 
 #include "constants.hpp"
+#include "../communication.hpp"
 
 class CombatEntity;
 

@@ -10,6 +10,7 @@
 
 #include "../src/constants.hpp"
 #include "../src/AIControlledEntity.hpp"
+#include "../communication.hpp"
 
 /**
 * \addtogroup server

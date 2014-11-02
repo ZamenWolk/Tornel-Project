@@ -2,6 +2,7 @@
 #define VERSION_H
 
 #include "src/constants.hpp"
+#include "communication.hpp"
 
 namespace AutoVersion
 {

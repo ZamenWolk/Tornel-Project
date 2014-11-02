@@ -9,6 +9,7 @@
 #include "Equipement.hpp"
 #include "Index.hpp"
 #include "operators.hpp"
+#include "../communication.hpp"
 
 extern IndexesIndex indexes; ///< Indexes of the game
 
@@ -16,30 +17,6 @@ extern IndexesIndex indexes; ///< Indexes of the game
 *   \file AIControlledEntity.hpp
 *   \brief Contains all the classes and structures concerning entities and AI
 */
-
-/**
-* \addtogroup both Shared
-* \brief Compounds shared between client and server
-* \ingroup server client
-* @{
-*/
-
-/**
-*	\brief Informations received from server to create premade entities
-*/
-
-struct EntityInformations
-{
-	std::string name; ///< Name of the entity
-	int         life, ///< Current life of the entity
-				mana, ///< Current mana of the entity
-						 stamina; ///< Current stamina of the entity
-	std::vector<Skill *> knownAbilities, ///< Known abilities of the entity
-						 knownSpells; ///< Known spells of the entity
-	CombatEffects        effects; ///< Current effects of the entity
-};
-
-/// @}
 
 /**
 * \addtogroup client

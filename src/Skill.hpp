@@ -5,6 +5,7 @@
 #include <SFML/System.hpp>
 
 #include "constants.hpp"
+#include "../communication.hpp"
 
 /**
 *   \file Skill.hpp

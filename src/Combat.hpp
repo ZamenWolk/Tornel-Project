@@ -15,6 +15,7 @@
 #include "constants.hpp"
 #include "Skill.hpp"
 #include "../version.hpp"
+#include "../communication.hpp"
 
 extern sf::Clock    mainClock; ///< Main clock of the program
 extern IndexesIndex indexes; ///< Indexes of the game
@@ -237,8 +238,8 @@ public:
 										  AutoVersion::MINOR,
 										  AutoVersion::PATCH);
 		std::vector<CombatEntity> teamFromServer;
-		sf::Time                  pingTime(sf::milliseconds(0)), pongTime(sf::milliseconds(0)), timeUntilLaunch(sf::milliseconds(
-				0)),              timeAtLaunchDelay(sf::milliseconds(0));
+		sf::Time                  pingTime(sf::milliseconds(0)), pongTime(sf::milliseconds(0)), timeUntilLaunch(sf::milliseconds(0)),
+								  timeAtLaunchDelay(sf::milliseconds(0));
 
 		//Connects to the server
 		onlineMutex.lock();

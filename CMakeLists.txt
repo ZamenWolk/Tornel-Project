@@ -33,7 +33,9 @@ set(SOURCE_FILES
     src/operators.cpp
     src/operators.hpp
     src/Skill.hpp
-    version.hpp)
+    version.hpp
+    communication.cpp
+    communication.hpp)
 
 set(SERVER_FILES
     server/FightSubserver.cpp
@@ -46,7 +48,9 @@ set(SERVER_FILES
     src/constants.cpp
     src/constants.hpp
     src/operators.cpp
-    src/operators.hpp)
+    src/operators.hpp
+    communication.cpp
+    communication.hpp)
 
 find_package(SFML COMPONENTS network audio graphics window system REQUIRED)
 

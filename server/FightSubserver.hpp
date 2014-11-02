@@ -16,6 +16,7 @@
 #include "../src/AIControlledEntity.hpp"
 #include "structures.hpp"
 #include "../version.hpp"
+#include "../communication.hpp"
 
 /**
 * \addtogroup server Server side
