@@ -5,10 +5,10 @@
 #include <string>
 #include <vector>
 #include <SFML/System.hpp>
-#include "src/Skill.hpp"
+//#include "src/Skill.hpp"
 #include "src/Equipement.hpp"
-#include "src/operators.hpp"
-#include "src/Equipement.hpp"
+
+class Skill;
 
 /**
 * \file ccommunication.hpp

@@ -152,7 +152,7 @@ public:
 	{
 		for (typename std::vector<T>::iterator it = index.begin(); it != index.end(); it++)
 		{
-			if (it->name() == searchName)
+			if (it->getName() == searchName)
 			{
 				return &*it;
 			}
@@ -173,7 +173,7 @@ public:
 	{
 		for (typename std::vector<T>::iterator it = index.begin(); it != index.end(); it++)
 		{
-			if (it->name() == searchEntry)
+			if (it->getName() == searchEntry)
 			{
 				return true;
 			}
@@ -190,7 +190,7 @@ public:
 
 	bool addEntry(T entryToAdd)
 	{
-		if (!doesEntryExist(entryToAdd.name()))
+		if (!doesEntryExist(entryToAdd.getName()))
 		{
 			index.push_back(entryToAdd);
 		}

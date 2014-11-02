@@ -196,7 +196,7 @@ sf::Packet &operator>>(sf::Packet &packet, sf::Time &time);
 template<typename T>
 sf::Packet &createPacket(sf::Packet &packet, const T &infos, SentInfosType type)
 {
-	if ((typeid(infos) == typeid(const VersionNumber) && type == VERSION_NUMBER) || (typeid(infos) == typeid(const sf::Time) && type == PING) || (typeid(infos) == typeid(const std::vector<CombatEntity>) && type == TEAM_DATA))
+	if ((typeid(infos) == typeid(VersionNumber const) && type == VERSION_NUMBER) || (typeid(infos) == typeid(const sf::Time) && type == PING) || (typeid(infos) == typeid(const std::vector<CombatEntity>) && type == TEAM_DATA))
 	{
 		return packet << type << infos;
 	}
