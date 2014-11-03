@@ -49,6 +49,16 @@ public:
 
 	virtual double result(int x) = 0;
 
+	int iresult(double x)
+	{
+		return (int)result(x);
+	}
+
+	int iresult(int x)
+	{
+		return (int)result(x);
+	}
+
 protected:
 
 	int minimalXValue, ///< Minimal value of x as handled in the game. -1 is none

@@ -62,7 +62,7 @@ public:
 			entity(entity),
 			target(nullptr),
 			effects(entity->getEffects(), entity->basicAttackEffects()),
-			ID((long long int)this%4200000000),
+			ID((unsigned long)((long long int)this%4200000000)),
 			lastInteractionTime(sf::milliseconds(0)),
 			interactionCooldown(sf::milliseconds(0))
 	{
@@ -78,7 +78,7 @@ public:
 			entity(new Entity(entity)),
 			target(nullptr),
 			effects(entity.effects),
-			ID((long long int)this%4200000000),
+			ID((unsigned long)((long long int)this%4200000000)),
 			lastInteractionTime(sf::milliseconds(0)),
 			interactionCooldown(sf::milliseconds(0))
 	{
@@ -209,7 +209,7 @@ public:
 	*	\return 1 if team 1 won, 0 if team 2 won
 	*/
 
-	int combatRunning(sf::RenderWindow &window, std::string IPAddress = "localhost", int addressPort = 2715)
+	int combatRunning(sf::RenderWindow &window, std::string IPAddress = "localhost", unsigned short addressPort = 2715)
 	{
 		setUpServer(IPAddress, addressPort);
 
@@ -241,7 +241,7 @@ public:
 	*	\param[in] addressPort Port to connect to on the server
 	*/
 
-	void setUpServer(std::string IPAddress, int addressPort)
+	void setUpServer(std::string IPAddress, unsigned short addressPort)
 	{
 		sf::Packet                versionNumber, charactersPacket, packetFromServer, timePacket;
 		VersionNumber             version(AutoVersion::STATUS,
@@ -567,7 +567,8 @@ protected:
 	{
 
 		static CombatMenu currentMenu(MAIN);
-		static int        spellPage(0), abilityPage(0), selectorVariable(0);
+		static int        spellPage(0), abilityPage(0);
+		static unsigned int selectorVariable(0);
 		static CombatEntity *currentCharacter(&currentTeam->at(0));
 
 		//Reads keypresses

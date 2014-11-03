@@ -5,7 +5,6 @@
 
 #include "operators.hpp"
 #include "Combat.hpp"
-#include "../communication.hpp"
 
 sf::Packet &operator<<(sf::Packet &packet, const std::vector<Skill *> &source)
 {

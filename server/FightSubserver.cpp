@@ -4,7 +4,7 @@
 
 bool findOpenSubserver(std::vector<FightSubserver *> &serverVector, FightSubserver **returnedSubserver)
 {
-	for (int i = 0; i < serverVector.size(); i++)
+	for (unsigned int i = 0; i < serverVector.size(); i++)
 	{
 		if (!(serverVector.operator[](i)->isFull()))
 		{

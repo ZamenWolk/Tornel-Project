@@ -52,10 +52,10 @@ public:
 			}
 			else if (input == "reset")
 			{
-				int servNumber(0);
+				unsigned int servNumber(0);
 				std::cin >> servNumber;
 
-				if (servNumber > 0 && servNumber <= subservers->size())
+				if (servNumber != 0 && servNumber <= subservers->size())
 				{
 					subservers->operator[](servNumber - 1)->reset();
 					std::cout << "Server #" << servNumber << " was succesfully reset" << std::endl;
