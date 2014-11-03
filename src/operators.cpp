@@ -38,7 +38,7 @@ sf::Packet &operator>>(sf::Packet &packet, ActionType &action)
 			action = END_OF_FIGHT;
 			break;
 		default:
-			errorReport("Server sent an unknown action", 0);
+			errorReport("Server sent an unknown action", false);
 	}
 
 	return packet;
@@ -223,7 +223,7 @@ sf::Packet &operator<<(sf::Packet &packet, const VersionNumber &version)
 
 sf::Packet &operator>>(sf::Packet &packet, VersionNumber &version)
 {
-	return packet >> version.status >> version.major << version.minor << version.patch;
+	return packet >> version.status >> version.major >> version.minor >> version.patch;
 }
 
 sf::Packet &operator<<(sf::Packet &packet, const std::vector<CombatEntity> &team)

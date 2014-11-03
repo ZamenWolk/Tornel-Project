@@ -80,19 +80,12 @@ int main()
 						sf::Packet                 receivedPacket;
 
 						clientsVector[i]->receive(receivedPacket);
-						receivedPacket >> infosType;
+						infoTypeInPacket(receivedPacket, infosType);
 
 						if (infosType == FIGHT_INTERACTION)
 						{
-							receivedPacket >> receivedInteraction;
+							deconstructPacket(receivedPacket, receivedInteraction, infosType);
 							subservers[i/2]->newEvent(receivedInteraction);
-						}
-						else if (infosType == TEAM_DATA)
-						{
-							receivedPacket >> receivedTeam;
-							isTeam1 = (i%2 == 0);
-
-							subservers[i/2]->newEvent(receivedTeam, isTeam1);
 						}
 					}
 				}
@@ -105,7 +98,7 @@ int main()
 	}
 #pragma clang diagnostic pop
 
-	std::cout << "Stopping the server" << std::endl;
+	cout << "Stopping the server" << endl;
 
 	inputThread.wait();
 	for (vector<ServerClient *>::iterator it = clientsVector.begin(); it != clientsVector.end(); it++)

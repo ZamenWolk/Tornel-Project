@@ -2,16 +2,23 @@
 #define OPERATORS_HPP_INCLUDED
 
 #include <SFML/System.hpp>
+#include <SFML/Network.hpp>
 #include <typeinfo>
 
 #include "constants.hpp"
-#include "../communication.hpp"
 
 class CombatEntity;
 
 struct Skill;
 struct CombatEffects;
 struct EntityInformations;
+struct VersionNumber;
+struct InteractionInfos;
+
+enum ActionType;
+enum SpecialAttribute;
+enum AttackType;
+enum SentInfosType;
 
 /**
 *   \file operators.hpp
@@ -184,28 +191,6 @@ sf::Packet &operator<<(sf::Packet &packet, const sf::Time &time);
 
 sf::Packet &operator>>(sf::Packet &packet, sf::Time &time);
 
-
-/**
-*   \brief Creates a packet with a some info and the SentInfosType going with it
-*   \param[in] packet Packet to flux the informations to
-*   \param[in] infos version structure to flux into the packet
-*   \param[in] type type of info contained in the structure
-*   \return updated packet
-*/
-
-template<typename T>
-sf::Packet &createPacket(sf::Packet &packet, const T &infos, SentInfosType type)
-{
-	if ((typeid(infos) == typeid(VersionNumber const) && type == VERSION_NUMBER) || (typeid(infos) == typeid(const sf::Time) && type == PING) || (typeid(infos) == typeid(const std::vector<CombatEntity>) && type == TEAM_DATA))
-	{
-		return packet << type << infos;
-	}
-	else
-	{
-		errorReport("The type of info sent does not match the type of variable");
-		return packet;
-	}
-}
 
 /// @}
 

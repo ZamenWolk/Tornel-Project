@@ -83,7 +83,9 @@ public:
 	{
 		ServerClient                    *concernedClient(nullptr);
 		std::vector<EntityInformations> *concernedTeamVector(nullptr);
-		bool                            isClient1;
+		bool                            isClient1(false);
+		SentInfosType 					type;
+		sf::Packet 						versionPacket;
 
 		if (clients[0].isSocketFree())
 		{
@@ -105,12 +107,11 @@ public:
 			return 0;
 		}
 
-		sf::Packet versionPacket;
-
 		concernedClient->connect(*listener, socketSelector);
 		concernedClient->receive(versionPacket);
 
-		versionPacket >> eventsStructure.versEv_number;
+		infoTypeInPacket(versionPacket, type);
+		deconstructPacket(versionPacket, eventsStructure.versEv_number, type);
 		eventsStructure.isEventTreated = true;
 
 		if (eventsStructure.versEv_number.status == AutoVersion::STATUS && eventsStructure.versEv_number.major == AutoVersion::MAJOR)
