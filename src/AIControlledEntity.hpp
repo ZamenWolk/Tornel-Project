@@ -6,7 +6,7 @@
 #include <SFML/System.hpp>
 
 #include "Skill.hpp"
-#include "Equipement.hpp"
+#include "Equipment.hpp"
 #include "Index.hpp"
 #include "operators.hpp"
 #include "../communication.hpp"
@@ -38,7 +38,7 @@ public:
 	*   \param[in] monsterClass Class of the entity
 	*/
 
-	EntityModel(const std::string &name, int level, IndexMember *monsterClass) :
+	EntityModel(const std::string &name, int level, EntityClass *monsterClass) :
 
 			name(name),
 			level(level),
@@ -147,7 +147,7 @@ public:
 			stamina = effects.stamina;
 	}
 
-	/// Actualize characteristics of the entity \details Used when an equipement is changed or when a Hero earns a level
+	/// Actualize characteristics of the entity \details Used when an equipment is changed or when a Hero earns a level
 	virtual void actualizeCharacteristics()
 	{
 		int newMaxLife(0), newMaxMana(0), newMaxStamina(0);
@@ -238,7 +238,7 @@ public:
 protected:
 
 	/// \return An array containing all the skills the entity can use at its level
-	void getKnownSkillsFromLevel()
+	virtual void getKnownSkillsFromLevel()
 	{
 		//Put the skills vectors back to 0 so they can be filled again
 		while (knownAbilities.size() > 0)
@@ -252,7 +252,7 @@ protected:
 		}
 
 		//Adds every skill that meets level requirement to the appropriate vector
-		for (std::vector<LevelingSkill>::iterator it = entityClass->learnableSkills.begin(); it != entityClass->learnableSkills.end(); it++)
+		for (std::vector<LevelingSkill>::iterator it = entityClass->getSkills().begin(); it != entityClass->getSkills().end(); it++)
 		{
 			if (level >= it->learnLevel)
 			{
@@ -277,7 +277,7 @@ protected:
 
 	Effects effects; ///< Bonuses of the entity
 
-	IndexMember *entityClass; ///< Class of the entity
+	EntityClass *entityClass; ///< Class of the entity
 
 	std::vector<Skill *> knownAbilities, ///< Abilities known by the player
 						 knownSpells; ///< Skills known by the Entity
@@ -298,9 +298,9 @@ public:
 	*   \param[in] monsterClass Class of the entity
 	*/
 
-	Entity(const std::string &name, int level, MonsterMember *monsterClass) :
+	Entity(const std::string &name, int level, MonsterClass *monsterClass) :
 
-			EntityModel(name, level, (IndexMember *)monsterClass), weaponEffects(monsterClass->effects)
+			EntityModel(name, level, (EntityClass *)monsterClass), weaponEffects(monsterClass->effects)
 	{
 
 	}

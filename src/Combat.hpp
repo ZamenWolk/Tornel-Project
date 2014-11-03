@@ -12,25 +12,36 @@
 
 #include "operators.hpp"
 #include "AIControlledEntity.hpp"
-#include "constants.hpp"
 #include "Skill.hpp"
 #include "../version.hpp"
 #include "../communication.hpp"
 
 extern sf::Clock    mainClock; ///< Main clock of the program
 extern IndexesIndex indexes; ///< Indexes of the game
+
 /**
 *	\file Combat.hpp
 *	\brief Contains classes and functions associated to combats
 */
-
-
 
 /**
 * \addtogroup client Client side
 * \brief Coumpounds used in the client application
 * @{
 */
+
+/**
+*	\brief Lists all possible menus the player might be in during combat
+*/
+
+enum CombatMenu
+{
+	MAIN, ///< Main part of the menu
+	CHARACTER_CHOOSING, ///< Character choosing menu
+	TARGET_CHOOSING, ///< Target choosing menu
+	SPELL_CHOOSING, ///< Spell choosing menu
+	ABILITY_CHOOSING, ///< Ability choosing menu
+};
 
 /**
 * 	\brief Entity for combat

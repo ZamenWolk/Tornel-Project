@@ -8,7 +8,7 @@
 #include "Index.hpp"
 #include "AIControlledEntity.hpp"
 #include "Skill.hpp"
-#include "Equipement.hpp"
+#include "Equipment.hpp"
 #include "mathfuncs.hpp"
 
 extern IndexesIndex indexes; ///< Indexes of the game
@@ -38,7 +38,7 @@ public:
 	*   \param[in] heroClass Class of the hero
 	*/
 
-	Hero(const std::string &name, int experiencePoints, IndexMember *heroClass) :
+	Hero(const std::string &name, int experiencePoints, EntityClass *heroClass) :
 
 
 			experiencePoints(experiencePoints),
@@ -60,23 +60,6 @@ public:
 	void gainXP(unsigned int xpGained)
 	{
 		experiencePoints += xpGained;
-	}
-
-	/**
-	*   \brief Add a skill to the character's usable skills
-	*   \param[in] skillToLearn Pointer to the skill to allow usage for the character
-	*/
-
-	void learnNewSkill(Skill *skillToLearn)
-	{
-		if (skillToLearn->skillType == ABILITY)
-		{
-			knownAbilities.push_back(skillToLearn);
-		}
-		else
-		{
-			knownSpells.push_back(skillToLearn);
-		}
 	}
 
 	/// \return Number of experience points the hero have
@@ -105,12 +88,12 @@ public:
 		effects.toughness        = entityClass->toughnessIncrement.result(level);
 		effects.mentalResistance = entityClass->mentalResistanceIncrement.result(level);
 
-		//Adds the effects of the equipements
-		effects += weapon->getEquipementEffects();
-		effects += helmet->getEquipementEffects();
-		effects += chestplate->getEquipementEffects();
-		effects += leggings->getEquipementEffects();
-		effects += boots->getEquipementEffects();
+		//Adds the effects of the equipments
+		effects += weapon->getEquipmentEffects();
+		effects += helmet->getEquipmentEffects();
+		effects += chestplate->getEquipmentEffects();
+		effects += leggings->getEquipmentEffects();
+		effects += boots->getEquipmentEffects();
 
 		//Changes the max life
 		newMaxLife = entityClass->maxLifeIncrement.result(level);
@@ -133,36 +116,36 @@ public:
 	}
 
 	/**
-	*   \brief Change the equipement the hero wears
-	*	\param[in] type type of the equipement
-	*   \param[in] newEquipement New equipement the hero has to wear
+	*   \brief Change the equipment the hero wears
+	*	\param[in] type type of the equipment
+	*   \param[in] newEquipment New equipment the hero has to wear
 	*/
 
-	void changeEquipement(EquipementType type, Equipement *newEquipement = NULL)
+	void changeEquipment(EquipmentType type, Equipment *newEquipment = NULL)
 	{
-		//Resets the equipement if set to NULL
-		if (newEquipement == NULL)
+		//Resets the equipment if set to NULL
+		if (newEquipment == NULL)
 		{
 			switch (type)
 			{
 				case HELMET:
-					newEquipement = indexes.helmetIndex.searchByName("Default");
+					newEquipment = indexes.helmetIndex.searchByName("Default");
 					break;
 
 				case CHESTPLATE:
-					newEquipement = indexes.chestplateIndex.searchByName("Default");
+					newEquipment = indexes.chestplateIndex.searchByName("Default");
 					break;
 
 				case LEGGINGS:
-					newEquipement = indexes.leggingsIndex.searchByName("Default");
+					newEquipment = indexes.leggingsIndex.searchByName("Default");
 					break;
 
 				case BOOTS:
-					newEquipement = indexes.bootsIndex.searchByName("Default");
+					newEquipment = indexes.bootsIndex.searchByName("Default");
 					break;
 
 				case WEAPON:
-					newEquipement = indexes.weaponIndex.searchByName("Default");
+					newEquipment = indexes.weaponIndex.searchByName("Default");
 					break;
 			}
 		}
@@ -170,23 +153,23 @@ public:
 		switch (type)
 		{
 			case HELMET:
-				helmet = newEquipement;
+				helmet = newEquipment;
 				break;
 
 			case CHESTPLATE:
-				chestplate = newEquipement;
+				chestplate = newEquipment;
 				break;
 
 			case LEGGINGS:
-				leggings = newEquipement;
+				leggings = newEquipment;
 				break;
 
 			case BOOTS:
-				boots = newEquipement;
+				boots = newEquipment;
 				break;
 
 			case WEAPON:
-				weapon = (Weapon *)newEquipement;
+				weapon = (Weapon *)newEquipment;
 				break;
 		}
 
@@ -205,17 +188,16 @@ public:
 		getKnownSkillsFromLevel();
 	}
 
-
 protected:
 
 	int experiencePoints; ///< Number of experience points the hero have
 
-	Weapon *weapon; ///< Weapon the hero is wearing
+	Weapon 			 *weapon; ///< Weapon the hero is wearing
 
-	Equipement *helmet, ///< Helmet the hero is wearing
-			   *chestplate, ///< Chestplate the hero is wearing
-			   *leggings, ///< Leggings the hero is wearing
-			   *boots; ///< Boots the hero is wearing
+	Equipment 		 *helmet, ///< Helmet the hero is wearing
+			   		 *chestplate, ///< Chestplate the hero is wearing
+			   		 *leggings, ///< Leggings the hero is wearing
+			   		 *boots; ///< Boots the hero is wearing
 };
 
 /// @}

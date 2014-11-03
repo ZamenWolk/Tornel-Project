@@ -62,32 +62,6 @@ enum Controls
 	FROM_FILE, ///< Actions read from a file
 };
 
-/**
-*	\brief Lists all possible menus the player might be in during combat
-*/
-
-enum CombatMenu
-{
-	MAIN, ///< Main part of the menu
-	CHARACTER_CHOOSING, ///< Character choosing menu
-	TARGET_CHOOSING, ///< Target choosing menu
-	SPELL_CHOOSING, ///< Spell choosing menu
-	ABILITY_CHOOSING, ///< Ability choosing menu
-};
-
-/**
-*	\brief Lists all possible types of equipement
-*/
-
-enum EquipementType
-{
-	HELMET, ///< Head equipement
-	CHESTPLATE, ///< Torso equipement
-	LEGGINGS, ///< Legs equipement
-	BOOTS, ///< Feet equipement
-	WEAPON, ///< Weapon equipement
-};
-
 /// @}
 
 /**

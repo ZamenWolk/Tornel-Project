@@ -68,6 +68,13 @@ struct Skill
 
 struct LevelingSkill
 {
+	LevelingSkill(Skill *skill, int learnLevel):
+			skill(skill),
+			learnLevel(learnLevel)
+	{
+
+	}
+
 	Skill *skill; ///< Skill the class is built around
 	int learnLevel; ///< Level at which the skill is learnt
 };

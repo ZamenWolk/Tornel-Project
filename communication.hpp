@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 #include <SFML/System.hpp>
-//#include "src/Skill.hpp"
-#include "src/Equipement.hpp"
+
+#include "src/Equipment.hpp"
 
 class Skill;
 

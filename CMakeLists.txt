@@ -25,9 +25,10 @@ set(SOURCE_FILES
     src/Combat.hpp
     src/constants.cpp
     src/constants.hpp
-    src/Equipement.hpp
+    src/Equipment.hpp
     src/Hero.hpp
     src/Index.hpp
+    src/Index.cpp
     src/main.cpp
     src/mathfuncs.hpp
     src/operators.cpp

@@ -4,26 +4,38 @@
 #include <string>
 #include <SFML/System.hpp>
 
-#include "constants.hpp"
-
 /**
 *   \file Equipement.hpp
-*   \brief Contains all the classes and structures of Equipement
+*   \brief Contains all the classes and structures of Equipment
 */
 
 /**
-* \addtogroup client
+*	\brief Lists all possible types of equipment
+*	\ingroup client
+*/
+
+enum EquipmentType
+{
+	HELMET, ///< Head equipment
+	CHESTPLATE, ///< Torso equipment
+	LEGGINGS, ///< Legs equipment
+	BOOTS, ///< Feet equipment
+	WEAPON, ///< Weapon equipment
+};
+
+/**
+* \addtogroup both
 * @{
 */
 
 /**
-*   \brief All effects of an equipement on the person who wears it
+*   \brief All effects of an equipment on the person who wears it
 *
 *   Here are all the components of the Effect :
 *
 *   Life : Pretty straight forward, boosts the life of the subject of the effect
 *
-*   Mana : Pretty straight forward as well, boosts the stamina of the sibject
+*   Mana : Pretty straight forward as well, boosts the stamina of the subject
 *
 *   Stamina : Do I really have to explain it again ?
 *
@@ -49,15 +61,15 @@ struct Effects
 	*   \param[in] equipementEffects Effects instance to copy for new instance
 	*/
 
-	Effects(const Effects &equipementEffects) :
+	Effects(const Effects &equipmentEffects) :
 
-			life(equipementEffects.life),
-			mana(equipementEffects.mana),
-			stamina(equipementEffects.stamina),
-			strength(equipementEffects.strength),
-			wisdom(equipementEffects.wisdom),
-			toughness(equipementEffects.toughness),
-			mentalResistance(equipementEffects.mentalResistance)
+			life(equipmentEffects.life),
+			mana(equipmentEffects.mana),
+			stamina(equipmentEffects.stamina),
+			strength(equipmentEffects.strength),
+			wisdom(equipmentEffects.wisdom),
+			toughness(equipmentEffects.toughness),
+			mentalResistance(equipmentEffects.mentalResistance)
 	{
 
 	}
@@ -155,13 +167,6 @@ struct WeaponEffects
 	sf::Time cooldownTime; ///< Cooldown time of the weapon
 };
 
-/// @}
-
-/**
-* \addtogroup both
-* @{
-*/
-
 /**
 *   \brief Fusion of Effects and WeaponEffects for combat purposes
 */
@@ -180,9 +185,9 @@ struct CombatEffects : public Effects, public WeaponEffects
 	*	\param[in] weaponEffects WeaponEffects part of data for CombatEffects
 	*/
 
-	CombatEffects(const Effects &equipementEffects, const WeaponEffects &weaponEffects) :
+	CombatEffects(const Effects &equipmentEffects, const WeaponEffects &weaponEffects) :
 
-			Effects(equipementEffects), WeaponEffects(weaponEffects)
+			Effects(equipmentEffects), WeaponEffects(weaponEffects)
 	{
 
 	}
@@ -224,11 +229,12 @@ struct CombatEffects : public Effects, public WeaponEffects
 */
 
 /**
-*	\brief An equipement
+*	\brief An equipment
 *	\details Can be worn by a hero to have characteristics boosts
+*	\todo Add prerequisites to the equipments
 */
 
-class Equipement
+class Equipment
 {
 public:
 
@@ -238,20 +244,20 @@ public:
 	*	\param[in] effects Effects given by the equipement
 	*/
 
-	Equipement(std::string name, std::string type, Effects effects) :
+	Equipment(std::string name, std::string type, Effects effects) :
 
-			name(name), type(type), equipementEffects(effects)
+			name(name), type(type), equipmentEffects(effects)
 	{
 
 	}
 
 	/**
-	*	\param[in] equipement Equipement to copy to new instance
+	*	\param[in] equipment Equipment to copy to new instance
 	*/
 
-	Equipement(const Equipement *equipement) :
+	Equipment(const Equipment *equipement) :
 
-			name(equipement->name), equipementEffects(equipement->equipementEffects)
+			name(equipement->name), equipmentEffects(equipement->equipmentEffects)
 	{
 
 	}
@@ -269,9 +275,9 @@ public:
 	}
 
 	/// \return Effects given by the equipement
-	Effects getEquipementEffects() const
+	Effects getEquipmentEffects() const
 	{
-		return equipementEffects;
+		return equipmentEffects;
 	}
 
 protected:
@@ -279,7 +285,7 @@ protected:
 	std::string name, ///< Name of the equipement
 				type; ///< Type of the equipement
 
-	Effects equipementEffects; ///< Effects given by the equipement
+	Effects equipmentEffects; ///< Effects given by the equipment
 
 };
 
@@ -287,14 +293,14 @@ protected:
 *   \brief A weapon a fighter can use
 */
 
-class Weapon : public Equipement
+class Weapon : public Equipment
 {
 public:
 
 	/**
 	*   \param[in] name Name of the weapon
 	*	\param[in] type Type of the weapon
-	*	\param[in] equipementEffects Equipement part of the effects given by the weapon
+	*	\param[in] equipementEffects Equipment part of the effects given by the weapon
 	*	\param[in] weaponEffects Weapon part of the effects given by the weapon
 	*/
 
@@ -303,7 +309,7 @@ public:
 		   const Effects &equipementEffects,
 		   const WeaponEffects &weaponEffects) :
 
-			Equipement(name, type, equipementEffects), weaponEffects(weaponEffects)
+			Equipment(name, type, equipementEffects), weaponEffects(weaponEffects)
 	{
 
 	}
@@ -313,7 +319,7 @@ public:
 	*/
 
 	Weapon(const Weapon *weapon) :
-			Equipement(weapon->name, weapon->type, weapon->equipementEffects), weaponEffects(weapon->weaponEffects)
+			Equipment(weapon->name, weapon->type, weapon->equipmentEffects), weaponEffects(weapon->weaponEffects)
 	{
 
 	}

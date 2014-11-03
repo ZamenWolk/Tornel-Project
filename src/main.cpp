@@ -26,16 +26,15 @@ int main()
 
 	cout << "The fight begins !" << endl << endl;
 
-	Hero                                                                                                                                              ZamenEntity(
-			"ZamenWolk",
-			0,
-			indexes.heroClassIndex.searchByName("Knight")),                                                                                           SblurbEntity(
-			"Sblurb",
-			0,
-			indexes.heroClassIndex.searchByName("Knight")),                                                                                           GrymsEntity(
-			"Gryms",
-			0,
-			indexes.heroClassIndex.searchByName("Knight"));
+	Hero ZamenEntity("ZamenWolk",
+					 0,
+					 indexes.heroClassIndex.searchByName("Knight")),
+	     SblurbEntity("Sblurb",
+					  0,
+					  indexes.heroClassIndex.searchByName("Knight")),
+		 GrymsEntity("Gryms",
+					 0,
+					 indexes.heroClassIndex.searchByName("Knight"));
 
 	Entity enemy1Entity("Slime 1", 1, indexes.monsterIndex.searchByName("Slime")), enemy2Entity("Slime 2",
 																								2,

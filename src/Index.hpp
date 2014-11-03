@@ -7,13 +7,68 @@
 #include <Thor/Input.hpp>
 
 #include "Skill.hpp"
-#include "Equipement.hpp"
+#include "Equipment.hpp"
 #include "mathfuncs.hpp"
 
 /**
 *   \file Index.hpp
 *   \brief Contains all the classes and structures to form indexes
 */
+
+class UsableEquipTypes
+{
+public:
+	UsableEquipTypes():
+			usableHelmetTypes(1, "Admin"),
+			usableChestTypes(1, "Admin"),
+			usableLeggingsTypes(1, "Admin"),
+			usableBootsTypes(1, "Admin"),
+			usableWeaponTypes(1, "Admin")
+	{
+
+	}
+
+	UsableEquipTypes(std::vector<std::string> helmetTypes,
+					 std::vector<std::string> chestTypes,
+					 std::vector<std::string> leggingsTypes,
+					 std::vector<std::string> bootsTypes,
+					 std::vector<std::string> weaponTypes)
+	{
+		for(std::vector<std::string>::iterator it = helmetTypes.begin(); it != helmetTypes.end(); it++)
+		{
+			addUsableType(*it, HELMET);
+		}
+
+		for(std::vector<std::string>::iterator it = chestTypes.begin(); it != chestTypes.end(); it++)
+		{
+			addUsableType(*it, CHESTPLATE);
+		}
+
+		for(std::vector<std::string>::iterator it = leggingsTypes.begin(); it != leggingsTypes.end(); it++)
+		{
+			addUsableType(*it, LEGGINGS);
+		}
+
+		for(std::vector<std::string>::iterator it = bootsTypes.begin(); it != bootsTypes.end(); it++)
+		{
+			addUsableType(*it, BOOTS);
+		}
+
+		for(std::vector<std::string>::iterator it = weaponTypes.begin(); it != weaponTypes.end(); it++)
+		{
+			addUsableType(*it, WEAPON);
+		}
+	}
+
+	bool addUsableType(std::string &typeName, EquipmentType equipmentType);
+
+protected:
+	std::vector<std::string>	usableHelmetTypes,
+								usableChestTypes,
+								usableLeggingsTypes,
+								usableBootsTypes,
+								usableWeaponTypes;
+};
 
 /**
 * \addtogroup both
@@ -24,7 +79,7 @@
 *	\brief Member of characters index
 */
 
-struct IndexMember
+struct EntityClass
 {
 
 	/**
@@ -39,15 +94,14 @@ struct IndexMember
 	*	\param[in] learnableSkills All the skills the class can learn
 	*/
 
-	IndexMember(std::string name,
+	EntityClass(std::string name,
 				ThirdPowerFunction maxLifeIncrement,
 				ThirdPowerFunction maxManaIncrement,
 				ThirdPowerFunction maxStaminaIncrement,
 				ThirdPowerFunction strengthIncrement,
 				ThirdPowerFunction wisdomIncrement,
 				ThirdPowerFunction toughnessIncrement,
-				ThirdPowerFunction mentalResistanceIncrement,
-				std::vector<LevelingSkill> learnableSkills) :
+				ThirdPowerFunction mentalResistanceIncrement) :
 			name(name),
 			maxLifeIncrement(maxLifeIncrement),
 			maxManaIncrement(maxManaIncrement),
@@ -55,8 +109,7 @@ struct IndexMember
 			strengthIncrement(strengthIncrement),
 			wisdomIncrement(wisdomIncrement),
 			toughnessIncrement(toughnessIncrement),
-			mentalResistanceIncrement(mentalResistanceIncrement),
-			learnableSkills(learnableSkills)
+			mentalResistanceIncrement(mentalResistanceIncrement)
 	{
 
 	}
@@ -67,6 +120,8 @@ struct IndexMember
 		return name;
 	}
 
+	virtual std::vector<LevelingSkill> getSkills() = 0;
+
 	std::string        name; ///< Name of the class
 	ThirdPowerFunction maxLifeIncrement, ///< Evolution followed by the index member's life
 					   maxManaIncrement, ///< Evolution followed by the index member's mana
@@ -74,7 +129,41 @@ struct IndexMember
 					   strengthIncrement, ///< Evolution followed by the index member's strength
 					   wisdomIncrement, ///< Evolution followed by the index member's wisdom
 					   toughnessIncrement, ///< Evolution followed by the index member's toughness
-							   mentalResistanceIncrement; ///< Evolution followed by the index member's mental resistance
+					   mentalResistanceIncrement; ///< Evolution followed by the index member's mental resistance
+};
+
+struct HeroClass : public EntityClass
+{
+	HeroClass(std::string name,
+			  ThirdPowerFunction maxLifeIncrement,
+			  ThirdPowerFunction maxManaIncrement,
+			  ThirdPowerFunction maxStaminaIncrement,
+			  ThirdPowerFunction strengthIncrement,
+			  ThirdPowerFunction wisdomIncrement,
+			  ThirdPowerFunction toughnessIncrement,
+			  ThirdPowerFunction mentalResistanceIncrement,
+			  UsableEquipTypes usableTypes,
+			  std::vector<LevelingSkill> learnableSkills):
+			EntityClass(name,
+						maxLifeIncrement,
+						maxManaIncrement,
+						maxStaminaIncrement,
+						strengthIncrement,
+						wisdomIncrement,
+						toughnessIncrement,
+						mentalResistanceIncrement),
+			learnableSkills(learnableSkills),
+			usableTypes(usableTypes)
+	{
+
+	}
+
+	virtual std::vector<LevelingSkill> getSkills()
+	{
+		return learnableSkills;
+	}
+
+	UsableEquipTypes		   usableTypes;
 	std::vector<LevelingSkill> learnableSkills; ///< All the skills the class can learn through the levels
 };
 
@@ -82,7 +171,7 @@ struct IndexMember
 *	\brief Member of monsters index
 */
 
-struct MonsterMember : public IndexMember
+struct MonsterClass : public EntityClass
 {
 
 	/**
@@ -98,31 +187,43 @@ struct MonsterMember : public IndexMember
 	*	\param[in] effects Basic attacks' informations
 	*/
 
-	MonsterMember(std::string name,
-				  ThirdPowerFunction maxLifeIncrement,
-				  ThirdPowerFunction maxManaIncrement,
-				  ThirdPowerFunction maxStaminaIncrement,
-				  ThirdPowerFunction strengthIncrement,
-				  ThirdPowerFunction wisdomIncrement,
-				  ThirdPowerFunction toughnessIncrement,
-				  ThirdPowerFunction mentalResistanceIncrement,
-				  std::vector<LevelingSkill> learnableSkills,
-				  WeaponEffects effects) :
+	MonsterClass(std::string name,
+				 ThirdPowerFunction maxLifeIncrement,
+				 ThirdPowerFunction maxManaIncrement,
+				 ThirdPowerFunction maxStaminaIncrement,
+				 ThirdPowerFunction strengthIncrement,
+				 ThirdPowerFunction wisdomIncrement,
+				 ThirdPowerFunction toughnessIncrement,
+				 ThirdPowerFunction mentalResistanceIncrement,
+				 std::vector<Skill *> skills,
+				 WeaponEffects effects) :
 
-			IndexMember(name,
+			EntityClass(name,
 						maxLifeIncrement,
 						maxManaIncrement,
 						maxStaminaIncrement,
 						strengthIncrement,
 						wisdomIncrement,
 						toughnessIncrement,
-						mentalResistanceIncrement,
-						learnableSkills), effects(effects)
+						mentalResistanceIncrement),
+			effects(effects),
+			skills(skills)
 	{
 
 	}
 
+	virtual std::vector<LevelingSkill> getSkills()
+	{
+		std::vector<LevelingSkill> leveledSkills;
+		for (std::vector<Skill *>::iterator it = skills.begin(); it != skills.end(); it++)
+		{
+			leveledSkills.push_back(LevelingSkill(*it, 0));
+		}
+		return leveledSkills;
+	}
+
 	WeaponEffects effects; ///< Basic attacks' informations
+	std::vector<Skill *> skills;
 };
 
 /**
@@ -188,7 +289,7 @@ public:
 	*	\return True if the entry is in the index after the function
 	*/
 
-	bool addEntry(T entryToAdd)
+	virtual bool addEntry(T entryToAdd)
 	{
 		if (!doesEntryExist(entryToAdd.getName()))
 		{
@@ -196,6 +297,11 @@ public:
 		}
 
 		return true;
+	}
+
+	std::string getIdentifier() const
+	{
+		return identifier;
 	}
 
 protected:
@@ -209,13 +315,13 @@ protected:
 */
 
 template<class T>
-class EquipementIndex : public Index<T>
+class EquipmentIndex : public Index<T>
 {
 
 public:
 
 	/// \param[in] identifier Name of the index for use in the error reports
-	EquipementIndex(std::string identifier) :
+	EquipmentIndex(std::string identifier) :
 			Index<T>(identifier), typeIndex()
 	{
 
@@ -255,6 +361,15 @@ public:
 		return true;
 	}
 
+	virtual bool addEntry(T entryToAdd)
+	{
+		if (!this->doesEntryExist(entryToAdd.getName()) && this->doesTypeExist(entryToAdd.getType()))
+		{
+			this->index.push_back(entryToAdd);
+		}
+
+		return true;
+	}
 
 protected:
 
@@ -277,26 +392,26 @@ struct IndexesIndex
 			leggingsIndex("Leggings"),
 			bootsIndex("Boots")
 	{
-		heroClassInit();
-		monsterInit();
-		spellInit();
-		abilityInit();
-		weaponInit();
 		helmetInit();
 		chestplateInit();
 		leggingsInit();
 		bootsInit();
+		weaponInit();
+		spellInit();
+		abilityInit();
+		heroClassInit();
+		monsterInit();
 	}
 
-	Index<IndexMember> heroClassIndex; ///< Index of hero classes
+	Index<HeroClass> heroClassIndex; ///< Index of hero classes
 
-	Index<MonsterMember> monsterIndex; ///< Index of monsters
+	Index<MonsterClass> monsterIndex; ///< Index of monsters
 
 	Index<Skill> skillIndex; ///< Index of skills
 
-	EquipementIndex<Weapon> weaponIndex; ///< Index of weapons
+	EquipmentIndex<Weapon> weaponIndex; ///< Index of weapons
 
-	EquipementIndex<Equipement> helmetIndex, ///< Index of helmets
+	EquipmentIndex<Equipment> helmetIndex, ///< Index of helmets
 								chestplateIndex, ///< Index of chestplates
 								leggingsIndex, ///< Index of leggings
 								bootsIndex; ///< Index of boots
@@ -309,87 +424,96 @@ private:
 	*/
 	void heroClassInit()
 	{
-		heroClassIndex.addEntry(IndexMember("default",
-											ThirdPowerFunction(1),
-											ThirdPowerFunction(1),
-											ThirdPowerFunction(1),
-											ThirdPowerFunction(1),
-											ThirdPowerFunction(1),
-											ThirdPowerFunction(1),
-											ThirdPowerFunction(1),
-											std::vector<LevelingSkill>(0)));
-		heroClassIndex.addEntry(IndexMember("Arcanist",
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											std::vector<LevelingSkill>(0)));
-		heroClassIndex.addEntry(IndexMember("Arnegon",
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											std::vector<LevelingSkill>(0)));
-		heroClassIndex.addEntry(IndexMember("Barrkian",
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											std::vector<LevelingSkill>(0)));
-		heroClassIndex.addEntry(IndexMember("Knight",
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(5.8302f, 0.1689f, 0.000844531f),
-											ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											std::vector<LevelingSkill>(0)));
-		heroClassIndex.addEntry(IndexMember("White mage",
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											std::vector<LevelingSkill>(0)));
-		heroClassIndex.addEntry(IndexMember("Black mage",
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											std::vector<LevelingSkill>(0)));
-		heroClassIndex.addEntry(IndexMember("Shalian",
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											std::vector<LevelingSkill>(0)));
-		heroClassIndex.addEntry(IndexMember("Assassin",
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(22.6f, 2.47f, -0.007f),
-											ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											ThirdPowerFunction(7.7f, 2.3f, -0.007f),
-											std::vector<LevelingSkill>(0)));
+		heroClassIndex.addEntry(HeroClass("default",
+										  ThirdPowerFunction(1),
+										  ThirdPowerFunction(1),
+										  ThirdPowerFunction(1),
+										  ThirdPowerFunction(1),
+										  ThirdPowerFunction(1),
+										  ThirdPowerFunction(1),
+										  ThirdPowerFunction(1),
+										  UsableEquipTypes(),
+										  std::vector<LevelingSkill>()));
+		heroClassIndex.addEntry(HeroClass("Arcanist",
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  UsableEquipTypes(),
+										  std::vector<LevelingSkill>()));
+		heroClassIndex.addEntry(HeroClass("Arnegon",
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  UsableEquipTypes(),
+										  std::vector<LevelingSkill>()));
+		heroClassIndex.addEntry(HeroClass("Barrkian",
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  UsableEquipTypes(),
+										  std::vector<LevelingSkill>()));
+		heroClassIndex.addEntry(HeroClass("Knight",
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(5.8302f, 0.1689f, 0.000844531f),
+										  ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  UsableEquipTypes(),
+										  std::vector<LevelingSkill>()));
+		heroClassIndex.addEntry(HeroClass("White mage",
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  UsableEquipTypes(),
+										  std::vector<LevelingSkill>()));
+		heroClassIndex.addEntry(HeroClass("Black mage",
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  UsableEquipTypes(),
+										  std::vector<LevelingSkill>()));
+		heroClassIndex.addEntry(HeroClass("Shalian",
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  UsableEquipTypes(),
+										  std::vector<LevelingSkill>()));
+		heroClassIndex.addEntry(HeroClass("Assassin",
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
+										  ThirdPowerFunction(7.3f, 0.66f, -0.0024f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
+										  UsableEquipTypes(),
+										  std::vector<LevelingSkill>()));
 	}
 
 	/**
@@ -397,16 +521,16 @@ private:
 	*/
 	void monsterInit()
 	{
-		monsterIndex.addEntry(MonsterMember("Slime",
-											ThirdPowerFunction(10, 10),
-											ThirdPowerFunction(10, 10),
-											ThirdPowerFunction(2.5, 2.5),
-											ThirdPowerFunction(3, 2),
-											ThirdPowerFunction(3, 2),
-											ThirdPowerFunction(3, 2),
-											ThirdPowerFunction(3, 2),
-											std::vector<LevelingSkill>(0),
-											WeaponEffects(3, sf::milliseconds(1500))));
+		monsterIndex.addEntry(MonsterClass("Slime",
+										   ThirdPowerFunction(10, 10),
+										   ThirdPowerFunction(10, 10),
+										   ThirdPowerFunction(2.5, 2.5),
+										   ThirdPowerFunction(3, 2),
+										   ThirdPowerFunction(3, 2),
+										   ThirdPowerFunction(3, 2),
+										   ThirdPowerFunction(3, 2),
+										   std::vector<Skill *>(0),
+										   WeaponEffects(3, sf::milliseconds(1500))));
 	}
 
 	/**
@@ -440,7 +564,7 @@ private:
 	void helmetInit()
 	{
 		helmetIndex.addType("Admin");
-		helmetIndex.addEntry(Equipement("Default", "Admin", Effects()));
+		helmetIndex.addEntry(Equipment("Default", "Admin", Effects()));
 	}
 
 	/**
@@ -449,7 +573,7 @@ private:
 	void chestplateInit()
 	{
 		chestplateIndex.addType("Admin");
-		chestplateIndex.addEntry(Equipement("Default", "Admin", Effects()));
+		chestplateIndex.addEntry(Equipment("Default", "Admin", Effects()));
 	}
 
 	/**
@@ -458,7 +582,7 @@ private:
 	void leggingsInit()
 	{
 		leggingsIndex.addType("Admin");
-		leggingsIndex.addEntry(Equipement("Default", "Admin", Effects()));
+		leggingsIndex.addEntry(Equipment("Default", "Admin", Effects()));
 	}
 
 	/**
@@ -467,7 +591,7 @@ private:
 	void bootsInit()
 	{
 		bootsIndex.addType("Admin");
-		bootsIndex.addEntry(Equipement("Default", "Admin", Effects()));
+		bootsIndex.addEntry(Equipment("Default", "Admin", Effects()));
 	}
 
 	/**
