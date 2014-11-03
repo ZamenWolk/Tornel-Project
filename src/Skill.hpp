@@ -68,7 +68,13 @@ struct Skill
 
 struct LevelingSkill
 {
-	LevelingSkill(Skill *skill, int learnLevel):
+
+	/**
+	* \param[in] skill Skill the class is built around
+	* \param[in] learnLevel Level at which the skill is nearnt
+	*/
+
+	LevelingSkill(Skill *skill, int learnLevel = 0):
 			skill(skill),
 			learnLevel(learnLevel)
 	{

@@ -15,6 +15,10 @@
 *   \brief Contains all the classes and structures to form indexes
 */
 
+/**
+* \brief Class storing types of equipment for each piece of equipment
+*/
+
 class UsableEquipTypes
 {
 public:
@@ -27,6 +31,14 @@ public:
 	{
 
 	}
+
+	/**
+	* \param[in] helmetTypes Types to add to the helmet vector
+	* \param[in] chestTypes Types to add to the chestplate vector
+	* \param[in] leggingsTypes Types to add to the leggings vector
+	* \param[in] bootsTypes Types to add to the boots vector
+	* \param[in] weaponTypes Types to add to the weapon vector
+	*/
 
 	UsableEquipTypes(std::vector<std::string> helmetTypes,
 					 std::vector<std::string> chestTypes,
@@ -60,14 +72,22 @@ public:
 		}
 	}
 
+	/**
+	* \brief Adds a type to one of the vectors
+	* \param[in] typeName name of the type to add
+	* \param[in] equipmentType vector to add the entry to
+	* \return true if the type was added to the corresponding index
+	* \warning The type must be registered in the corresponding index to be added here
+	*/
+
 	bool addUsableType(std::string &typeName, EquipmentType equipmentType);
 
 protected:
-	std::vector<std::string>	usableHelmetTypes,
-								usableChestTypes,
-								usableLeggingsTypes,
-								usableBootsTypes,
-								usableWeaponTypes;
+	std::vector<std::string>	usableHelmetTypes, ///< Types of helmet
+								usableChestTypes, ///< Types of chestplate
+								usableLeggingsTypes, ///< Types of leggings
+								usableBootsTypes, ///< Types of boots
+								usableWeaponTypes; ///< Types of weapon
 };
 
 /**
@@ -91,7 +111,6 @@ struct EntityClass
 	*	\param[in] wisdomIncrement Evolution followed by the index member's wisdom
 	*	\param[in] toughnessIncrement Evolution followed by the index member's toughness
 	*	\param[in] mentalResistanceIncrement Evolution followed by the index member's mental resistance
-	*	\param[in] learnableSkills All the skills the class can learn
 	*/
 
 	EntityClass(std::string name,
@@ -120,6 +139,7 @@ struct EntityClass
 		return name;
 	}
 
+	/// \return Skills of the class
 	virtual std::vector<LevelingSkill> getSkills() = 0;
 
 	std::string        name; ///< Name of the class
@@ -132,8 +152,26 @@ struct EntityClass
 					   mentalResistanceIncrement; ///< Evolution followed by the index member's mental resistance
 };
 
+/**
+* \brief Class of a hero
+*/
+
 struct HeroClass : public EntityClass
 {
+
+	/**
+	*	\param[in] name Name of the class
+	*	\param[in] maxLifeIncrement Evolution followed by the index member's life
+	*	\param[in] maxManaIncrement Evolution followed by the index member's mana
+	*	\param[in] maxStaminaIncrement Evolution followed by the index member's stamina
+	*	\param[in] strengthIncrement Evolution followed by the index member's strength
+	*	\param[in] wisdomIncrement Evolution followed by the index member's wisdom
+	*	\param[in] toughnessIncrement Evolution followed by the index member's toughness
+	*	\param[in] mentalResistanceIncrement Evolution followed by the index member's mental resistance
+	*	\param[in] usableTypes Equipment types the hero can equip and use
+	*	\param[in] learnableSkills All the skills the hero can learn throughout the levels
+	*/
+
 	HeroClass(std::string name,
 			  ThirdPowerFunction maxLifeIncrement,
 			  ThirdPowerFunction maxManaIncrement,
@@ -163,7 +201,7 @@ struct HeroClass : public EntityClass
 		return learnableSkills;
 	}
 
-	UsableEquipTypes		   usableTypes;
+	UsableEquipTypes		   usableTypes; ///< Equipment types the hero can equip and use
 	std::vector<LevelingSkill> learnableSkills; ///< All the skills the class can learn through the levels
 };
 
@@ -183,7 +221,7 @@ struct MonsterClass : public EntityClass
 	*	\param[in] wisdomIncrement Evolution followed by the index member's wisdom
 	*	\param[in] toughnessIncrement Evolution followed by the index member's toughness
 	*	\param[in] mentalResistanceIncrement Evolution followed by the index member's mental resistance
-	*	\param[in] learnableSkills All the skills the class can learn
+	*	\param[in] skills All the skills the monster has
 	*	\param[in] effects Basic attacks' informations
 	*/
 
@@ -217,13 +255,13 @@ struct MonsterClass : public EntityClass
 		std::vector<LevelingSkill> leveledSkills;
 		for (std::vector<Skill *>::iterator it = skills.begin(); it != skills.end(); it++)
 		{
-			leveledSkills.push_back(LevelingSkill(*it, 0));
+			leveledSkills.push_back(LevelingSkill(*it));
 		}
 		return leveledSkills;
 	}
 
 	WeaponEffects effects; ///< Basic attacks' informations
-	std::vector<Skill *> skills;
+	std::vector<Skill *> skills; ///< All the skills the monster has
 };
 
 /**
@@ -299,6 +337,7 @@ public:
 		return true;
 	}
 
+	/// \return Identifier of the index
 	std::string getIdentifier() const
 	{
 		return identifier;
@@ -363,7 +402,7 @@ public:
 
 	virtual bool addEntry(T entryToAdd)
 	{
-		if (!this->doesEntryExist(entryToAdd.getName()) && this->doesTypeExist(entryToAdd.getType()))
+		if (!this->doesEntryExist(entryToAdd.getName()) && doesTypeExist(entryToAdd.getType()))
 		{
 			this->index.push_back(entryToAdd);
 		}

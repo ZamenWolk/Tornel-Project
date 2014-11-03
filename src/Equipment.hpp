@@ -5,7 +5,7 @@
 #include <SFML/System.hpp>
 
 /**
-*   \file Equipement.hpp
+*   \file Equipment.hpp
 *   \brief Contains all the classes and structures of Equipment
 */
 
@@ -58,7 +58,7 @@ struct Effects
 	}
 
 	/**
-	*   \param[in] equipementEffects Effects instance to copy for new instance
+	*   \param[in] equipmentEffects Effects instance to copy for new instance
 	*/
 
 	Effects(const Effects &equipmentEffects) :
@@ -181,7 +181,7 @@ struct CombatEffects : public Effects, public WeaponEffects
 	}
 
 	/**
-	*   \param[in] equipementEffects Effects part of data for CombatEffects
+	*   \param[in] equipmentEffects Effects part of data for CombatEffects
 	*	\param[in] weaponEffects WeaponEffects part of data for CombatEffects
 	*/
 
@@ -255,9 +255,9 @@ public:
 	*	\param[in] equipment Equipment to copy to new instance
 	*/
 
-	Equipment(const Equipment *equipement) :
+	Equipment(const Equipment *equipment) :
 
-			name(equipement->name), equipmentEffects(equipement->equipmentEffects)
+			name(equipment->name), equipmentEffects(equipment->equipmentEffects)
 	{
 
 	}
