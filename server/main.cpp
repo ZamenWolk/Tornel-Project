@@ -4,7 +4,6 @@
 #include "../src/operators.hpp"
 #include "FightSubserver.hpp"
 #include "fonctor.hpp"
-#include "../communication.hpp"
 
 using namespace std;
 using namespace sf;
@@ -50,6 +49,8 @@ int main()
 
 	cout << "Searching for event" << endl;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wloop-analysis"
 	while (!stopServer)
 	{
 		if (selector.wait(milliseconds(200)))
@@ -102,6 +103,7 @@ int main()
 
 		sf::sleep(sf::milliseconds(25));
 	}
+#pragma clang diagnostic pop
 
 	std::cout << "Stopping the server" << std::endl;
 

@@ -203,6 +203,7 @@ sf::Packet &createPacket(sf::Packet &packet, const T &infos, SentInfosType type)
 	else
 	{
 		errorReport("The type of info sent does not match the type of variable");
+		return packet;
 	}
 }
 

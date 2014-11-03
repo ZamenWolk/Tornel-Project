@@ -42,22 +42,22 @@ public:
 
 			name(name),
 			level(level),
-			effects{0, 0, 0, monsterClass->strengthIncrement.result(level), monsterClass->wisdomIncrement.result(level), monsterClass->toughnessIncrement.result(
-					level), monsterClass->mentalResistanceIncrement.result(level)},
+			effects{0, 0, 0, monsterClass->strengthIncrement.iresult(level), monsterClass->wisdomIncrement.iresult(level),
+					monsterClass->toughnessIncrement.iresult(level), monsterClass->mentalResistanceIncrement.iresult(level)},
 			entityClass(monsterClass),
 			knownAbilities(0),
 			knownSpells(0)
 	{
-		effects.life = monsterClass->maxLifeIncrement.result(level);
+		effects.life = monsterClass->maxLifeIncrement.iresult(level);
 		effects.life += TOUGHNESS_TO_LIFE.result(effects.toughness);
 		effects.life += MENTAL_RESISTANCE_TO_LIFE.result(effects.mentalResistance);
 		life = effects.life;
 
-		effects.mana = monsterClass->maxManaIncrement.result(level);
+		effects.mana = monsterClass->maxManaIncrement.iresult(level);
 		effects.mana += WISDOM_TO_MANA.result(effects.wisdom);
 		mana = effects.mana;
 
-		effects.stamina = monsterClass->maxStaminaIncrement.result(level);
+		effects.stamina = monsterClass->maxStaminaIncrement.iresult(level);
 		effects.stamina += STRENGTH_TO_STAMINA.result(effects.strength);
 		stamina = effects.stamina;
 
@@ -153,13 +153,13 @@ public:
 		int newMaxLife(0), newMaxMana(0), newMaxStamina(0);
 
 		//Actualizes base characteristics from level
-		effects.strength         = entityClass->strengthIncrement.result(level);
-		effects.wisdom           = entityClass->wisdomIncrement.result(level);
-		effects.toughness        = entityClass->toughnessIncrement.result(level);
-		effects.mentalResistance = entityClass->mentalResistanceIncrement.result(level);
+		effects.strength         = entityClass->strengthIncrement.iresult(level);
+		effects.wisdom           = entityClass->wisdomIncrement.iresult(level);
+		effects.toughness        = entityClass->toughnessIncrement.iresult(level);
+		effects.mentalResistance = entityClass->mentalResistanceIncrement.iresult(level);
 
 		//Calculates the new max life and changes the current life accordingly
-		newMaxLife = entityClass->maxLifeIncrement.result(level);
+		newMaxLife = entityClass->maxLifeIncrement.iresult(level);
 		newMaxLife += TOUGHNESS_TO_LIFE.result(effects.toughness);
 		newMaxLife += MENTAL_RESISTANCE_TO_LIFE.result(effects.mentalResistance);
 		life += newMaxLife - effects.life;
@@ -168,7 +168,7 @@ public:
 		effects.life = newMaxLife;
 
 		//Calculates the new max mana and changes the current mana accordingly
-		newMaxMana = entityClass->maxManaIncrement.result(level);
+		newMaxMana = entityClass->maxManaIncrement.iresult(level);
 		newMaxMana += WISDOM_TO_MANA.result(effects.wisdom);
 		mana += newMaxMana - effects.mana;
 		if (mana < 0)
@@ -176,7 +176,7 @@ public:
 		effects.mana = newMaxMana;
 
 		//Calculates the new max stamina and changes the current stamina accordingly
-		newMaxStamina = entityClass->maxStaminaIncrement.result(level);
+		newMaxStamina = entityClass->maxStaminaIncrement.iresult(level);
 		newMaxStamina += STRENGTH_TO_STAMINA.result(effects.strength);
 		stamina += newMaxStamina - effects.stamina;
 		if (stamina < 0)
@@ -187,7 +187,7 @@ public:
 	/// \return True if the entity's life is greater than 0
 	bool isAlive() const
 	{
-		return life > 0 ? true : false;
+		return life > 0;
 	}
 
 	/// \return Name of the entity
