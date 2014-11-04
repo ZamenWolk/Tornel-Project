@@ -6,6 +6,7 @@
 #include <typeinfo>
 
 #include "constants.hpp"
+#include "../enums.hpp"
 
 class CombatEntity;
 
@@ -14,11 +15,6 @@ struct CombatEffects;
 struct EntityInformations;
 struct VersionNumber;
 struct InteractionInfos;
-
-enum ActionType;
-enum SpecialAttribute;
-enum AttackType;
-enum SentInfosType;
 
 /**
 *   \file operators.hpp

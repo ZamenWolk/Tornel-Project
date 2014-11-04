@@ -23,35 +23,61 @@ set(SOURCE_FILES
     src/AIControlledEntity.cpp
     src/AIControlledEntity.hpp
     src/Combat.hpp
+    src/Combat.cpp
     src/constants.cpp
     src/constants.hpp
     src/Equipment.hpp
+    src/Equipment.cpp
     src/Hero.hpp
+    src/Hero.cpp
     src/Index.hpp
     src/Index.cpp
     src/main.cpp
     src/mathfuncs.hpp
+    src/mathfuncs.cpp
     src/operators.cpp
     src/operators.hpp
     src/Skill.hpp
+    src/Skill.cpp
     version.hpp
     communication.cpp
-    communication.hpp)
+    communication.hpp
+    enums.hpp
+    src/IndexesIndex.hpp
+    src/IndexesIndex.cpp)
 
 set(SERVER_FILES
-    server/FightSubserver.cpp
-    server/FightSubserver.hpp
-    server/fonctor.hpp
-    server/main.cpp
-    server/ServerClients.hpp
-    server/structures.hpp
-    version.hpp
     src/constants.cpp
     src/constants.hpp
     src/operators.cpp
     src/operators.hpp
+    src/Equipment.hpp
+    src/Equipment.cpp
+    src/IndexesIndex.hpp
+    src/IndexesIndex.cpp
+    src/Skill.cpp
+    src/Skill.hpp
+    src/AIControlledEntity.cpp
+    src/AIControlledEntity.hpp
+    src/Index.cpp
+    src/Index.hpp
+    src/Combat.cpp
+    src/Combat.hpp
+    src/mathfuncs.hpp
+    src/mathfuncs.cpp
+    server/FightSubserver.cpp
+    server/FightSubserver.hpp
+    server/fonctor.hpp
+    server/fonctor.cpp
+    server/main.cpp
+    server/ServerClients.hpp
+    server/ServerClients.cpp
+    server/structures.hpp
+    server/structures.cpp
+    version.hpp
     communication.cpp
-    communication.hpp)
+    communication.hpp
+    enums.hpp)
 
 find_package(SFML COMPONENTS network audio graphics window system REQUIRED)
 

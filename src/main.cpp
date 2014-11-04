@@ -4,10 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
-#include "Index.hpp"
-#include "operators.hpp"
-#include "Combat.hpp"
 #include "Hero.hpp"
+#include "../version.hpp"
 
 using namespace std;
 using namespace sf;
@@ -39,30 +37,7 @@ int main()
 	Entity enemy1Entity("Slime 1", 1, indexes.monsterIndex.searchByName("Slime")), enemy2Entity("Slime 2",
 																								2,
 																								indexes.monsterIndex.searchByName(
-																										"Slime"));
-
-	CombatEntity Zamen(&ZamenEntity), Gryms(&GrymsEntity), Sblurb(&SblurbEntity);
-	CombatEntity enemy1(&enemy1Entity), enemy2(&enemy2Entity);
-
-	vector<CombatEntity> heroTeam(1, Zamen), enemyTeam(1, enemy1);
-
-	heroTeam.push_back(Gryms);
-	heroTeam.push_back(Sblurb);
-
-	enemyTeam.push_back(enemy2);
-
-	Combat *testCombat = new Combat(heroTeam, enemyTeam, KEYBOARD, AI);
-
-	int combatResult = testCombat->combatRunning(window);
-
-	if (combatResult == 1)
-	{
-		cout << "You win !" << endl;
-	}
-	else
-	{
-		cout << "You lost !" << endl;
-	}
+																								"Slime"));
 
 	return EXIT_SUCCESS;
 

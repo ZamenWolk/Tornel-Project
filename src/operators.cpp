@@ -3,7 +3,6 @@
 
 #include <SFML/System.hpp>
 
-#include "operators.hpp"
 #include "Combat.hpp"
 
 sf::Packet &operator<<(sf::Packet &packet, const std::vector<Skill *> &source)
@@ -248,7 +247,9 @@ sf::Packet &operator>>(sf::Packet &packet, std::vector<CombatEntity> &team)
 		EntityInformations receivedEntity;
 		packet >> receivedEntity;
 
-		team.push_back(receivedEntity);
+		EntityModel *receivedCombatEntity(new Entity(receivedEntity));
+
+		team.push_back(CombatEntity(receivedCombatEntity));
 	}
 
 	return packet;

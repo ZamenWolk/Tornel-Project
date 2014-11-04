@@ -33,22 +33,9 @@ struct Skill
 	*	\param[in] skillType Type of the skill
 	*/
 
-	Skill(std::string name, int baseDamage, int manaCost, int staminaCost, sf::Time cooldown, AttackType skillType) :
+	Skill(std::string name, int baseDamage, int manaCost, int staminaCost, sf::Time cooldown, AttackType skillType);
 
-			name(name),
-			baseDamage(baseDamage),
-			manaCost(manaCost),
-			staminaCost(staminaCost),
-			cooldown(cooldown),
-			skillType(skillType)
-	{
-
-	}
-
-	std::string getName() const ///< \return name of the Skill
-	{
-		return name;
-	}
+	std::string getName() const;
 
 	std::string name; ///< Name of the Skill
 
@@ -74,12 +61,7 @@ struct LevelingSkill
 	* \param[in] learnLevel Level at which the skill is nearnt
 	*/
 
-	LevelingSkill(Skill *skill, int learnLevel = 0):
-			skill(skill),
-			learnLevel(learnLevel)
-	{
-
-	}
+	LevelingSkill(Skill *skill, int learnLevel = 0);
 
 	Skill *skill; ///< Skill the class is built around
 	int learnLevel; ///< Level at which the skill is learnt

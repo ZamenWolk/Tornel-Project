@@ -50,39 +50,9 @@ enum EquipmentType
 
 struct Effects
 {
-	Effects() :
+	Effects();
 
-			life(0), mana(0), stamina(0), strength(0), wisdom(0), toughness(0), mentalResistance(0)
-	{
-
-	}
-
-	/**
-	*   \param[in] equipmentEffects Effects instance to copy for new instance
-	*/
-
-	Effects(const Effects &equipmentEffects) :
-
-			life(equipmentEffects.life),
-			mana(equipmentEffects.mana),
-			stamina(equipmentEffects.stamina),
-			strength(equipmentEffects.strength),
-			wisdom(equipmentEffects.wisdom),
-			toughness(equipmentEffects.toughness),
-			mentalResistance(equipmentEffects.mentalResistance)
-	{
-
-	}
-
-	/**
-	*   \param[in] lifeGain Life boost effect
-	*	\param[in] manaGain Mana boost effect
-	*	\param[in] staminaGain Stamina boost effect
-	*	\param[in] strengthGain Strength boost effect
-	*	\param[in] wisdomGain Wisdom boost effect
-	*	\param[in] toughnessGain Toughness boost effect
-	*	\param[in] mentalResistanceGain Mental resistance boost effect
-	*/
+	Effects(const Effects &equipmentEffects);
 
 	Effects(int lifeGain,
 			int manaGain,
@@ -90,33 +60,9 @@ struct Effects
 			int strengthGain,
 			int wisdomGain,
 			int toughnessGain,
-			int mentalResistanceGain) :
+			int mentalResistanceGain);
 
-			life(lifeGain),
-			mana(manaGain),
-			stamina(staminaGain),
-			strength(strengthGain),
-			wisdom(wisdomGain),
-			toughness(toughnessGain),
-			mentalResistance(mentalResistanceGain)
-	{
-
-	}
-
-	/**
-	*	\brief Addition of 2 Effects instances
-	*/
-
-	void operator+=(const Effects &a)
-	{
-		life += a.life;
-		mana += a.mana;
-		stamina += a.stamina;
-		strength += strength;
-		wisdom += a.wisdom;
-		toughness += a.toughness;
-		mentalResistance += a.mentalResistance;
-	}
+	void operator+=(const Effects &a);
 
 	int life, ///< Life boost effect
 		mana, ///< Mana boost effect
@@ -133,35 +79,11 @@ struct Effects
 
 struct WeaponEffects
 {
-	WeaponEffects() :
+	WeaponEffects();
 
-			baseDamage(3), cooldownTime(sf::milliseconds(1500))
-	{
+	WeaponEffects(const WeaponEffects &weaponEffects);
 
-	}
-
-	/**
-	*   \param[in] weaponEffects WeaponEffects instance to copy for new instance
-	*/
-
-	WeaponEffects(const WeaponEffects &weaponEffects) :
-
-			baseDamage(weaponEffects.baseDamage), cooldownTime(weaponEffects.cooldownTime)
-	{
-
-	}
-
-	/**
-	*	\param[in] baseDamage Base damage of the weapon
-	*	\param[in] cooldownTime Cooldown time of the weapon
-	*/
-
-	WeaponEffects(int baseDamage, sf::Time cooldownTime) :
-
-			baseDamage(baseDamage), cooldownTime(cooldownTime)
-	{
-
-	}
+	WeaponEffects(int baseDamage, sf::Time cooldownTime);
 
 	int      baseDamage; ///< Base damage of the weapon
 	sf::Time cooldownTime; ///< Cooldown time of the weapon
@@ -173,52 +95,19 @@ struct WeaponEffects
 
 struct CombatEffects : public Effects, public WeaponEffects
 {
-	CombatEffects() :
+	CombatEffects();
 
-			Effects(), WeaponEffects()
-	{
-
-	}
-
-	/**
-	*   \param[in] equipmentEffects Effects part of data for CombatEffects
-	*	\param[in] weaponEffects WeaponEffects part of data for CombatEffects
-	*/
-
-	CombatEffects(const Effects &equipmentEffects, const WeaponEffects &weaponEffects) :
-
-			Effects(equipmentEffects), WeaponEffects(weaponEffects)
-	{
-
-	}
-
-	/**
-	*   \param[in] lifeGain Life boost effect
-	*	\param[in] manaGain Mana boost effect
-	*	\param[in] staminaGain Stamina boost effect
-	*	\param[in] strengthGain Strength boost effect
-	*	\param[in] wisdomGain Wisdom boost effect
-	*	\param[in] toughnessGain Toughness boost effect
-	*	\param[in] mentalResistanceGain Mental resistance boost effect
-	*	\param[in] baseDamage base damage of the weapon
-	*	\param[in] cooldownTime Cooldown time of the weapon
-	*/
+	CombatEffects(const Effects &equipmentEffects, const WeaponEffects &weaponEffects);
 
 	CombatEffects(int lifeGain,
-				  int manaGain,
-				  int staminaGain,
-				  int strengthGain,
-				  int wisdomGain,
-				  int toughnessGain,
-				  int mentalResistanceGain,
-				  int baseDamage,
-				  sf::Time cooldownTime) :
-
-			Effects(lifeGain, manaGain, staminaGain, strengthGain, wisdomGain, toughnessGain, mentalResistanceGain),
-			WeaponEffects(baseDamage, cooldownTime)
-	{
-
-	}
+					  int manaGain,
+					  int staminaGain,
+					  int strengthGain,
+					  int wisdomGain,
+					  int toughnessGain,
+					  int mentalResistanceGain,
+					  int baseDamage,
+					  sf::Time cooldownTime);
 };
 
 /// @}
@@ -244,41 +133,15 @@ public:
 	*	\param[in] effects Effects given by the equipement
 	*/
 
-	Equipment(std::string name, std::string type, Effects effects) :
+	Equipment(std::string name, std::string type, Effects effects);
 
-			name(name), type(type), equipmentEffects(effects)
-	{
+	Equipment(const Equipment *equipment);
 
-	}
+	std::string getName() const;
 
-	/**
-	*	\param[in] equipment Equipment to copy to new instance
-	*/
+	std::string getType() const;
 
-	Equipment(const Equipment *equipment) :
-
-			name(equipment->name), equipmentEffects(equipment->equipmentEffects)
-	{
-
-	}
-
-	/// \return Name of the equipement
-	std::string getName() const
-	{
-		return name;
-	}
-
-	/// \return Type of the equipement
-	std::string getType() const
-	{
-		return type;
-	}
-
-	/// \return Effects given by the equipement
-	Effects getEquipmentEffects() const
-	{
-		return equipmentEffects;
-	}
+	Effects getEquipmentEffects() const;
 
 protected:
 
@@ -297,38 +160,14 @@ class Weapon : public Equipment
 {
 public:
 
-	/**
-	*   \param[in] name Name of the weapon
-	*	\param[in] type Type of the weapon
-	*	\param[in] equipementEffects Equipment part of the effects given by the weapon
-	*	\param[in] weaponEffects Weapon part of the effects given by the weapon
-	*/
-
 	Weapon(const std::string &name,
 		   std::string type,
 		   const Effects &equipementEffects,
-		   const WeaponEffects &weaponEffects) :
+		   const WeaponEffects &weaponEffects);
 
-			Equipment(name, type, equipementEffects), weaponEffects(weaponEffects)
-	{
+	Weapon(const Weapon *weapon);
 
-	}
-
-	/**
-	*   \param[in] weapon Weapon instance to copy for the new class
-	*/
-
-	Weapon(const Weapon *weapon) :
-			Equipment(weapon->name, weapon->type, weapon->equipmentEffects), weaponEffects(weapon->weaponEffects)
-	{
-
-	}
-
-	/// \return Weapon part of the effects given by the weapon
-	WeaponEffects getWeaponEffects() const
-	{
-		return weaponEffects;
-	}
+	WeaponEffects getWeaponEffects() const;
 
 protected:
 

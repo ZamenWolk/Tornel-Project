@@ -1,6 +1,8 @@
 #ifndef CONSTANTS_HPP_INCLUDED
 #define CONSTANTS_HPP_INCLUDED
 
+#include <string>
+
 /**
 *	\file constants.hpp
 *	\brief Contains all the preprocessor definitions

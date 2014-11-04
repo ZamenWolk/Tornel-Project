@@ -3,8 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "Index.hpp"
-#include "AIControlledEntity.hpp"
+#include "IndexesIndex.hpp"
 
 using namespace std;
 

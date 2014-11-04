@@ -33,25 +33,13 @@ struct EventsStructure
 	*/
 
 	EventsStructure(SentInfosType typeOfEvent,
-					bool isEventTreated,
-					InteractionInfos intEv_infos,
-					std::vector<EntityInformations> teamEv_infos,
-					bool event_team1,
-					VersionNumber versEv_number) :
-			typeOfEvent(typeOfEvent),
-			isEventTreated(isEventTreated),
-			intEv_infos(intEv_infos),
-			event_team1(event_team1),
-			versEv_number(versEv_number)
-	{
+						 bool isEventTreated,
+						 InteractionInfos intEv_infos,
+						 std::vector<EntityInformations> teamEv_infos,
+						 bool event_team1,
+						 VersionNumber versEv_number);
 
-	}
-
-	EventsStructure() :
-			typeOfEvent(FIGHT_INTERACTION), isEventTreated(true), intEv_infos(), event_team1(true), versEv_number()
-	{
-
-	}
+	EventsStructure();
 
 	SentInfosType                   typeOfEvent; ///< Type of the event
 	bool                            isEventTreated; ///< Does the event still have to be treated

@@ -1,9 +1,9 @@
 #include <iostream>
 #include <SFML/Network.hpp>
 
-#include "../src/operators.hpp"
 #include "FightSubserver.hpp"
 #include "fonctor.hpp"
+#include "../communication.hpp"
 
 using namespace std;
 using namespace sf;
@@ -16,7 +16,7 @@ int main()
 	vector<FightSubserver *> subservers;
 	vector<ServerClient *>   clientsVector;
 	SocketSelector           selector;
-	inputFonctor             input(&subservers, stopServer);
+	InputFonctor input(&subservers, stopServer);
 	Thread                   inputThread(input);
 
 	listener.listen(2715);
@@ -49,8 +49,6 @@ int main()
 
 	cout << "Searching for event" << endl;
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wloop-analysis"
 	while (!stopServer)
 	{
 		if (selector.wait(milliseconds(200)))
@@ -96,7 +94,6 @@ int main()
 
 		sf::sleep(sf::milliseconds(25));
 	}
-#pragma clang diagnostic pop
 
 	cout << "Stopping the server" << endl;
 
