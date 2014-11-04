@@ -121,9 +121,9 @@ Effects Equipment::getEquipmentEffects() const
 
 Weapon::Weapon(const std::string &name,
 			   std::string type,
-			   const Effects &equipementEffects,
+			   const Effects &equipmentEffects,
 			   const WeaponEffects &weaponEffects) :
-		Equipment(name, type, equipementEffects), weaponEffects(weaponEffects)
+		Equipment(name, type, equipmentEffects), weaponEffects(weaponEffects)
 {
 
 }

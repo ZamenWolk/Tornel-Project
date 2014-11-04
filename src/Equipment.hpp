@@ -52,7 +52,21 @@ struct Effects
 {
 	Effects();
 
+	/**
+	*   \param[in] equipmentEffects Effects instance to copy for new instance
+	*/
+
 	Effects(const Effects &equipmentEffects);
+
+	/**
+	*   \param[in] lifeGain Life boost effect
+	*	\param[in] manaGain Mana boost effect
+	*	\param[in] staminaGain Stamina boost effect
+	*	\param[in] strengthGain Strength boost effect
+	*	\param[in] wisdomGain Wisdom boost effect
+	*	\param[in] toughnessGain Toughness boost effect
+	*	\param[in] mentalResistanceGain Mental resistance boost effect
+	*/
 
 	Effects(int lifeGain,
 			int manaGain,
@@ -61,6 +75,10 @@ struct Effects
 			int wisdomGain,
 			int toughnessGain,
 			int mentalResistanceGain);
+
+	/**
+	*	\brief Addition of 2 Effects instances
+	*/
 
 	void operator+=(const Effects &a);
 
@@ -81,7 +99,16 @@ struct WeaponEffects
 {
 	WeaponEffects();
 
+	/**
+	*   \param[in] weaponEffects WeaponEffects instance to copy for new instance
+	*/
+
 	WeaponEffects(const WeaponEffects &weaponEffects);
+
+	/**
+	*	\param[in] baseDamage Base damage of the weapon
+	*	\param[in] cooldownTime Cooldown time of the weapon
+	*/
 
 	WeaponEffects(int baseDamage, sf::Time cooldownTime);
 
@@ -97,7 +124,24 @@ struct CombatEffects : public Effects, public WeaponEffects
 {
 	CombatEffects();
 
+	/**
+	*   \param[in] equipmentEffects Effects part of data for CombatEffects
+	*	\param[in] weaponEffects WeaponEffects part of data for CombatEffects
+	*/
+
 	CombatEffects(const Effects &equipmentEffects, const WeaponEffects &weaponEffects);
+
+	/**
+	*   \param[in] lifeGain Life boost effect
+	*	\param[in] manaGain Mana boost effect
+	*	\param[in] staminaGain Stamina boost effect
+	*	\param[in] strengthGain Strength boost effect
+	*	\param[in] wisdomGain Wisdom boost effect
+	*	\param[in] toughnessGain Toughness boost effect
+	*	\param[in] mentalResistanceGain Mental resistance boost effect
+	*	\param[in] baseDamage base damage of the weapon
+	*	\param[in] cooldownTime Cooldown time of the weapon
+	*/
 
 	CombatEffects(int lifeGain,
 					  int manaGain,
@@ -135,12 +179,19 @@ public:
 
 	Equipment(std::string name, std::string type, Effects effects);
 
+	/**
+	*	\param[in] equipment Equipment to copy to new instance
+	*/
+
 	Equipment(const Equipment *equipment);
 
+	/// \return Name of the equipement
 	std::string getName() const;
 
+	/// \return Type of the equipement
 	std::string getType() const;
 
+	/// \return Effects given by the equipement
 	Effects getEquipmentEffects() const;
 
 protected:
@@ -160,13 +211,25 @@ class Weapon : public Equipment
 {
 public:
 
+	/**
+	*   \param[in] name Name of the weapon
+	*	\param[in] type Type of the weapon
+	*	\param[in] equipmentEffects Equipment part of the effects given by the weapon
+	*	\param[in] weaponEffects Weapon part of the effects given by the weapon
+	*/
+
 	Weapon(const std::string &name,
 		   std::string type,
-		   const Effects &equipementEffects,
+		   const Effects &equipmentEffects,
 		   const WeaponEffects &weaponEffects);
+
+	/**
+	*   \param[in] weapon Weapon instance to copy for the new class
+	*/
 
 	Weapon(const Weapon *weapon);
 
+	/// \return Weapon part of the effects given by the weapon
 	WeaponEffects getWeaponEffects() const;
 
 protected:

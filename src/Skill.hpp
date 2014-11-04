@@ -35,6 +35,7 @@ struct Skill
 
 	Skill(std::string name, int baseDamage, int manaCost, int staminaCost, sf::Time cooldown, AttackType skillType);
 
+	/// \return name of the Skill
 	std::string getName() const;
 
 	std::string name; ///< Name of the Skill

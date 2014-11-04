@@ -21,6 +21,11 @@ class MathFunction
 {
 public:
 
+	/**
+	*	\param[in] minimalXValue Minimal value of x as handled in the game. -1 is none
+	*	\param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
+	*/
+
 	MathFunction(int minimalXValue = -1, int maximalXValue = -1);
 
 	/**
@@ -39,7 +44,19 @@ public:
 
 	virtual double result(int x) = 0;
 
+	/**
+	*   \brief Applies the function for the given number
+	*   \param[in] x Number to give to the math function
+	*	\return \f$ f(x) \f$
+	*/
+
 	int iresult(double x);
+
+	/**
+	*   \brief Applies the function for the given number
+	*   \param[in] x Number to give to the math function
+	*	\return \f$ f(x) \f$
+	*/
 
 	int iresult(int x);
 
@@ -57,6 +74,15 @@ protected:
 class ThirdPowerFunction : public MathFunction
 {
 public:
+
+	/**
+	*	\param[in] yIntercept Value of \f$ f(x) \f$ when \f$ x=0 \f$
+	*	\param[in] firstPowerFactor Factor of \f$ x \f$
+	*	\param[in] secondPowerFactor Factor of \f$ x^2 \f$
+	*	\param[in] thirdPowerFactor Factor of \f$ x^3 \f$
+	*	\param[in] minimalXValue Minimal value of x as handled in the game. -1 is none
+	*	\param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
+	*/
 
 	ThirdPowerFunction(double yIntercept = 0,
 						   double firstPowerFactor = 0,
@@ -87,6 +113,15 @@ class InvertFunction : public MathFunction
 {
 public:
 
+	/**
+	*	\param[in] yIntercept Value of \f$ f(x) \f$ when \f$ x=0 \f$
+	*	\param[in] firstPowerFactor Factor of \f$ x \f$
+	*	\param[in] secondPowerFactor Factor of \f$ \sqrt{x} \f$
+	*	\param[in] thirdPowerFactor Factor of \f$ \sqrt[3]{x} \f$
+	*	\param[in] minimalXValue Minimal value of x as handled in the game. -1 is none
+	*	\param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
+	*/
+
 	InvertFunction(double yIntercept = 0,
 					   double firstPowerFactor = 0,
 					   double secondPowerFactor = 0,
@@ -116,6 +151,14 @@ class RecurrentSequence : public MathFunction
 {
 public:
 
+	/**
+	*   \param[in] valueAtMinimumX Value of \f$ u(x) \f$ at the minimum value of x
+	*	\param[in] commonDifference Value to add to the sequence at each occuring
+	*	\param[in] commonRatio Value to multiply the sequence with at each occuring
+	*	\param[in] minimalXValue Minimal value of x as handled in the game
+	*	\param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
+	*/
+
 	RecurrentSequence(double valueAtMinimumX = 0,
 						  double commonDifference = 0,
 						  double commonRatio = 1,
@@ -142,6 +185,15 @@ class SequenceUsing_Sequence : public RecurrentSequence
 {
 public:
 
+	/**
+	*   \param[in] valueAtMinimumX Value of \f$ u(x) \f$ at the minimum value of x
+	*	\param[in] commonDifference Value to add to the sequence at each occuring
+	*	\param[in] commonRatio Value to multiply the sequence with at each occuring
+	*	\param[in] usedSequence Sequence added to \f$ u(n) \f$ at each occuring
+	*	\param[in] minimalXValue Minimal value of x as handled in the game
+	*	\param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
+	*/
+
 	SequenceUsing_Sequence(double valueAtMinimumX = 0,
 							   double commonDifference = 0,
 							   double commonRatio = 1,
@@ -167,12 +219,21 @@ class ExponentialFunction : public MathFunction
 {
 public:
 
+	/**
+	*   \param[in] negativeOfExponential Whether the exponential factor is inverted or not
+	*	\param[in] exponentialFactor Factor of the exponential
+	*	\param[in] horizontalTranslater Horizontal translater of the function
+	*	\param[in] verticalTranslater Vertical translater of the function
+	*	\param[in] minimalXValue Minimal value of x as handled in the game. -1 is none
+	*	\param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
+	*/
+
 	ExponentialFunction(bool negativeOfExponential = false,
-							double exponentialFactor = 1,
-							double horizontalTranslater = 0,
-							double verticalTranslater = 0,
-							int minimalXValue = -1,
-							int maximalXValue = -1);
+						double exponentialFactor = 1,
+						double horizontalTranslater = 0,
+						double verticalTranslater = 0,
+						int minimalXValue = -1,
+						int maximalXValue = -1);
 
 	virtual double result(double x);
 

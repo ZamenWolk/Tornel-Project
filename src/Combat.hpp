@@ -126,7 +126,20 @@ public:
 
 	int combatRunning(sf::RenderWindow &window, std::string IPAddress = "localhost", unsigned short addressPort = 2715);
 
+	/**
+	*	\brief sets up the class with the server before using it
+	*	\param[in] IPAddress Address of the server to connect to
+	*	\param[in] addressPort Port to connect to on the server
+	*   \todo Use the goddamn server/client structures
+	*/
+
 	void setUpServer(std::string IPAddress, unsigned short addressPort);
+
+	/**
+	* \brief Handles end of combat after the actual fight ends
+	* \return true if you won the battle
+	* \todo Enhance so it makes real things
+	*/
 
 	bool endOfCombat();
 
@@ -141,13 +154,42 @@ public:
 
 protected:
 
+	/**
+	*	\brief Function running on a different thread and taking care of processing both team's events (1 function per team)
+	*	\param[in] team1 Is true if the function concerns the team 1
+	*   \todo Switch the handling of interaction times respect from server to client
+	*/
+
 	void teamInstructions(bool team1);
 
+	///\todo Complete if statements
+	///\todo Create structures for returns from server
 	void serverHandling();
+
+	/**
+	*   \brief Takes an ID and finds the entity in the fight that has this ID
+	*   \param[in] entityID ID to search the entity with
+	*   \return Pointer to the entity with the corresponding ID
+	*/
 
 	CombatEntity *IDToEntity(unsigned long entityID);
 
+	/**
+	*	\brief Reads and decodes instructions for the keyboard
+	*	\param[in] currentTeam Team controlled for the function
+	*	\param[in] currentEnemies Enemies of the team controlled
+	*/
+
 	void keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::vector<CombatEntity> *currentEnemies);
+
+	/**
+	*	\brief Send an interaction to the server to be handled
+	*	\param[in] attacker Address of the attacker to use as an identifier to the server
+	*	\param[in] target Address of the target to use as an identifier to the server
+	*	\param[in] type Type of the attack
+	*	\param[in] spellName Name of the spell for the server to find in the indexes
+	*   \todo Use the goddamn server/client structures
+	*/
 
 	void sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, std::string spellName = "");
 
