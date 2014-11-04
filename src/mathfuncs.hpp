@@ -42,17 +42,29 @@ public:
 	virtual double result(double x) = 0;
 
 	/**
+    *   \brief Applies the function for the given number
+    *   \param[in] x Number to give to the math function
+    *	\return \f$ f(x) \f$
+    */
+
+	virtual double result(int x) = 0;
+
+	/**
 	*   \brief Applies the function for the given number
 	*   \param[in] x Number to give to the math function
 	*	\return \f$ f(x) \f$
 	*/
 
-	virtual double result(int x) = 0;
-
 	int iresult(double x)
 	{
 		return (int)result(x);
 	}
+
+	/**
+	*   \brief Applies the function for the given number
+	*   \param[in] x Number to give to the math function
+	*	\return \f$ f(x) \f$
+	*/
 
 	int iresult(int x)
 	{
