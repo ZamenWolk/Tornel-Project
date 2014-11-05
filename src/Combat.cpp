@@ -40,12 +40,10 @@ unsigned long CombatEntity::getID() const
 	return ID;
 }
 
-Combat::Combat(vector<CombatEntity> team1Fighters,
-			   vector<CombatEntity> team2Fighters,
-			   const Controls team1Control,
+Combat::Combat(const Controls team1Control,
 			   const Controls team2Control):
-			team1Fighters(team1Fighters),
-			team2Fighters(team2Fighters),
+			team1Fighters(),
+			team2Fighters(),
 			team1Control(team1Control),
 			team2Control(team2Control),
 			team1EventProcessed(true),
@@ -57,16 +55,6 @@ Combat::Combat(vector<CombatEntity> team1Fighters,
 			onlineMutex(),
 			launched(false)
 {
-	while (team1Fighters.size() >= 5)
-	{
-		team1Fighters.pop_back();
-	}
-
-	while (team2Fighters.size() >= 5)
-	{
-		team2Fighters.pop_back();
-	}
-
 	combatChecking();
 }
 
@@ -90,8 +78,14 @@ void Combat::changeEnemyTeam(vector<CombatEntity> newTeam)
 	}
 }
 
-string Combat::Run(RenderWindow &app)
+string Combat::Run(RenderWindow &app, std::map<std::string, Screen*> &screens)
 {
+	if (team1Fighters.size() < 1 || team1Fighters > 5 || team2Fighters.size() < 1 || team2Fighters > 5)
+	{
+		errorReport("The combat was not properly initialized");
+		return "menu";
+	}
+
 	if (!launched)
 	{
 		//Launches the threads
@@ -212,7 +206,7 @@ string Combat::endOfCombat()
 {
 	aboutToStop = true;
 	Packet packetFromServer;
-	bool       wonBattle;
+	bool wonBattle;
 
 	//Terminates all server threads
 	team1Thread.wait();
@@ -230,7 +224,15 @@ string Combat::endOfCombat()
 
 	launched = false;
 
-	return wonBattle ? "winner":"loser";
+	return wonBattle ? "winner" : "loser";
+}
+
+void Combat::combatChecking()
+{
+	if (team1Control == AI || team1Control == ONLINE || team1Control == FROM_FILE || team1Control == KEYBOARD && team2Control == KEYBOARD || team1Control == CONTROLLER && team2Control == CONTROLLER)
+	{
+		errorReport("Error in combat checking", true);
+	}
 }
 
 void Combat::teamInstructions(bool team1)
@@ -613,4 +615,29 @@ void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackTy
 			errorReport("Unable to send informations to combat server");
 		}
 		onlineMutex.unlock();
+}
+
+int Combat::fillFightersVector(std::vector<CombatEntity> &teamVector, bool isTeam1)
+{
+	int deletedEntities(0);
+	if (isTeam1)
+	{
+		team1Fighters = teamVector;
+		while (team1Fighters.size() > 5)
+		{
+			team1Fighters.pop_back();
+			deletedEntities++;
+		}
+	}
+	else
+	{
+		team2Fighters = teamVector;
+		while (team2Fighters.size() > 5)
+		{
+			team2Fighters.pop_back();
+			deletedEntities++;
+		}
+	}
+
+	return deletedEntities;
 }

@@ -19,7 +19,7 @@ int main()
 {
 	RenderWindow window;
 	string screen("");
-	map<string, Screen*> Screens;
+	map<string, Screen*> screens;
 
 	cout << "Welcome to Tornel'Fighters v." << AutoVersion::FULLVERSION_STRING << endl << endl;
 
@@ -30,7 +30,7 @@ int main()
 
 	while (screen != "stop")
 	{
-		screen = Screens[screen]->Run(window);
+		screen = screens[screen]->Run(window, screens);
 	}
 
 	return EXIT_SUCCESS;

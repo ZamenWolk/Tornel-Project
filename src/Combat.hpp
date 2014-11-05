@@ -106,9 +106,7 @@ public:
 	*	\todo Move filling of teamFighters out of initialization, with specific function
 	*/
 
-	Combat(std::vector<CombatEntity> team1Fighters,
-		   std::vector<CombatEntity> team2Fighters,
-		   const Controls team1Control,
+	Combat(const Controls team1Control,
 		   const Controls team2Control);
 
 	/**
@@ -124,10 +122,11 @@ public:
 	*	\param[in] IPAddress Address of the server to connect to
 	*	\param[in] addressPort Port to connect to on the server
 	*	\return 1 if team 1 won, 0 if team 2 won
-	*	\todo Complete inpleementation of screens
+	*	\todo Complete inplementation of screens
+	*	\todo Edit main loop so it considers inputs to other Screen
 	*/
 
-	virtual std::string Run(sf::RenderWindow &app);
+	virtual std::string Run(sf::RenderWindow &app, std::map<std::string, Screen*> &screens);
 
 	/**
 	*	\brief sets up the class with the server before using it
@@ -147,13 +146,9 @@ public:
 	std::string endOfCombat();
 
 	/// Checks if the created Combat function will be able to run
-	void combatChecking()
-	{
-		if (team1Control == AI || team1Control == ONLINE || team1Control == FROM_FILE || team1Control == KEYBOARD && team2Control == KEYBOARD || team1Control == CONTROLLER && team2Control == CONTROLLER)
-		{
-			errorReport("Error in combat checking");
-		}
-	}
+	void combatChecking();
+
+	int fillFightersVector(std::vector<CombatEntity> &teamVector, bool isTeam1);
 
 protected:
 
