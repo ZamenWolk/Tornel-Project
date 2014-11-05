@@ -177,7 +177,7 @@ public:
 	*	\param[in] effects Effects given by the equipement
 	*/
 
-	Equipment(std::string name, std::string type, Effects effects);
+	Equipment(std::string name, std::string type, Effects effects, Effects prerequisites);
 
 	/**
 	*	\param[in] equipment Equipment to copy to new instance
@@ -194,12 +194,15 @@ public:
 	/// \return Effects given by the equipement
 	Effects getEquipmentEffects() const;
 
+	Effects getPrerequisites() const;
+
 protected:
 
 	std::string name, ///< Name of the equipement
 				type; ///< Type of the equipement
 
-	Effects equipmentEffects; ///< Effects given by the equipment
+	Effects equipmentEffects, ///< Effects given by the equipment
+			prerequisites;
 
 };
 

@@ -39,6 +39,8 @@ set(SOURCE_FILES
     src/operators.hpp
     src/Skill.hpp
     src/Skill.cpp
+    src/Screen.cpp
+    src/Screen.hpp
     version.hpp
     communication.cpp
     communication.hpp

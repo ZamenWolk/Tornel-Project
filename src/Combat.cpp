@@ -1,12 +1,15 @@
 #include "Combat.hpp"
 
-CombatEntity::CombatEntity(EntityModel *entity):
+using namespace std;
+using namespace sf;
+
+CombatEntity::CombatEntity(EntityModel *entity, unsigned long ID):
 						entity(entity),
 						target(nullptr),
 						effects(entity->getEffects(), entity->basicAttackEffects()),
-						ID((unsigned long)((long long int)this%4200000000)),
-						lastInteractionTime(sf::milliseconds(0)),
-						interactionCooldown(sf::milliseconds(0))
+						ID(ID),
+						lastInteractionTime(milliseconds(0)),
+						interactionCooldown(milliseconds(0))
 {
 
 }
@@ -37,8 +40,8 @@ unsigned long CombatEntity::getID() const
 	return ID;
 }
 
-Combat::Combat(std::vector<CombatEntity> team1Fighters,
-			   std::vector<CombatEntity> team2Fighters,
+Combat::Combat(vector<CombatEntity> team1Fighters,
+			   vector<CombatEntity> team2Fighters,
 			   const Controls team1Control,
 			   const Controls team2Control):
 			team1Fighters(team1Fighters),
@@ -48,10 +51,11 @@ Combat::Combat(std::vector<CombatEntity> team1Fighters,
 			team1EventProcessed(true),
 			team2EventProcessed(true),
 			aboutToStop(false),
-			team1Thread(std::bind(&Combat::teamInstructions, this, true)),
-			team2Thread(std::bind(&Combat::teamInstructions, this, false)),
+			team1Thread(bind(&Combat::teamInstructions, this, true)),
+			team2Thread(bind(&Combat::teamInstructions, this, false)),
 			serverThread(&Combat::serverHandling, this),
-			onlineMutex()
+			onlineMutex(),
+			launched(false)
 {
 	while (team1Fighters.size() >= 5)
 	{
@@ -66,7 +70,7 @@ Combat::Combat(std::vector<CombatEntity> team1Fighters,
 	combatChecking();
 }
 
-void Combat::changeEnemyTeam(std::vector<CombatEntity> newTeam)
+void Combat::changeEnemyTeam(vector<CombatEntity> newTeam)
 {
 	//Resets the vector of team2
 	while (team2Fighters.size() > 0)
@@ -80,72 +84,77 @@ void Combat::changeEnemyTeam(std::vector<CombatEntity> newTeam)
 	}
 
 	//Loads the new team into the vector
-	for (std::vector<CombatEntity>::iterator it = newTeam.begin(); it != newTeam.end(); it++)
+	for (vector<CombatEntity>::iterator it = newTeam.begin(); it != newTeam.end(); it++)
 	{
 		team2Fighters.push_back(*it);
 	}
 }
 
-int Combat::combatRunning(sf::RenderWindow &window, std::string IPAddress, unsigned short addressPort)
+string Combat::Run(RenderWindow &app)
 {
-	setUpServer(IPAddress, addressPort);
+	if (!launched)
+	{
+		//Launches the threads
+		cout << "The game begins !" << endl;
+		team1Thread.launch();
+		team2Thread.launch();
+		serverThread.launch();
 
-	//Launches the threads
-	std::cout << "The game begins !" << std::endl;
-	team1Thread.launch();
-	team2Thread.launch();
+		launched = true;
+	}
+
 
 	//Catches events to be processed by the threads until the fight stops
 	while (!aboutToStop)
 	{
-		indexes.keyboardMap.update(window);
+		indexes.keyboardMap.update(app);
 
 		team1EventProcessed = false;
 		team2EventProcessed = false;
 
 		while (!team1EventProcessed && !team2EventProcessed)
 		{
-			sf::sleep(sf::milliseconds(25));
+			sleep(milliseconds(25));
 		}
 	}
 
 	return endOfCombat();
 }
 
-void Combat::setUpServer(std::string IPAddress, unsigned short addressPort)
+void Combat::Setup(string IPAddress, unsigned short addressPort)
 {
-	sf::Packet                versionNumber, charactersPacket, packetFromServer, timePacket;
+	Packet                versionNumber, charactersPacket, packetFromServer, timePacket;
 	VersionNumber             version(AutoVersion::STATUS,
 									  AutoVersion::MAJOR,
 									  AutoVersion::MINOR,
 									  AutoVersion::PATCH);
-	std::vector<CombatEntity> teamFromServer;
-	sf::Time                  pingTime(sf::milliseconds(0)), pongTime(sf::milliseconds(0)), timeUntilLaunch(sf::milliseconds(0)),
-							  timeAtLaunchDelay(sf::milliseconds(0));
+	vector<CombatEntity> teamFromServer;
+	Time                  pingTime(milliseconds(0)), pongTime(milliseconds(0)), timeUntilLaunch(milliseconds(0)),
+							  timeAtLaunchDelay(milliseconds(0));
 
 	//Connects to the server
 	onlineMutex.lock();
-	if (onlinePort.connect(IPAddress, addressPort) != sf::Socket::Done)
+	if (onlinePort.connect(IPAddress, addressPort) != Socket::Done)
 	{
 		errorReport("Can't connect to the server");
 	}
 
 	//Sends version number to the server
 	createPacket(versionNumber, version, VERSION_NUMBER);
-	if (onlinePort.send(versionNumber) != sf::Socket::Done)
+	if (onlinePort.send(versionNumber) != Socket::Done)
 	{
 		errorReport("Can't send version information to server");
 	}
 
 	//Sends team's character vector to the server
 	createPacket(charactersPacket, team1Fighters, TEAM_DATA);
-	if (onlinePort.send(charactersPacket) != sf::Socket::Done)
+	if (onlinePort.send(charactersPacket) != Socket::Done)
 	{
 		errorReport("Can't send team informations to server");
 	}
 
 	//Receives opposite team's character vector from the server
-	if (onlinePort.receive(packetFromServer) != sf::Socket::Done)
+	if (onlinePort.receive(packetFromServer) != Socket::Done)
 	{
 		errorReport("Can't receive team informations from server");
 	}
@@ -155,12 +164,12 @@ void Combat::setUpServer(std::string IPAddress, unsigned short addressPort)
 	//Calculates the ping with the server so both clients can begin at the same time
 	pingTime = mainClock.getElapsedTime();
 	createPacket(timePacket, pingTime, PING);
-	if (onlinePort.send(timePacket) != sf::Socket::Done)
+	if (onlinePort.send(timePacket) != Socket::Done)
 	{
 		errorReport("Can't ping server");
 	}
 
-	if (onlinePort.receive(packetFromServer) != sf::Socket::Done)
+	if (onlinePort.receive(packetFromServer) != Socket::Done)
 	{
 		errorReport("Can't receive pong from server");
 	}
@@ -173,7 +182,7 @@ void Combat::setUpServer(std::string IPAddress, unsigned short addressPort)
 
 	//Sends latency to server
 	createPacket(timePacket, pongTime - pingTime, PING);
-	if (onlinePort.send(timePacket) != sf::Socket::Done)
+	if (onlinePort.send(timePacket) != Socket::Done)
 	{
 		errorReport("Can't send latency to server");
 	}
@@ -184,7 +193,7 @@ void Combat::setUpServer(std::string IPAddress, unsigned short addressPort)
 	}
 
 	//Receives the delay until the beginning of the fight from the server
-	if (onlinePort.receive(timePacket) != sf::Socket::Done)
+	if (onlinePort.receive(timePacket) != Socket::Done)
 	{
 		errorReport("Can't receive launch delay from server");
 	}
@@ -195,14 +204,14 @@ void Combat::setUpServer(std::string IPAddress, unsigned short addressPort)
 	//Waits until the delay until the beginning of fight is over
 	while (mainClock.getElapsedTime() < timeAtLaunchDelay + timeUntilLaunch)
 	{
-		sf::sleep(sf::milliseconds(50));
+		sleep(milliseconds(50));
 	}
 }
 
-bool Combat::endOfCombat()
+string Combat::endOfCombat()
 {
 	aboutToStop = true;
-	sf::Packet packetFromServer;
+	Packet packetFromServer;
 	bool       wonBattle;
 
 	//Terminates all server threads
@@ -212,19 +221,21 @@ bool Combat::endOfCombat()
 
 	//Receives winner information from server
 	onlineMutex.lock();
-	if (onlinePort.receive(packetFromServer) != sf::Socket::Done)
+	if (onlinePort.receive(packetFromServer) != Socket::Done)
 	{
 		errorReport("Can't receive winner informations from server");
 	}
 	onlineMutex.unlock();
 	packetFromServer >> wonBattle;
 
-	return wonBattle;
+	launched = false;
+
+	return wonBattle ? "winner":"loser";
 }
 
 void Combat::teamInstructions(bool team1)
 {
-	std::vector<CombatEntity> *currentTeam(nullptr), *currentEnemies(nullptr);
+	vector<CombatEntity> *currentTeam(nullptr), *currentEnemies(nullptr);
 	const Controls            *currentControl(nullptr);
 	bool                      *currentTeamEventProcessed(nullptr);
 
@@ -252,7 +263,7 @@ void Combat::teamInstructions(bool team1)
 
 		*currentTeamEventProcessed = true;
 
-		sf::sleep(sf::milliseconds(25));
+		sleep(milliseconds(25));
 	}
 }
 
@@ -260,19 +271,19 @@ void Combat::serverHandling()
 {
 	while (!aboutToStop)
 	{
-		sf::Packet       packetFromServer;
+		Packet       packetFromServer;
 		ActionType       actionType;
 		SpecialAttribute specialAttribute;
-		sf::Uint32       subjectID(0);
+		Uint32       subjectID(0);
 		CombatEntity *subject(nullptr);
-		sf::Socket::Status result;
+		Socket::Status result;
 
 		//Receives packet of information from the server
 		onlineMutex.lock();
 		result = onlinePort.receive(packetFromServer);
 		onlineMutex.unlock();
 
-		if (result != sf::Socket::Done && result != sf::Socket::NotReady)
+		if (result != Socket::Done && result != Socket::NotReady)
 		{
 			errorReport("Can't receive informations from server");
 		}
@@ -289,12 +300,12 @@ void Combat::serverHandling()
 				//If it is because there is not enough capacity points
 				if (specialAttribute == NOT_ENOUGH_CP)
 				{
-					std::string skillName;
+					string skillName;
 					packetFromServer >> skillName;
 
 					Skill *skill(indexes.skillIndex.searchByName(skillName));
 
-					std::cout << subject->getEntity()->getName() << " needs more Capacity Points to use " << skill->name << std::endl;
+					cout << subject->getEntity()->getName() << " needs more Capacity Points to use " << skill->name << endl;
 				}
 					//Reaction not handled by the client
 				else
@@ -307,12 +318,12 @@ void Combat::serverHandling()
 				//If damages were dealt
 			else if (actionType == DEAL_DAMAGE)
 			{
-				sf::Uint32 targetID;
+				Uint32 targetID;
 				packetFromServer >> targetID;
 				CombatEntity *target(IDToEntity(targetID));
 				int         attackDamage;
 				AttackType  attackType;
-				std::string skillName;
+				string skillName;
 				Skill       *skill(nullptr);
 
 				//Searches who was hit
@@ -331,11 +342,11 @@ void Combat::serverHandling()
 				{
 					if (attackType == WEAPON_ATTACK)
 					{
-						std::cout << subject->getEntity()->getName() << " attacked " << target->getEntity()->getName() << ", dealing " << attackDamage << " damages" << std::endl;
+						cout << subject->getEntity()->getName() << " attacked " << target->getEntity()->getName() << ", dealing " << attackDamage << " damages" << endl;
 					}
 					else
 					{
-						std::cout << subject->getEntity()->getName() << " used " << skill->name << " on " << target->getEntity()->getName() << ", dealing " << attackDamage << " damages" << std::endl;
+						cout << subject->getEntity()->getName() << " used " << skill->name << " on " << target->getEntity()->getName() << ", dealing " << attackDamage << " damages" << endl;
 					}
 				}
 					//Attribute of attack not handled by function
@@ -371,13 +382,13 @@ void Combat::serverHandling()
 			}
 		}
 
-		sf::sleep(sf::milliseconds(25));
+		sleep(milliseconds(25));
 	}
 }
 
 CombatEntity* Combat::IDToEntity(unsigned long entityID)
 {
-		for (std::vector<CombatEntity>::iterator it = team1Fighters.begin(); it != team1Fighters.end(); it++)
+		for (vector<CombatEntity>::iterator it = team1Fighters.begin(); it != team1Fighters.end(); it++)
 		{
 			if (it->getID() == entityID)
 			{
@@ -385,7 +396,7 @@ CombatEntity* Combat::IDToEntity(unsigned long entityID)
 			}
 		}
 
-		for (std::vector<CombatEntity>::iterator it = team2Fighters.begin(); it != team2Fighters.end(); it++)
+		for (vector<CombatEntity>::iterator it = team2Fighters.begin(); it != team2Fighters.end(); it++)
 		{
 			if (it->getID() == entityID)
 			{
@@ -397,7 +408,7 @@ CombatEntity* Combat::IDToEntity(unsigned long entityID)
 		return &team1Fighters[0];
 	}
 
-void Combat::keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::vector<CombatEntity> *currentEnemies)
+void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<CombatEntity> *currentEnemies)
 {
 
 	static CombatMenu currentMenu(MAIN);
@@ -410,25 +421,25 @@ void Combat::keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::v
 	if (indexes.keyboardMap.isActive("characterMenu"))
 	{
 		currentMenu = CHARACTER_CHOOSING;
-		std::cout << "Current menu : Character choosing" << std::endl;
+		cout << "Current menu : Character choosing" << endl;
 	}
 		//If user wants to go to the target menu
 	else if (indexes.keyboardMap.isActive("targetMenu"))
 	{
 		currentMenu = TARGET_CHOOSING;
-		std::cout << "Current menu : Target choosing" << std::endl;
+		cout << "Current menu : Target choosing" << endl;
 	}
 		//If user wants to go to the ability menu
 	else if (indexes.keyboardMap.isActive("abilityMenu"))
 	{
 		currentMenu = ABILITY_CHOOSING;
-		std::cout << "Current menu : Ability choosing" << std::endl;
+		cout << "Current menu : Ability choosing" << endl;
 	}
 		//If user wants to go to the spell menu
 	else if (indexes.keyboardMap.isActive("spellMenu"))
 	{
 		currentMenu = SPELL_CHOOSING;
-		std::cout << "Current menu : Spell choosing" << std::endl;
+		cout << "Current menu : Spell choosing" << endl;
 	}
 		//If user wants to attack
 	else if (indexes.keyboardMap.isActive("weaponAttack"))
@@ -439,7 +450,7 @@ void Combat::keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::v
 	else if (indexes.keyboardMap.isActive("mainMenu"))
 	{
 		currentMenu = MAIN;
-		std::cout << "Current menu : Main" << std::endl;
+		cout << "Current menu : Main" << endl;
 	}
 		//If user selects the number 1
 	else if (indexes.keyboardMap.isActive("selector1"))
@@ -479,13 +490,13 @@ void Combat::keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::v
 			case ABILITY_CHOOSING:
 				if (abilityPage > 0)
 					abilityPage--;
-				std::cout << "Ability page : " << abilityPage << std::endl;
+				cout << "Ability page : " << abilityPage << endl;
 				break;
 
 			case SPELL_CHOOSING:
 				if (spellPage > 0)
 					spellPage--;
-				std::cout << "Spell page : " << spellPage << std::endl;
+				cout << "Spell page : " << spellPage << endl;
 				break;
 			case MAIN:
 				break;
@@ -496,7 +507,7 @@ void Combat::keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::v
 		}
 	}
 
-		//If user wants to go to the next page
+	//If user wants to go to the next page
 	else if (indexes.keyboardMap.isActive("nextPage"))
 	{
 		switch (currentMenu)
@@ -504,13 +515,13 @@ void Combat::keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::v
 			case ABILITY_CHOOSING:
 				if (currentCharacter->getEntity()->getKnownAbilities().size() >= (abilityPage*6 + 7))
 					abilityPage++;
-				std::cout << "Ability page : " << abilityPage << std::endl;
+				cout << "Ability page : " << abilityPage << endl;
 				break;
 
 			case SPELL_CHOOSING:
 				if (currentCharacter->getEntity()->getKnownSpells().size() >= (spellPage*6 + 7))
 					spellPage++;
-				std::cout << "Spell page : " << spellPage << std::endl;
+				cout << "Spell page : " << spellPage << endl;
 				break;
 			case MAIN:
 				break;
@@ -522,7 +533,7 @@ void Combat::keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::v
 	}
 
 	//If a selector key was pressed
-	if (indexes.keyboardMap.isActive("selector"))
+	if (indexes.keyboardMap.isActive("selector") && !selectorVariable)
 	{
 		//Only runs tests for Character and target choosing if selector 6 was not pressed
 		if (indexes.keyboardMap.isActive("charSelector"))
@@ -534,7 +545,7 @@ void Combat::keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::v
 					if (currentTeam->at(selectorVariable).getEntity()->isAlive())
 					{
 						currentCharacter = &currentTeam->at(selectorVariable);
-						std::cout << "New character : " << currentCharacter->getEntity()->getName() << std::endl;
+						cout << "New character : " << currentCharacter->getEntity()->getName() << endl;
 					}
 					break;
 
@@ -543,7 +554,7 @@ void Combat::keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::v
 					if (currentEnemies->at(selectorVariable).getEntity()->isAlive())
 					{
 						currentCharacter->changeTarget(&currentEnemies->at(selectorVariable));
-						std::cout << "New target : " << currentCharacter->getTarget()->getEntity()->getName() << std::endl;
+						cout << "New target : " << currentCharacter->getTarget()->getEntity()->getName() << endl;
 					}
 					break;
 				case MAIN:
@@ -584,21 +595,22 @@ void Combat::keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::v
 				break;
 		}
 
+		selectorVariable = 0;
 		currentMenu = MAIN;
 	}
 }
 
-void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, std::string spellName)
+void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, string spellName)
 {
-		sf::Packet       packetToSend;
+		Packet       packetToSend;
 		InteractionInfos informationsToSend{attacker.getID(), target.getID(), type, spellName};
 
 		packetToSend << informationsToSend;
 
 		onlineMutex.lock();
-		if (onlinePort.send(packetToSend) != sf::Socket::Done)
+		if (onlinePort.send(packetToSend) != Socket::Done)
 		{
 			errorReport("Unable to send informations to combat server");
 		}
 		onlineMutex.unlock();
-	}
+}

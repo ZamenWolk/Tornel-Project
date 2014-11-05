@@ -14,6 +14,7 @@
 #include "Skill.hpp"
 #include "../version.hpp"
 #include "../communication.hpp"
+#include "Screen.hpp"
 
 extern sf::Clock    mainClock; ///< Main clock of the program
 extern IndexesIndex indexes; ///< Indexes of the game
@@ -56,7 +57,7 @@ public:
 	*	\param[in] entity Entity to copy to the created entity
 	*/
 
-	CombatEntity(EntityModel *entity);
+	CombatEntity(EntityModel *entity, unsigned long ID = (unsigned long)((long long int)this%4200000000));
 
 	/**
 	*	\brief Changes the current target of the entity
@@ -92,7 +93,7 @@ protected:
 * 	\details Contains both team as well as the main loop function
 */
 
-class Combat
+class Combat : public Screen
 {
 public:
 
@@ -102,6 +103,7 @@ public:
 	*	\param[in] team1Control Way the team 1 is controlled
 	*	\param[in] team2Control Way the team 2 is controlled
 	*	\warning Each teams can contain at max 5 fighters
+	*	\todo Move filling of teamFighters out of initialization, with specific function
 	*/
 
 	Combat(std::vector<CombatEntity> team1Fighters,
@@ -122,9 +124,10 @@ public:
 	*	\param[in] IPAddress Address of the server to connect to
 	*	\param[in] addressPort Port to connect to on the server
 	*	\return 1 if team 1 won, 0 if team 2 won
+	*	\todo Complete inpleementation of screens
 	*/
 
-	int combatRunning(sf::RenderWindow &window, std::string IPAddress = "localhost", unsigned short addressPort = 2715);
+	virtual std::string Run(sf::RenderWindow &app);
 
 	/**
 	*	\brief sets up the class with the server before using it
@@ -133,7 +136,7 @@ public:
 	*   \todo Use the goddamn server/client structures
 	*/
 
-	void setUpServer(std::string IPAddress, unsigned short addressPort);
+	void Setup(std::string IPAddress = "localhost", unsigned short addressPort = 2715);
 
 	/**
 	* \brief Handles end of combat after the actual fight ends
@@ -141,7 +144,7 @@ public:
 	* \todo Enhance so it makes real things
 	*/
 
-	bool endOfCombat();
+	std::string endOfCombat();
 
 	/// Checks if the created Combat function will be able to run
 	void combatChecking()
@@ -201,7 +204,8 @@ protected:
 
 	bool team1EventProcessed, ///< Is true if the team 1 thread processed the actual event
 		 team2EventProcessed, ///< Is true if the team 2 thread processed the actual event
-		 aboutToStop; ///< Becomes true when the end of fuction combatRunning is reached
+		 aboutToStop, ///< Becomes true when the end of fuction Run is reached
+		 launched;
 
 	sf::Thread team1Thread, ///< Thread in charge of processing team 1's events
 			   team2Thread, ///< Thread in charge of processing team 2's events

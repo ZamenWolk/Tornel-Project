@@ -92,14 +92,14 @@ CombatEffects::CombatEffects(int lifeGain,
 
 }
 
-Equipment::Equipment(std::string name, std::string type, Effects effects) :
-		name(name), type(type), equipmentEffects(effects)
+Equipment::Equipment(std::string name, std::string type, Effects effects, Effects prerequisites) :
+		name(name), type(type), equipmentEffects(effects), prerequisites(prerequisites)
 {
 
 }
 
-Equipment::Equipment(const Equipment *equipment) :
-		name(equipment->name), equipmentEffects(equipment->equipmentEffects)
+Equipment::Equipment(const Equipment *equipment):
+		name(equipment->name), type(equipment->type), equipmentEffects(equipment->equipmentEffects), prerequisites(equipment->prerequisites)
 {
 
 }
@@ -137,4 +137,9 @@ Weapon::Weapon(const Weapon *weapon) :
 WeaponEffects Weapon::getWeaponEffects() const
 {
 	return weaponEffects;
+}
+
+Effects Equipment::getPrerequisites() const
+{
+	return prerequisites;
 }

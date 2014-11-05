@@ -3,9 +3,11 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
+#include <map>
 
 #include "Hero.hpp"
 #include "../version.hpp"
+#include "Screen.hpp"
 
 using namespace std;
 using namespace sf;
@@ -15,29 +17,21 @@ extern IndexesIndex indexes;
 
 int main()
 {
+	RenderWindow window;
+	string screen("");
+	map<string, Screen*> Screens;
+
 	cout << "Welcome to Tornel'Fighters v." << AutoVersion::FULLVERSION_STRING << endl << endl;
 
-	RenderWindow window;
-
 	window.create(VideoMode(1067, 800), "Tornel'Fighters");
-	window.setFramerateLimit(30);
+	window.setFramerateLimit(45);
 
 	cout << "The fight begins !" << endl << endl;
 
-	Hero ZamenEntity("ZamenWolk",
-					 0,
-					 indexes.heroClassIndex.searchByName("Knight")),
-	     SblurbEntity("Sblurb",
-					  0,
-					  indexes.heroClassIndex.searchByName("Knight")),
-		 GrymsEntity("Gryms",
-					 0,
-					 indexes.heroClassIndex.searchByName("Knight"));
-
-	Entity enemy1Entity("Slime 1", 1, indexes.monsterIndex.searchByName("Slime")), enemy2Entity("Slime 2",
-																								2,
-																								indexes.monsterIndex.searchByName(
-																								"Slime"));
+	while (screen != "stop")
+	{
+		screen = Screens[screen]->Run(window);
+	}
 
 	return EXIT_SUCCESS;
 

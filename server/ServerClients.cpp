@@ -1,7 +1,7 @@
 #include "ServerClients.hpp"
 
 ServerClient::ServerClient() :
-		isFree(true), socketSelector(0)
+		isFree(true), socketSelector(0), lastInteractionClock()
 {
 
 }
