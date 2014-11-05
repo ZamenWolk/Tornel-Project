@@ -4,8 +4,8 @@
 #include <cmath>
 
 /**
-*   \file mathfuncs.hpp
-*   \brief Contains class declaration for maths functions
+* \file mathfuncs.hpp
+* \brief Contains class declaration for maths functions
 */
 
 /**
@@ -14,7 +14,7 @@
 */
 
 /**
-*   \brief Parent class of all the math functions classes
+* \brief Parent class of all the math functions classes
 */
 
 class MathFunction
@@ -22,40 +22,40 @@ class MathFunction
 public:
 
 	/**
-	*	\param[in] minimalXValue Minimal value of x as handled in the game. -1 is none
-	*	\param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
+	* \param[in] minimalXValue Minimal value of x as handled in the game. -1 is none
+	* \param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
 	*/
 
 	MathFunction(int minimalXValue = -1, int maximalXValue = -1);
 
 	/**
-	*   \brief Applies the function for the given number
-	*   \param[in] x Number to give to the math function
-	*	\return \f$ f(x) \f$
+	* \brief Applies the function for the given number
+	* \param[in] x Number to give to the math function
+	* \return \f$ f(x) \f$
 	*/
 
 	virtual double result(double x) = 0;
 
 	/**
-    *   \brief Applies the function for the given number
-    *   \param[in] x Number to give to the math function
-    *	\return \f$ f(x) \f$
+    * \brief Applies the function for the given number
+    * \param[in] x Number to give to the math function
+    * \return \f$ f(x) \f$
     */
 
 	virtual double result(int x) = 0;
 
 	/**
-	*   \brief Applies the function for the given number
-	*   \param[in] x Number to give to the math function
-	*	\return \f$ f(x) \f$
+	* \brief Applies the function for the given number
+	* \param[in] x Number to give to the math function
+	* \return \f$ f(x) \f$
 	*/
 
 	int iresult(double x);
 
 	/**
-	*   \brief Applies the function for the given number
-	*   \param[in] x Number to give to the math function
-	*	\return \f$ f(x) \f$
+	* \brief Applies the function for the given number
+	* \param[in] x Number to give to the math function
+	* \return \f$ f(x) \f$
 	*/
 
 	int iresult(int x);
@@ -67,8 +67,8 @@ protected:
 };
 
 /**
-*   \brief Third Power function
-*	\details Function \f$ f(x) = ax^3 + bx^2 + cx + d  \f$
+* \brief Third Power function
+* \details Function \f$ f(x) = ax^3 + bx^2 + cx + d  \f$
 */
 
 class ThirdPowerFunction : public MathFunction
@@ -76,12 +76,12 @@ class ThirdPowerFunction : public MathFunction
 public:
 
 	/**
-	*	\param[in] yIntercept Value of \f$ f(x) \f$ when \f$ x=0 \f$
-	*	\param[in] firstPowerFactor Factor of \f$ x \f$
-	*	\param[in] secondPowerFactor Factor of \f$ x^2 \f$
-	*	\param[in] thirdPowerFactor Factor of \f$ x^3 \f$
-	*	\param[in] minimalXValue Minimal value of x as handled in the game. -1 is none
-	*	\param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
+	* \param[in] yIntercept Value of \f$ f(x) \f$ when \f$ x=0 \f$
+	* \param[in] firstPowerFactor Factor of \f$ x \f$
+	* \param[in] secondPowerFactor Factor of \f$ x^2 \f$
+	* \param[in] thirdPowerFactor Factor of \f$ x^3 \f$
+	* \param[in] minimalXValue Minimal value of x as handled in the game. -1 is none
+	* \param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
 	*/
 
 	ThirdPowerFunction(double yIntercept = 0,
@@ -105,8 +105,8 @@ protected:
 };
 
 /**
-*   \brief Invert function
-*	\details Function \f$ f(x) = a\sqrt[3]{x} + b\sqrt{x} + cx + d  \f$
+* \brief Invert function
+* \details Function \f$ f(x) = a\sqrt[3]{x} + b\sqrt{x} + cx + d  \f$
 */
 
 class InvertFunction : public MathFunction
@@ -114,12 +114,12 @@ class InvertFunction : public MathFunction
 public:
 
 	/**
-	*	\param[in] yIntercept Value of \f$ f(x) \f$ when \f$ x=0 \f$
-	*	\param[in] firstPowerFactor Factor of \f$ x \f$
-	*	\param[in] secondPowerFactor Factor of \f$ \sqrt{x} \f$
-	*	\param[in] thirdPowerFactor Factor of \f$ \sqrt[3]{x} \f$
-	*	\param[in] minimalXValue Minimal value of x as handled in the game. -1 is none
-	*	\param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
+	* \param[in] yIntercept Value of \f$ f(x) \f$ when \f$ x=0 \f$
+	* \param[in] firstPowerFactor Factor of \f$ x \f$
+	* \param[in] secondPowerFactor Factor of \f$ \sqrt{x} \f$
+	* \param[in] thirdPowerFactor Factor of \f$ \sqrt[3]{x} \f$
+	* \param[in] minimalXValue Minimal value of x as handled in the game. -1 is none
+	* \param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
 	*/
 
 	InvertFunction(double yIntercept = 0,
@@ -143,8 +143,8 @@ protected:
 };
 
 /**
-*   \brief Sequence defined by a recurring
-*	\details Sequence \f$ u(n) = u(n-1) * q + r  \f$
+* \brief Sequence defined by a recurring
+* \details Sequence \f$ u(n) = u(n-1) * q + r  \f$
 */
 
 class RecurrentSequence : public MathFunction
@@ -152,11 +152,11 @@ class RecurrentSequence : public MathFunction
 public:
 
 	/**
-	*   \param[in] valueAtMinimumX Value of \f$ u(x) \f$ at the minimum value of x
-	*	\param[in] commonDifference Value to add to the sequence at each occuring
-	*	\param[in] commonRatio Value to multiply the sequence with at each occuring
-	*	\param[in] minimalXValue Minimal value of x as handled in the game
-	*	\param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
+	* \param[in] valueAtMinimumX Value of \f$ u(x) \f$ at the minimum value of x
+	* \param[in] commonDifference Value to add to the sequence at each occuring
+	* \param[in] commonRatio Value to multiply the sequence with at each occuring
+	* \param[in] minimalXValue Minimal value of x as handled in the game
+	* \param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
 	*/
 
 	RecurrentSequence(double valueAtMinimumX = 0,
@@ -177,8 +177,8 @@ protected:
 };
 
 /**
-*   \brief Recurring sequence following another sequence
-*	\details Sequence \f$ u(n) = u(n-1) * q + r + u'(n)  \f$
+* \brief Recurring sequence following another sequence
+* \details Sequence \f$ u(n) = u(n-1) * q + r + u'(n)  \f$
 */
 
 class SequenceUsing_Sequence : public RecurrentSequence
@@ -186,12 +186,12 @@ class SequenceUsing_Sequence : public RecurrentSequence
 public:
 
 	/**
-	*   \param[in] valueAtMinimumX Value of \f$ u(x) \f$ at the minimum value of x
-	*	\param[in] commonDifference Value to add to the sequence at each occuring
-	*	\param[in] commonRatio Value to multiply the sequence with at each occuring
-	*	\param[in] usedSequence Sequence added to \f$ u(n) \f$ at each occuring
-	*	\param[in] minimalXValue Minimal value of x as handled in the game
-	*	\param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
+	* \param[in] valueAtMinimumX Value of \f$ u(x) \f$ at the minimum value of x
+	* \param[in] commonDifference Value to add to the sequence at each occuring
+	* \param[in] commonRatio Value to multiply the sequence with at each occuring
+	* \param[in] usedSequence Sequence added to \f$ u(n) \f$ at each occuring
+	* \param[in] minimalXValue Minimal value of x as handled in the game
+	* \param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
 	*/
 
 	SequenceUsing_Sequence(double valueAtMinimumX = 0,
@@ -211,8 +211,8 @@ protected:
 };
 
 /**
-*   \brief Exponential function
-*	\details Function \f$ f(x) = a^{x-b} + c  \f$
+* \brief Exponential function
+* \details Function \f$ f(x) = a^{x-b} + c  \f$
 */
 
 class ExponentialFunction : public MathFunction
@@ -220,12 +220,12 @@ class ExponentialFunction : public MathFunction
 public:
 
 	/**
-	*   \param[in] negativeOfExponential Whether the exponential factor is inverted or not
-	*	\param[in] exponentialFactor Factor of the exponential
-	*	\param[in] horizontalTranslater Horizontal translater of the function
-	*	\param[in] verticalTranslater Vertical translater of the function
-	*	\param[in] minimalXValue Minimal value of x as handled in the game. -1 is none
-	*	\param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
+	* \param[in] negativeOfExponential Whether the exponential factor is inverted or not
+	* \param[in] exponentialFactor Factor of the exponential
+	* \param[in] horizontalTranslater Horizontal translater of the function
+	* \param[in] verticalTranslater Vertical translater of the function
+	* \param[in] minimalXValue Minimal value of x as handled in the game. -1 is none
+	* \param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
 	*/
 
 	ExponentialFunction(bool negativeOfExponential = false,

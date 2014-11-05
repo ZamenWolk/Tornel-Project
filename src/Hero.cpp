@@ -68,7 +68,7 @@ void Hero::actualizeCharacteristics()
 	stamina += effects.stamina - oldMaxStamina;
 }
 
-void Hero::changeEquipment(EquipmentType type, Equipment *newEquipment = NULL)
+void Hero::changeEquipment(EquipmentType type, Equipment *newEquipment)
 {
 	//Resets the equipment if set to NULL
 	if (newEquipment == NULL)

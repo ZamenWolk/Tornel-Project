@@ -24,16 +24,16 @@ class Skill;
 */
 
 /**
-*   \brief Structures used to send version numbers between server and client
+* \brief Structures used to send version numbers between server and client
 */
 
 struct VersionNumber
 {
 	/**
-	*   \param[in] status Status of the game
-	*   \param[in] major Major number of the game version
-	*   \param[in] minor Minor number of the game version
-	*   \param[in] patch Patch number of the game version
+	* \param[in] status Status of the game
+	* \param[in] major Major number of the game version
+	* \param[in] minor Minor number of the game version
+	* \param[in] patch Patch number of the game version
 	*/
 
 	VersionNumber(std::string status, sf::Int32 major, sf::Int32 minor, sf::Int32 patch) :
@@ -55,16 +55,16 @@ struct VersionNumber
 };
 
 /**
-*   \brief Structures used to send interactions between server and client
+* \brief Structures used to send interactions between server and client
 */
 
 struct InteractionInfos
 {
 	/**
-	*   \param[in] attackerID ID of the attacker
-	*   \param[in] targetID ID of the target
-	*   \param[in] type Type of the interaction
-	*   \param[in] spellName Name of the spell, if used
+	* \param[in] attackerID ID of the attacker
+	* \param[in] targetID ID of the target
+	* \param[in] type Type of the interaction
+	* \param[in] spellName Name of the spell, if used
 	*/
 
 	InteractionInfos(sf::Uint32 attackerID, sf::Uint32 targetID, AttackType type, std::string spellName) :
@@ -86,7 +86,7 @@ struct InteractionInfos
 };
 
 /**
-*	\brief Informations received from server to create premade entities
+* \brief Informations received from server to create premade entities
 */
 
 struct EntityInformations
@@ -101,11 +101,11 @@ struct EntityInformations
 };
 
 /**
-*   \brief Creates a packet with a some info and the SentInfosType going with it
-*   \param[in] packet Packet to flux the informations to
-*   \param[in] infos version structure to flux into the packet
-*   \param[in] type type of info contained in the structure
-*   \return updated packet
+* \brief Creates a packet with a some info and the SentInfosType going with it
+* \param[in] packet Packet to flux the informations to
+* \param[in] infos version structure to flux into the packet
+* \param[in] type type of info contained in the structure
+* \return updated packet
 */
 
 template<typename T>

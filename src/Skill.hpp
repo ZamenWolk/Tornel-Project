@@ -8,8 +8,8 @@
 #include "../communication.hpp"
 
 /**
-*   \file Skill.hpp
-*   \brief Contains the struct Skill and the LevellingSkill structure
+* \file Skill.hpp
+* \brief Contains the struct Skill and the LevellingSkill structure
 */
 
 /**
@@ -18,19 +18,19 @@
 */
 
 /**
-*   \brief A skill usable by fighters
-*   \details Defined by an animation and a base damage
+* \brief A skill usable by fighters
+* \details Defined by an animation and a base damage
 */
 
 struct Skill
 {
 	/**
-	*	\param[in] name Name of the skill
-	*	\param[in] baseDamage Base damage of the skill
-	*	\param[in] manaCost Mana cost for using the skill
-	*	\param[in] staminaCost Stamina cost for using the skill
-	*	\param[in] cooldown Cooldown after the skill
-	*	\param[in] skillType Type of the skill
+	* \param[in] name Name of the skill
+	* \param[in] baseDamage Base damage of the skill
+	* \param[in] manaCost Mana cost for using the skill
+	* \param[in] staminaCost Stamina cost for using the skill
+	* \param[in] cooldown Cooldown after the skill
+	* \param[in] skillType Type of the skill
 	*/
 
 	Skill(std::string name, int baseDamage, int manaCost, int staminaCost, sf::Time cooldown, AttackType skillType);
@@ -51,7 +51,7 @@ struct Skill
 };
 
 /**
-*   \brief A conponent of the arrays defining when a hero type can learn a Skill
+* \brief A conponent of the arrays defining when a hero type can learn a Skill
 */
 
 struct LevelingSkill

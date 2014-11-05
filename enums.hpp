@@ -2,7 +2,7 @@
 #define ENUMS_HPP_INCLUDED
 
 /**
-*   \brief Precise the type of the attack
+* \brief Precise the type of the attack
 */
 
 enum AttackType
@@ -39,7 +39,7 @@ enum SpecialAttribute
 };
 
 /**
-*   \brief Lists possible types of informations sent between server and client
+* \brief Lists possible types of informations sent between server and client
 */
 
 enum SentInfosType

@@ -13,8 +13,8 @@
 extern IndexesIndex indexes; ///< Indexes of the game
 
 /**
-*   \file AIControlledEntity.hpp
-*   \brief Contains all the classes and structures concerning entities and AI
+* \file AIControlledEntity.hpp
+* \brief Contains all the classes and structures concerning entities and AI
 */
 
 /**
@@ -23,7 +23,7 @@ extern IndexesIndex indexes; ///< Indexes of the game
 */
 
 /**
-*   \brief An entity that fight during the game, either ally or enemy
+* \brief An entity that fight during the game, either ally or enemy
 */
 
 class EntityModel
@@ -32,15 +32,15 @@ class EntityModel
 public:
 
 	/**
-	*   \param[in] name Name of the entity
-	*   \param[in] level Level of the entity
-	*   \param[in] monsterClass Class of the entity
+	* \param[in] name Name of the entity
+	* \param[in] level Level of the entity
+	* \param[in] monsterClass Class of the entity
 	*/
 
 	EntityModel(const std::string &name, int level, EntityClass *monsterClass);
 
 	/**
-	*	\param[in] entity Entity to copy to the created entity
+	* \param[in] entity Entity to copy to the created entity
 	*/
 
 	EntityModel(const EntityModel &entity);
@@ -52,25 +52,25 @@ public:
 	EntityModel(EntityInformations &entity);
 
 	/**
-	*   \brief Change the life of the entity
-	*   \param[in] changeAmount Number of points to add/substract from the entity
-	*   \warning Don't forget to enter a negative number in case of a life loss !
+	* \brief Change the life of the entity
+	* \param[in] changeAmount Number of points to add/substract from the entity
+	* \warning Don't forget to enter a negative number in case of a life loss !
 	*/
 
 	void changeLife(int changeAmount);
 
 	/**
-	*   \brief Change the mana of the entity
-	*   \param[in] changeAmount Number of points to add/substract from the entity
-	*   \warning Don't forget to enter a negative number in case of a mana loss !
+	* \brief Change the mana of the entity
+	* \param[in] changeAmount Number of points to add/substract from the entity
+	* \warning Don't forget to enter a negative number in case of a mana loss !
 	*/
 
 	void changeMana(int changeAmount);
 
 	/**
-	*   \brief Change the stamina of the entity
-	*   \param[in] changeAmount Number of points to add/substract from the entity
-	*   \warning Don't forget to enter a negative number in case of a stamina loss !
+	* \brief Change the stamina of the entity
+	* \param[in] changeAmount Number of points to add/substract from the entity
+	* \warning Don't forget to enter a negative number in case of a stamina loss !
 	*/
 
 	void changeStamina(int changeAmount);
@@ -129,7 +129,7 @@ protected:
 };
 
 /**
-*	\brief Temporary entity, controlled by the AI
+* \brief Temporary entity, controlled by the AI
 */
 
 class Entity : public EntityModel
@@ -137,15 +137,15 @@ class Entity : public EntityModel
 public:
 
 	/**
-	*   \param[in] name Name of the entity
-	*   \param[in] level Level of the entity
-	*   \param[in] monsterClass Class of the entity
+	* \param[in] name Name of the entity
+	* \param[in] level Level of the entity
+	* \param[in] monsterClass Class of the entity
 	*/
 
 	Entity(const std::string &name, int level, MonsterClass *monsterClass);
 
 	/**
-	*	\param[in] entity Entity to copy to the created entity
+	* \param[in] entity Entity to copy to the created entity
 	*/
 
 	Entity(const Entity &entity);

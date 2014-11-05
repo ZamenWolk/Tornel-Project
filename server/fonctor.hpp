@@ -2,8 +2,8 @@
 #define FONCTOR_HPP_INCLUDED
 
 /**
-*   \file fonctor.hpp
-*   \brief Contains all the functors of the program
+* \file fonctor.hpp
+* \brief Contains all the functors of the program
 */
 
 #include <SFML/Network.hpp>
@@ -18,7 +18,7 @@
 */
 
 /**
-*   \brief Input thread functor. Creates a prompt for the user to type in commands
+* \brief Input thread functor. Creates a prompt for the user to type in commands
 */
 
 class InputFonctor
@@ -26,14 +26,14 @@ class InputFonctor
 public:
 
 	/**
-	*   \param[in] subservers Subservers concerned by the commands typed
-	*   \param[in] stopServer Reference to the main thread's stopServer variable
+	* \param[in] subservers Subservers concerned by the commands typed
+	* \param[in] stopServer Reference to the main thread's stopServer variable
 	*/
 
 	InputFonctor(std::vector<FightSubserver *> *subservers, bool &stopServer);
 
 	/**
-	*   \brief Function of the functor
+	* \brief Function of the functor
 	*/
 
 	void operator()();

@@ -4,8 +4,8 @@
 #include <string>
 
 /**
-*	\file constants.hpp
-*	\brief Contains all the preprocessor definitions
+* \file constants.hpp
+* \brief Contains all the preprocessor definitions
 */
 
 /**
@@ -72,7 +72,7 @@ enum Controls
 */
 
 /**
-*	\brief Function called in case of error
+* \brief Function called in case of error
 */
 
 void errorReport(std::string errorMessage, bool isFatal = 1);

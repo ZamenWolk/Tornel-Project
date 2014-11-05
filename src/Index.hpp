@@ -11,8 +11,8 @@
 #include "mathfuncs.hpp"
 
 /**
-*   \file Index.hpp
-*   \brief Contains all the classes and structures to form indexes
+* \file Index.hpp
+* \brief Contains all the classes and structures to form indexes
 */
 
 /**
@@ -21,21 +21,21 @@
 */
 
 /**
-*	\brief Member of characters index
+* \brief Member of characters index
 */
 
 struct EntityClass
 {
 
 	/**
-	*	\param[in] name Name of the class
-	*	\param[in] maxLifeIncrement Evolution followed by the index member's life
-	*	\param[in] maxManaIncrement Evolution followed by the index member's mana
-	*	\param[in] maxStaminaIncrement Evolution followed by the index member's stamina
-	*	\param[in] strengthIncrement Evolution followed by the index member's strength
-	*	\param[in] wisdomIncrement Evolution followed by the index member's wisdom
-	*	\param[in] toughnessIncrement Evolution followed by the index member's toughness
-	*	\param[in] mentalResistanceIncrement Evolution followed by the index member's mental resistance
+	* \param[in] name Name of the class
+	* \param[in] maxLifeIncrement Evolution followed by the index member's life
+	* \param[in] maxManaIncrement Evolution followed by the index member's mana
+	* \param[in] maxStaminaIncrement Evolution followed by the index member's stamina
+	* \param[in] strengthIncrement Evolution followed by the index member's strength
+	* \param[in] wisdomIncrement Evolution followed by the index member's wisdom
+	* \param[in] toughnessIncrement Evolution followed by the index member's toughness
+	* \param[in] mentalResistanceIncrement Evolution followed by the index member's mental resistance
 	*/
 
 	EntityClass(std::string name,
@@ -120,16 +120,16 @@ struct HeroClass : public EntityClass
 {
 
 	/**
-	*	\param[in] name Name of the class
-	*	\param[in] maxLifeIncrement Evolution followed by the index member's life
-	*	\param[in] maxManaIncrement Evolution followed by the index member's mana
-	*	\param[in] maxStaminaIncrement Evolution followed by the index member's stamina
-	*	\param[in] strengthIncrement Evolution followed by the index member's strength
-	*	\param[in] wisdomIncrement Evolution followed by the index member's wisdom
-	*	\param[in] toughnessIncrement Evolution followed by the index member's toughness
-	*	\param[in] mentalResistanceIncrement Evolution followed by the index member's mental resistance
-	*	\param[in] usableTypes Equipment types the hero can equip and use
-	*	\param[in] learnableSkills All the skills the hero can learn throughout the levels
+	* \param[in] name Name of the class
+	* \param[in] maxLifeIncrement Evolution followed by the index member's life
+	* \param[in] maxManaIncrement Evolution followed by the index member's mana
+	* \param[in] maxStaminaIncrement Evolution followed by the index member's stamina
+	* \param[in] strengthIncrement Evolution followed by the index member's strength
+	* \param[in] wisdomIncrement Evolution followed by the index member's wisdom
+	* \param[in] toughnessIncrement Evolution followed by the index member's toughness
+	* \param[in] mentalResistanceIncrement Evolution followed by the index member's mental resistance
+	* \param[in] usableTypes Equipment types the hero can equip and use
+	* \param[in] learnableSkills All the skills the hero can learn throughout the levels
 	*/
 
 	HeroClass(std::string name,
@@ -150,23 +150,23 @@ struct HeroClass : public EntityClass
 };
 
 /**
-*	\brief Member of monsters index
+* \brief Member of monsters index
 */
 
 struct MonsterClass : public EntityClass
 {
 
 	/**
-	*	\param[in] name Name of the class
-	*	\param[in] maxLifeIncrement Evolution followed by the index member's life
-	*	\param[in] maxManaIncrement Evolution followed by the index member's mana
-	*	\param[in] maxStaminaIncrement Evolution followed by the index member's stamina
-	*	\param[in] strengthIncrement Evolution followed by the index member's strength
-	*	\param[in] wisdomIncrement Evolution followed by the index member's wisdom
-	*	\param[in] toughnessIncrement Evolution followed by the index member's toughness
-	*	\param[in] mentalResistanceIncrement Evolution followed by the index member's mental resistance
-	*	\param[in] skills All the skills the monster has
-	*	\param[in] effects Basic attacks' informations
+	* \param[in] name Name of the class
+	* \param[in] maxLifeIncrement Evolution followed by the index member's life
+	* \param[in] maxManaIncrement Evolution followed by the index member's mana
+	* \param[in] maxStaminaIncrement Evolution followed by the index member's stamina
+	* \param[in] strengthIncrement Evolution followed by the index member's strength
+	* \param[in] wisdomIncrement Evolution followed by the index member's wisdom
+	* \param[in] toughnessIncrement Evolution followed by the index member's toughness
+	* \param[in] mentalResistanceIncrement Evolution followed by the index member's mental resistance
+	* \param[in] skills All the skills the monster has
+	* \param[in] effects Basic attacks' informations
 	*/
 
 	MonsterClass(std::string name,
@@ -187,7 +187,7 @@ struct MonsterClass : public EntityClass
 };
 
 /**
-*   \brief Contains the characteristics of a certain kind of thing in the game
+* \brief Contains the characteristics of a certain kind of thing in the game
 */
 
 template<class T>
@@ -226,8 +226,8 @@ public:
 	}
 
 	/**
-	*	\param[in] searchEntry name of the name to search for
-	*	\return true if the entry given exists in the index
+	* \param[in] searchEntry name of the name to search for
+	* \return true if the entry given exists in the index
 	*/
 
 	bool doesEntryExist(std::string searchEntry)
@@ -246,7 +246,7 @@ public:
 	/**
 	* 	\brief Add an entry into the index
 	* 	\param[in] entryToAdd Entry to add to the index
-	*	\return True if the entry is in the index after the function
+	* \return True if the entry is in the index after the function
 	*/
 
 	virtual bool addEntry(T entryToAdd)
@@ -272,7 +272,7 @@ protected:
 };
 
 /**
-*   \brief Index class with more functions, most notably handling types (i.e. for weapons)
+* \brief Index class with more functions, most notably handling types (i.e. for weapons)
 */
 
 template<class T>
@@ -289,8 +289,8 @@ public:
 	}
 
 	/**
-	*	\param[in] searchType name of the type to search for
-	*	\return true if the type given exists in the index
+	* \param[in] searchType name of the type to search for
+	* \return true if the type given exists in the index
 	*/
 
 	bool doesTypeExist(std::string searchType)
@@ -307,9 +307,9 @@ public:
 	}
 
 	/**
-	*	\brief Adds the type given in argument to the index
-	*	\param[in] typeToAdd type to add to the index
-	*	\return true if type exists in the index after the function
+	* \brief Adds the type given in argument to the index
+	* \param[in] typeToAdd type to add to the index
+	* \return true if type exists in the index after the function
 	*/
 
 	bool addType(std::string typeToAdd)

@@ -5,13 +5,13 @@
 #include <SFML/System.hpp>
 
 /**
-*   \file Equipment.hpp
-*   \brief Contains all the classes and structures of Equipment
+* \file Equipment.hpp
+* \brief Contains all the classes and structures of Equipment
 */
 
 /**
-*	\brief Lists all possible types of equipment
-*	\ingroup client
+* \brief Lists all possible types of equipment
+* \ingroup client
 */
 
 enum EquipmentType
@@ -29,7 +29,7 @@ enum EquipmentType
 */
 
 /**
-*   \brief All effects of an equipment on the person who wears it
+* \brief All effects of an equipment on the person who wears it
 *
 *   Here are all the components of the Effect :
 *
@@ -53,19 +53,19 @@ struct Effects
 	Effects();
 
 	/**
-	*   \param[in] equipmentEffects Effects instance to copy for new instance
+	* \param[in] equipmentEffects Effects instance to copy for new instance
 	*/
 
 	Effects(const Effects &equipmentEffects);
 
 	/**
-	*   \param[in] lifeGain Life boost effect
-	*	\param[in] manaGain Mana boost effect
-	*	\param[in] staminaGain Stamina boost effect
-	*	\param[in] strengthGain Strength boost effect
-	*	\param[in] wisdomGain Wisdom boost effect
-	*	\param[in] toughnessGain Toughness boost effect
-	*	\param[in] mentalResistanceGain Mental resistance boost effect
+	* \param[in] lifeGain Life boost effect
+	* \param[in] manaGain Mana boost effect
+	* \param[in] staminaGain Stamina boost effect
+	* \param[in] strengthGain Strength boost effect
+	* \param[in] wisdomGain Wisdom boost effect
+	* \param[in] toughnessGain Toughness boost effect
+	* \param[in] mentalResistanceGain Mental resistance boost effect
 	*/
 
 	Effects(int lifeGain,
@@ -77,7 +77,7 @@ struct Effects
 			int mentalResistanceGain);
 
 	/**
-	*	\brief Addition of 2 Effects instances
+	* \brief Addition of 2 Effects instances
 	*/
 
 	void operator+=(const Effects &a);
@@ -98,7 +98,7 @@ bool operator>=(Effects const &a, Effects const &b);
 bool operator>(Effects const &a, Effects const &b);
 
 /**
-*   \brief Additional effects specific to weapons
+* \brief Additional effects specific to weapons
 */
 
 struct WeaponEffects
@@ -106,14 +106,14 @@ struct WeaponEffects
 	WeaponEffects();
 
 	/**
-	*   \param[in] weaponEffects WeaponEffects instance to copy for new instance
+	* \param[in] weaponEffects WeaponEffects instance to copy for new instance
 	*/
 
 	WeaponEffects(const WeaponEffects &weaponEffects);
 
 	/**
-	*	\param[in] baseDamage Base damage of the weapon
-	*	\param[in] cooldownTime Cooldown time of the weapon
+	* \param[in] baseDamage Base damage of the weapon
+	* \param[in] cooldownTime Cooldown time of the weapon
 	*/
 
 	WeaponEffects(int baseDamage, sf::Time cooldownTime);
@@ -123,7 +123,7 @@ struct WeaponEffects
 };
 
 /**
-*   \brief Fusion of Effects and WeaponEffects for combat purposes
+* \brief Fusion of Effects and WeaponEffects for combat purposes
 */
 
 struct CombatEffects : public Effects, public WeaponEffects
@@ -131,22 +131,22 @@ struct CombatEffects : public Effects, public WeaponEffects
 	CombatEffects();
 
 	/**
-	*   \param[in] equipmentEffects Effects part of data for CombatEffects
-	*	\param[in] weaponEffects WeaponEffects part of data for CombatEffects
+	* \param[in] equipmentEffects Effects part of data for CombatEffects
+	* \param[in] weaponEffects WeaponEffects part of data for CombatEffects
 	*/
 
 	CombatEffects(const Effects &equipmentEffects, const WeaponEffects &weaponEffects);
 
 	/**
-	*   \param[in] lifeGain Life boost effect
-	*	\param[in] manaGain Mana boost effect
-	*	\param[in] staminaGain Stamina boost effect
-	*	\param[in] strengthGain Strength boost effect
-	*	\param[in] wisdomGain Wisdom boost effect
-	*	\param[in] toughnessGain Toughness boost effect
-	*	\param[in] mentalResistanceGain Mental resistance boost effect
-	*	\param[in] baseDamage base damage of the weapon
-	*	\param[in] cooldownTime Cooldown time of the weapon
+	* \param[in] lifeGain Life boost effect
+	* \param[in] manaGain Mana boost effect
+	* \param[in] staminaGain Stamina boost effect
+	* \param[in] strengthGain Strength boost effect
+	* \param[in] wisdomGain Wisdom boost effect
+	* \param[in] toughnessGain Toughness boost effect
+	* \param[in] mentalResistanceGain Mental resistance boost effect
+	* \param[in] baseDamage base damage of the weapon
+	* \param[in] cooldownTime Cooldown time of the weapon
 	*/
 
 	CombatEffects(int lifeGain,
@@ -168,9 +168,8 @@ struct CombatEffects : public Effects, public WeaponEffects
 */
 
 /**
-*	\brief An equipment
-*	\details Can be worn by a hero to have characteristics boosts
-*	\todo Add prerequisites to the equipments
+* \brief An equipment
+* \details Can be worn by a hero to have characteristics boosts
 */
 
 class Equipment
@@ -178,15 +177,15 @@ class Equipment
 public:
 
 	/**
-	*   \param[in] name Name of the equipement
-	*	\param[in] type Type of the equipement
-	*	\param[in] effects Effects given by the equipement
+	* \param[in] name Name of the equipement
+	* \param[in] type Type of the equipement
+	* \param[in] effects Effects given by the equipement
 	*/
 
 	Equipment(std::string name, std::string type, Effects effects,int prerequisiteLevel = 0, Effects prerequisites = Effects(0, 0, 0, 0, 0, 0, 0));
 
 	/**
-	*	\param[in] equipment Equipment to copy to new instance
+	* \param[in] equipment Equipment to copy to new instance
 	*/
 
 	Equipment(const Equipment *equipment);
@@ -217,7 +216,7 @@ protected:
 };
 
 /**
-*   \brief A weapon a fighter can use
+* \brief A weapon a fighter can use
 */
 
 class Weapon : public Equipment
@@ -225,10 +224,10 @@ class Weapon : public Equipment
 public:
 
 	/**
-	*   \param[in] name Name of the weapon
-	*	\param[in] type Type of the weapon
-	*	\param[in] equipmentEffects Equipment part of the effects given by the weapon
-	*	\param[in] weaponEffects Weapon part of the effects given by the weapon
+	* \param[in] name Name of the weapon
+	* \param[in] type Type of the weapon
+	* \param[in] equipmentEffects Equipment part of the effects given by the weapon
+	* \param[in] weaponEffects Weapon part of the effects given by the weapon
 	*/
 
 	Weapon(const std::string &name,
@@ -237,7 +236,7 @@ public:
 		   const WeaponEffects &weaponEffects);
 
 	/**
-	*   \param[in] weapon Weapon instance to copy for the new class
+	* \param[in] weapon Weapon instance to copy for the new class
 	*/
 
 	Weapon(const Weapon *weapon);

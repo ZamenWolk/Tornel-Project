@@ -11,7 +11,10 @@ CombatEntity::CombatEntity(EntityModel *entity, unsigned long ID):
 						lastInteractionTime(milliseconds(0)),
 						interactionCooldown(milliseconds(0))
 {
-
+	if(ID == 0)
+	{
+		ID = ((unsigned long)((long long int)this%4200000000));
+	}
 }
 
 void CombatEntity::changeTarget(CombatEntity *newTarget)
@@ -80,7 +83,7 @@ void Combat::changeEnemyTeam(vector<CombatEntity> newTeam)
 
 string Combat::Run(RenderWindow &app, std::map<std::string, Screen*> &screens)
 {
-	if (team1Fighters.size() < 1 || team1Fighters > 5 || team2Fighters.size() < 1 || team2Fighters > 5)
+	if (team1Fighters.size() < 1 || team1Fighters.size() > 5 || team2Fighters.size() < 1 || team2Fighters.size() > 5)
 	{
 		errorReport("The combat was not properly initialized");
 		return "menu";
@@ -640,4 +643,14 @@ int Combat::fillFightersVector(std::vector<CombatEntity> &teamVector, bool isTea
 	}
 
 	return deletedEntities;
+}
+
+void CombatEntity::operator=(const CombatEntity &a)
+{
+	entity = a.entity;
+	target = a.target;
+	effects = a.effects;
+	ID = a.ID;
+	lastInteractionTime = a.lastInteractionTime;
+	interactionCooldown = a.interactionCooldown;
 }
