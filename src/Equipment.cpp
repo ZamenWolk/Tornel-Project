@@ -92,14 +92,15 @@ CombatEffects::CombatEffects(int lifeGain,
 
 }
 
-Equipment::Equipment(std::string name, std::string type, Effects effects, Effects prerequisites) :
-		name(name), type(type), equipmentEffects(effects), prerequisites(prerequisites)
+Equipment::Equipment(std::string name, std::string type, Effects effects, int prerequisiteLevel, Effects prerequisites) :
+		name(name), type(type), equipmentEffects(effects), prerequisites(prerequisites), prerequisiteLevel(prerequisiteLevel)
 {
 
 }
 
 Equipment::Equipment(const Equipment *equipment):
-		name(equipment->name), type(equipment->type), equipmentEffects(equipment->equipmentEffects), prerequisites(equipment->prerequisites)
+		name(equipment->name), type(equipment->type), equipmentEffects(equipment->equipmentEffects),
+		prerequisites(equipment->prerequisites), prerequisiteLevel(equipment->prerequisiteLevel)
 {
 
 }
@@ -117,6 +118,49 @@ std::string Equipment::getType() const
 Effects Equipment::getEquipmentEffects() const
 {
 	return equipmentEffects;
+}
+
+Effects Equipment::getPrerequisites() const
+{
+	return prerequisites;
+}
+
+bool operator==(Effects const &a, Effects const &b)
+{
+	return (a.life == b.life
+   			&& a.mana == b.mana
+   			&& a.mentalResistance == b.mentalResistance
+   			&& a.stamina == b.stamina
+   			&& a.strength == b.strength
+   			&& a.toughness == b.toughness
+   			&& a.wisdom == b.wisdom);
+}
+
+bool operator>=(Effects const &a, Effects const &b)
+{
+	return ((a == b) || (a.life >= b.life
+   			&& a.mana >= b.mana
+   			&& a.mentalResistance >= b.mentalResistance
+   			&& a.stamina >= b.stamina
+   			&& a.strength >= b.strength
+   			&& a.toughness >= b.toughness
+   			&& a.wisdom >= b.wisdom));
+}
+
+bool operator>(Effects const &a, Effects const &b)
+{
+	return (a.life > b.life
+			&& a.mana > b.mana
+			&& a.mentalResistance > b.mentalResistance
+			&& a.stamina > b.stamina
+			&& a.strength > b.strength
+			&& a.toughness > b.toughness
+			&& a.wisdom > b.wisdom);
+}
+
+int Equipment::getPrerequisiteLevel() const
+{
+	return prerequisiteLevel;
 }
 
 Weapon::Weapon(const std::string &name,
@@ -137,9 +181,4 @@ Weapon::Weapon(const Weapon *weapon) :
 WeaponEffects Weapon::getWeaponEffects() const
 {
 	return weaponEffects;
-}
-
-Effects Equipment::getPrerequisites() const
-{
-	return prerequisites;
 }

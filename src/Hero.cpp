@@ -68,7 +68,7 @@ void Hero::actualizeCharacteristics()
 	stamina += effects.stamina - oldMaxStamina;
 }
 
-void Hero::changeEquipment(EquipmentType type, Equipment *newEquipment)
+void Hero::changeEquipment(EquipmentType type, Equipment *newEquipment = NULL)
 {
 	//Resets the equipment if set to NULL
 	if (newEquipment == NULL)
@@ -97,27 +97,31 @@ void Hero::changeEquipment(EquipmentType type, Equipment *newEquipment)
 		}
 	}
 
-	switch (type)
+
+	if (level >= newEquipment->getPrerequisiteLevel() && effects >= newEquipment->getPrerequisites())
 	{
-		case HELMET:
-			helmet = newEquipment;
-			break;
+		switch (type)
+		{
+			case HELMET:
+				helmet = newEquipment;
+				break;
 
-		case CHESTPLATE:
-			chestplate = newEquipment;
-			break;
+			case CHESTPLATE:
+				chestplate = newEquipment;
+				break;
 
-		case LEGGINGS:
-			leggings = newEquipment;
-			break;
+			case LEGGINGS:
+				leggings = newEquipment;
+				break;
 
-		case BOOTS:
-			boots = newEquipment;
-			break;
+			case BOOTS:
+				boots = newEquipment;
+				break;
 
-		case WEAPON:
-			weapon = (Weapon *)newEquipment;
-			break;
+			case WEAPON:
+				weapon = (Weapon *)newEquipment;
+				break;
+		}
 	}
 
 	actualizeCharacteristics();

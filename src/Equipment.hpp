@@ -91,6 +91,12 @@ struct Effects
 		mentalResistance; ///< Mental resistance boost effect
 };
 
+bool operator==(Effects const &a, Effects const &b);
+
+bool operator>=(Effects const &a, Effects const &b);
+
+bool operator>(Effects const &a, Effects const &b);
+
 /**
 *   \brief Additional effects specific to weapons
 */
@@ -177,7 +183,7 @@ public:
 	*	\param[in] effects Effects given by the equipement
 	*/
 
-	Equipment(std::string name, std::string type, Effects effects, Effects prerequisites);
+	Equipment(std::string name, std::string type, Effects effects,int prerequisiteLevel = 0, Effects prerequisites = Effects(0, 0, 0, 0, 0, 0, 0));
 
 	/**
 	*	\param[in] equipment Equipment to copy to new instance
@@ -196,6 +202,8 @@ public:
 
 	Effects getPrerequisites() const;
 
+	int getPrerequisiteLevel() const;
+
 protected:
 
 	std::string name, ///< Name of the equipement
@@ -203,6 +211,8 @@ protected:
 
 	Effects equipmentEffects, ///< Effects given by the equipment
 			prerequisites;
+
+	int prerequisiteLevel;
 
 };
 

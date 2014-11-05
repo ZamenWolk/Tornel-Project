@@ -126,6 +126,11 @@ std::string EntityModel::getName() const
 	return name;
 }
 
+int EntityModel::getLevel() const
+{
+	return level;
+}
+
 int EntityModel::getLife() const
 {
 	return life;

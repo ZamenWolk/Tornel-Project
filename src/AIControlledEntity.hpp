@@ -84,6 +84,8 @@ public:
 	/// \return Name of the entity
 	std::string getName() const;
 
+	int getLevel() const;
+
 	/// \return Current life level of the entity
 	int getLife() const;
 
