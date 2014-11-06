@@ -186,7 +186,6 @@ protected:
 	* \param[in] target Address of the target to use as an identifier to the server
 	* \param[in] type Type of the attack
 	* \param[in] spellName Name of the spell for the server to find in the indexes
-	* \todo Use the goddamn server/client structures
 	*/
 
 	void sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, std::string spellName = "");

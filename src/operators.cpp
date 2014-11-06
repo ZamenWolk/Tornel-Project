@@ -208,6 +208,9 @@ sf::Packet &operator>>(sf::Packet &packet, SentInfosType &infosType)
 		case PING:
 			infosType = PING;
 			break;
+		case PONG:
+			infosType = PONG;
+			break;
 		default:
 			errorReport("Server tried to send an unknown information type");
 	}

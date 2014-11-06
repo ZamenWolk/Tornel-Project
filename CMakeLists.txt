@@ -94,7 +94,7 @@ find_library(THOR_LIBRARY_DEBUG
              PATHS ${FIND_SFML_PATHS})
 
 set(THOR_LIBRARY debug ${THOR_LIBRARY_DEBUG}
-                 optimized THOR_LIBRARY_RELEASE})
+                 optimized ${THOR_LIBRARY_RELEASE})
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} ${THOR_LIBRARY} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})

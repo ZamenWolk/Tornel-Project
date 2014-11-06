@@ -87,14 +87,15 @@ struct InteractionInfos
 
 /**
 * \brief Informations received from server to create premade entities
+* \todo Add an ID variable
 */
 
 struct EntityInformations
 {
 	std::string name; ///< Name of the entity
-	int         life, ///< Current life of the entity
+	sf::Int16   life, ///< Current life of the entity
 				mana, ///< Current mana of the entity
-						 stamina; ///< Current stamina of the entity
+				stamina; ///< Current stamina of the entity
 	std::vector<Skill *> knownAbilities, ///< Known abilities of the entity
 						 knownSpells; ///< Known spells of the entity
 	CombatEffects        effects; ///< Current effects of the entity
@@ -111,7 +112,9 @@ struct EntityInformations
 template<typename T>
 sf::Packet &createPacket(sf::Packet &packet, const T &infos, SentInfosType type)
 {
-	if ((typeid(infos) == typeid(VersionNumber const) && type == VERSION_NUMBER) || (typeid(infos) == typeid(const sf::Time) && type == PING) || (typeid(infos) == typeid(const std::vector<CombatEntity>) && type == TEAM_DATA))
+	if ((typeid(infos) == typeid(VersionNumber const) && type == VERSION_NUMBER)
+		|| (typeid(infos) == typeid(const sf::Time) && type == PING)
+		|| (typeid(infos) == typeid(const std::vector<CombatEntity>) && type == TEAM_DATA))
 	{
 		return packet << type << infos;
 	}

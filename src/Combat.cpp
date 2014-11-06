@@ -92,7 +92,7 @@ string Combat::Run(RenderWindow &app, std::map<std::string, Screen*> &screens)
 	if (!launched)
 	{
 		//Launches the threads
-		cout << "The game begins !" << endl;
+		logReport("The game begins !");
 		team1Thread.launch();
 		team2Thread.launch();
 		serverThread.launch();
@@ -310,14 +310,12 @@ void Combat::serverHandling()
 
 					Skill *skill(indexes.skillIndex.searchByName(skillName));
 
-					cout << subject->getEntity()->getName() << " needs more Capacity Points to use " << skill->name << endl;
+					logReport(subject->getEntity()->getName() + " needs more Capacity Points to use " + skill->name);
 				}
 					//Reaction not handled by the client
 				else
 				{
-					errorReport(
-							"The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers",
-							0);
+					errorReport("The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
 				}
 			}
 				//If damages were dealt
@@ -347,19 +345,31 @@ void Combat::serverHandling()
 				{
 					if (attackType == WEAPON_ATTACK)
 					{
-						cout << subject->getEntity()->getName() << " attacked " << target->getEntity()->getName() << ", dealing " << attackDamage << " damages" << endl;
+						string message(subject->getEntity()->getName());
+						message += " attacked ";
+						message += target->getEntity()->getName();
+						message += ", dealing ";
+						message += attackDamage;
+						message += " damage";
+						logReport(message);
 					}
 					else
 					{
-						cout << subject->getEntity()->getName() << " used " << skill->name << " on " << target->getEntity()->getName() << ", dealing " << attackDamage << " damages" << endl;
+						string message(subject->getEntity()->getName());
+						message += " used ";
+						message += skill->name;
+						message += " on ";
+						message += target->getEntity()->getName();
+						message += ", dealing ";
+						message += attackDamage;
+						message += " damage";
+						logReport(message);
 					}
 				}
 					//Attribute of attack not handled by function
 				else
 				{
-					errorReport(
-							"The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers",
-							0);
+					errorReport("The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
 				}
 			}
 				/**else if (actionType == HEAL)
@@ -381,9 +391,7 @@ void Combat::serverHandling()
 				//Action requested not handled by server
 			else
 			{
-				errorReport(
-						"The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers",
-						0);
+				errorReport("The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
 			}
 		}
 
@@ -426,25 +434,25 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 	if (indexes.keyboardMap.isActive("characterMenu"))
 	{
 		currentMenu = CHARACTER_CHOOSING;
-		cout << "Current menu : Character choosing" << endl;
+		logReport("Current menu : Character choosing");
 	}
 		//If user wants to go to the target menu
 	else if (indexes.keyboardMap.isActive("targetMenu"))
 	{
 		currentMenu = TARGET_CHOOSING;
-		cout << "Current menu : Target choosing" << endl;
+		logReport("Current menu : Target choosing");
 	}
 		//If user wants to go to the ability menu
 	else if (indexes.keyboardMap.isActive("abilityMenu"))
 	{
 		currentMenu = ABILITY_CHOOSING;
-		cout << "Current menu : Ability choosing" << endl;
+		logReport("Current menu : Ability choosing");
 	}
 		//If user wants to go to the spell menu
 	else if (indexes.keyboardMap.isActive("spellMenu"))
 	{
 		currentMenu = SPELL_CHOOSING;
-		cout << "Current menu : Spell choosing" << endl;
+		logReport("Current menu : Spell choosing");
 	}
 		//If user wants to attack
 	else if (indexes.keyboardMap.isActive("weaponAttack"))
@@ -455,7 +463,7 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 	else if (indexes.keyboardMap.isActive("mainMenu"))
 	{
 		currentMenu = MAIN;
-		cout << "Current menu : Main" << endl;
+		logReport("Current menu : Main");
 	}
 		//If user selects the number 1
 	else if (indexes.keyboardMap.isActive("selector1"))
@@ -495,13 +503,13 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 			case ABILITY_CHOOSING:
 				if (abilityPage > 0)
 					abilityPage--;
-				cout << "Ability page : " << abilityPage << endl;
+				logReport("Ability page : " + abilityPage);
 				break;
 
 			case SPELL_CHOOSING:
 				if (spellPage > 0)
 					spellPage--;
-				cout << "Spell page : " << spellPage << endl;
+				logReport("Spell page : " + spellPage);
 				break;
 			case MAIN:
 				break;
@@ -520,13 +528,13 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 			case ABILITY_CHOOSING:
 				if (currentCharacter->getEntity()->getKnownAbilities().size() >= (abilityPage*6 + 7))
 					abilityPage++;
-				cout << "Ability page : " << abilityPage << endl;
+				logReport("Ability page : " + abilityPage);
 				break;
 
 			case SPELL_CHOOSING:
 				if (currentCharacter->getEntity()->getKnownSpells().size() >= (spellPage*6 + 7))
 					spellPage++;
-				cout << "Spell page : " << spellPage << endl;
+				logReport("Spell page : " + spellPage);
 				break;
 			case MAIN:
 				break;
@@ -550,7 +558,7 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 					if (currentTeam->at(selectorVariable).getEntity()->isAlive())
 					{
 						currentCharacter = &currentTeam->at(selectorVariable);
-						cout << "New character : " << currentCharacter->getEntity()->getName() << endl;
+						logReport("New character : " + currentCharacter->getEntity()->getName());
 					}
 					break;
 
@@ -559,7 +567,7 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 					if (currentEnemies->at(selectorVariable).getEntity()->isAlive())
 					{
 						currentCharacter->changeTarget(&currentEnemies->at(selectorVariable));
-						cout << "New target : " << currentCharacter->getTarget()->getEntity()->getName() << endl;
+						logReport("New target : " + currentCharacter->getTarget()->getEntity()->getName());
 					}
 					break;
 				case MAIN:
@@ -607,17 +615,17 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 
 void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, string spellName)
 {
-		Packet       packetToSend;
-		InteractionInfos informationsToSend{attacker.getID(), target.getID(), type, spellName};
+	Packet       packetToSend;
+	InteractionInfos informationsToSend{attacker.getID(), target.getID(), type, spellName};
 
-		packetToSend << informationsToSend;
+	createPacket(packetToSend, informationsToSend, FIGHT_INTERACTION);
 
-		onlineMutex.lock();
-		if (onlinePort.send(packetToSend) != Socket::Done)
-		{
-			errorReport("Unable to send informations to combat server");
-		}
-		onlineMutex.unlock();
+	onlineMutex.lock();
+	if (onlinePort.send(packetToSend) != Socket::Done)
+	{
+		errorReport("Unable to send informations to combat server");
+	}
+	onlineMutex.unlock();
 }
 
 int Combat::fillFightersVector(std::vector<CombatEntity> &teamVector, bool isTeam1)

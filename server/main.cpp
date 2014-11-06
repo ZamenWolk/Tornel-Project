@@ -21,7 +21,7 @@ int main()
 
 	listener.listen(2715);
 
-	cout << "How many fights do you want to host simultaneously ?" << endl;
+	logReport("How many fights do you want to host simultaneously ?");
 	cin >> subserverNumber;
 
 	for (int i = 0; i != subserverNumber; i++)
@@ -45,15 +45,15 @@ int main()
 
 	inputThread.launch();
 
-	cout << "The server host is now ready and working !" << endl;
+	logReport("The server host is now ready and working !");
 
-	cout << "Searching for event" << endl;
+	logReport("Searching for event");
 
 	while (!stopServer)
 	{
 		if (selector.wait(milliseconds(200)))
 		{
-			cout << "Found something !" << endl;
+			logReport("Found something !");
 
 			if (selector.isReady(listener))
 			{
@@ -69,7 +69,7 @@ int main()
 				{
 					if (selector.isReady(*clientsVector[i]) && subservers[i/2]->isLastEventTreated())
 					{
-						cout << "Received info !" << endl;
+						logReport("Received info !");
 
 						InteractionInfos           receivedInteraction;
 						vector<EntityInformations> receivedTeam;
@@ -85,17 +85,21 @@ int main()
 							deconstructPacket(receivedPacket, receivedInteraction, infosType);
 							subservers[i/2]->newEvent(receivedInteraction);
 						}
+						else if (infosType == PING)
+						{
+
+						}
 					}
 				}
 			}
 
-			cout << "Searching for event" << endl;
+			logReport("Searching for event");
 		}
 
 		sf::sleep(sf::milliseconds(25));
 	}
 
-	cout << "Stopping the server" << endl;
+	logReport("Stopping the server");
 
 	inputThread.wait();
 	for (vector<ServerClient *>::iterator it = clientsVector.begin(); it != clientsVector.end(); it++)
@@ -107,6 +111,8 @@ int main()
 	{
 		subservers.pop_back();
 	}
+
+	logReport("End of program\n", true);
 
 	return EXIT_SUCCESS;
 }

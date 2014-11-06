@@ -77,6 +77,8 @@ enum Controls
 
 void errorReport(std::string errorMessage, bool isFatal = 1);
 
+void logReport(std::string logMessage, bool hidden = false);
+
 /// @}
 
 #endif // CONSTANTS_HPP_INCLUDED

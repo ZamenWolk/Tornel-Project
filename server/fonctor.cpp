@@ -1,5 +1,7 @@
 #include "fonctor.hpp"
 
+using namespace std;
+
 InputFonctor::InputFonctor(std::vector<FightSubserver *> *subservers, bool &stopServer):
 					subservers(subservers), stopServer(stopServer)
 {
@@ -26,16 +28,19 @@ void InputFonctor::operator()()
 			if (servNumber != 0 && servNumber <= subservers->size())
 			{
 				subservers->operator[](servNumber - 1)->reset();
-				std::cout << "Server #" << servNumber << " was succesfully reset" << std::endl;
+				string message("Server #");
+				message +=  servNumber;
+				message += " was succesfully reset";
+				logReport(message);
 			}
 			else
 			{
-				std::cout << "This is not a correct number" << std::endl;
+				logReport("This is not a correct number");
 			}
 		}
 		else
 		{
-			std::cout << "This is not an existing command" << std::endl;
+			logReport("This is not an existing command");
 		}
 	}
 }

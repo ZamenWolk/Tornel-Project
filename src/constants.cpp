@@ -16,22 +16,40 @@ void errorReport(string errorMessage, bool isFatal)
 	time_t    rawtime;
 	struct tm *timeinfo;
 	char      buffer[100];
-	string    output("");
-	ofstream  errlog("errlog.txt", ios::app);
+	ofstream  errlog("errors.log", ios::app);
 
 	//Creates the time string
 	time(&rawtime);
 	timeinfo = localtime(&rawtime);
-	strftime(buffer, 100, "[%d/%m/%y %H:%M]", timeinfo);
-
-	//Creates the error message string
-	output = " ";
-	output += errorMessage;
+	strftime(buffer, 100, "[%d/%m/%y %H:%M:%S]", timeinfo);
 
 	//Prints the strings in the console and the error log file
-	cerr << buffer << output << endl;
-	errlog << buffer << output << endl;
+	#ifndef NDEBUG
+	cerr << buffer << " " << errorMessage << endl;
+	#endif
+	errlog << buffer << " " << errorMessage << endl;
 
 	if (isFatal)
 		exit(EXIT_FAILURE);
+}
+
+void logReport(std::string logMessage, bool hidden)
+{
+	time_t    rawtime;
+	struct tm *timeinfo;
+	char      buffer[100];
+	ofstream  eventlog("events.log", ios::app);
+
+	//Creates the time string
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	strftime(buffer, 100, "[%d/%m/%y %H:%M:%S]", timeinfo);
+
+	//Prints the strings in the console and the event log file
+
+	#ifdef NDEBUG
+	if (!hidden)
+	#endif
+	cout << logMessage << endl;
+	eventlog << buffer << " " << logMessage << endl;
 }
