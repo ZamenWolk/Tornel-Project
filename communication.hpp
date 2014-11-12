@@ -92,6 +92,40 @@ struct InteractionInfos
 
 struct EntityInformations
 {
+	EntityInformations():
+			name(""),
+			life(0),
+			mana(0),
+			stamina(0),
+			knownAbilities(),
+			knownSpells(),
+			effects()
+	{
+		ID = ((sf::Uint32)((long long int)this%4200000000));
+	}
+
+	EntityInformations(std::string name,
+					   int life,
+					   int mana,
+					   int stamina,
+					   std::vector<Skill*> knownAbilities,
+					   std::vector<Skill*> knownSpells,
+					   CombatEffects effects,
+					   sf::Uint32 ID = 0):
+			name(name),
+			life((sf::Int16)life),
+			mana((sf::Int16)mana),
+			stamina((sf::Int16)stamina),
+			knownAbilities(knownAbilities),
+			knownSpells(knownSpells),
+			effects(effects),
+			ID(ID)
+	{
+		if (ID == 0)
+			ID = ((sf::Uint32)((long long int)this%4200000000));
+	}
+
+	sf::Uint32 	ID;
 	std::string name; ///< Name of the entity
 	sf::Int16   life, ///< Current life of the entity
 				mana, ///< Current mana of the entity

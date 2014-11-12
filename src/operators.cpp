@@ -3,6 +3,7 @@
 
 #include <SFML/System.hpp>
 
+#include "operators.hpp"
 #include "Combat.hpp"
 
 sf::Packet &operator<<(sf::Packet &packet, const std::vector<Skill *> &source)
@@ -116,6 +117,7 @@ sf::Packet &operator>>(sf::Packet &packet, CombatEffects &source)
 
 sf::Packet &operator>>(sf::Packet &packet, EntityInformations &entity)
 {
+	packet >> entity.ID;
 	packet >> entity.name;
 	packet >> entity.life;
 	packet >> entity.mana;

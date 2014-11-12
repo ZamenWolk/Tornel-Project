@@ -9,6 +9,8 @@ EntityModel::EntityModel(const std::string &name, int level, EntityClass *monste
 					knownAbilities(0),
 					knownSpells(0)
 {
+	ID = ((sf::Uint32)((long long int)this%4200000000));
+
 	effects.life = monsterClass->maxLifeIncrement.iresult(level);
 	effects.life += TOUGHNESS_TO_LIFE.result(effects.toughness);
 	effects.life += MENTAL_RESISTANCE_TO_LIFE.result(effects.mentalResistance);
@@ -34,7 +36,8 @@ EntityModel::EntityModel(const EntityModel &entity):
 		effects(entity.effects),
 		entityClass(entity.entityClass),
 		knownAbilities(entity.knownAbilities),
-		knownSpells(entity.knownSpells)
+		knownSpells(entity.knownSpells),
+		ID(entity.ID)
 {
 
 }
@@ -48,7 +51,8 @@ EntityModel::EntityModel(EntityInformations &entity):
 					effects(entity.effects),
 					entityClass(indexes.heroClassIndex.searchByName("default")),
 					knownAbilities(entity.knownAbilities),
-					knownSpells(entity.knownSpells)
+					knownSpells(entity.knownSpells),
+					ID(entity.ID)
 {
 
 }
@@ -212,4 +216,9 @@ Entity::Entity(EntityInformations &entity):
 WeaponEffects Entity::basicAttackEffects() const
 {
 	return weaponEffects;
+}
+
+sf::Uint32 EntityModel::getID() const
+{
+	return ID;
 }

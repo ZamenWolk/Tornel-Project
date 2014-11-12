@@ -3,11 +3,10 @@
 using namespace std;
 using namespace sf;
 
-CombatEntity::CombatEntity(EntityModel *entity, unsigned long ID):
+CombatEntity::CombatEntity(EntityModel *entity):
 						entity(entity),
 						target(nullptr),
 						effects(entity->getEffects(), entity->basicAttackEffects()),
-						ID(ID),
 						lastInteractionTime(milliseconds(0)),
 						interactionCooldown(milliseconds(0))
 {
@@ -36,11 +35,6 @@ CombatEntity* CombatEntity::getTarget() const
 CombatEffects CombatEntity::getEffects() const
 {
 	return effects;
-}
-
-unsigned long CombatEntity::getID() const
-{
-	return ID;
 }
 
 Combat::Combat(const Controls team1Control,
@@ -658,7 +652,6 @@ void CombatEntity::operator=(const CombatEntity &a)
 	entity = a.entity;
 	target = a.target;
 	effects = a.effects;
-	ID = a.ID;
 	lastInteractionTime = a.lastInteractionTime;
 	interactionCooldown = a.interactionCooldown;
 }

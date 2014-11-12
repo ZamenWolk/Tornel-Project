@@ -104,14 +104,17 @@ public:
 	/// \return Spells known by the Entity
 	std::vector<Skill *> getKnownSpells() const;
 
+	sf::Uint32 getID() const;
+
 	/// \return Effects dealt by the entity's basic attack
 	virtual WeaponEffects basicAttackEffects() const = 0;
 
 protected:
 
-	/// \return An array containing all the skills the entity can use at its level
+	/// \ret urn An array containing all the skills the entity can use at its level
 	virtual void getKnownSkillsFromLevel();
 
+	sf::Uint32 ID;
 	int level, ///< Level of the entity
 		life, ///< Current life of the entity
 		mana, ///< Current mana of the entity

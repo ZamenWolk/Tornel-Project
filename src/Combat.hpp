@@ -85,7 +85,6 @@ protected:
 	EntityModel  *entity; ///< Subject of the CombatEntity
 	CombatEntity *target; ///< Current target of the entity
 	CombatEffects effects; ///< Effects of the entity
-	unsigned long ID; ///< ID of the entity
 	sf::Time      lastInteractionTime, ///< Time of last interaction
 				  interactionCooldown; ///< Current cooldown
 };
