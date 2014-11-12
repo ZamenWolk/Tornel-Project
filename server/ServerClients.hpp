@@ -16,7 +16,6 @@
 /**
 * \brief Enhanced version of a TCP socket
 * \details Has extra functions to know if the socket is connected, and automatic handling of a SocketSelector
-* \todo create functions keeping track of last interaction with outside port
 */
 
 class ServerClient : public sf::TcpSocket
@@ -39,11 +38,17 @@ public:
 
 	void disconnect();
 
+	sf::Socket::Status send(sf::Packet &packet);
+
+	sf::Socket::Status receive(sf::Packet &packet);
+
 	/**
 	* \return Whether the Socket is free or not
 	*/
 
 	bool isSocketFree() const;
+
+	sf::Time timeSinceLastInteraction() const;
 
 protected:
 

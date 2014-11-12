@@ -87,7 +87,6 @@ struct InteractionInfos
 
 /**
 * \brief Informations received from server to create premade entities
-* \todo Add an ID variable
 */
 
 struct EntityInformations

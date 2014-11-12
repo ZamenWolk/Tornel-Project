@@ -32,3 +32,24 @@ bool ServerClient::isSocketFree() const
 {
 	return isFree;
 }
+
+sf::Socket::Status ServerClient::send(sf::Packet &packet)
+{
+	lastInteractionClock.restart();
+	sf::Socket::Status status = TcpSocket::send(packet);
+	lastInteractionClock.restart();
+	return status;
+}
+
+sf::Socket::Status ServerClient::receive(sf::Packet &packet)
+{
+	lastInteractionClock.restart();
+	sf::Socket::Status status = TcpSocket::receive(packet);
+	lastInteractionClock.restart();
+	return status;
+}
+
+sf::Time ServerClient::timeSinceLastInteraction() const
+{
+	return lastInteractionClock.getElapsedTime();
+}
