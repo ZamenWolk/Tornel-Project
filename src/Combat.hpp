@@ -131,7 +131,6 @@ public:
 	* \brief sets up the class with the server before using it
 	* \param[in] IPAddress Address of the server to connect to
 	* \param[in] addressPort Port to connect to on the server
-	* \todo Use the goddamn server/client structures
 	*/
 
 	void Setup(std::string IPAddress = "localhost", unsigned short addressPort = 2715);

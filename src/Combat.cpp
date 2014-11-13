@@ -166,10 +166,7 @@ void Combat::Setup(string IPAddress, unsigned short addressPort)
 	}
 	pongTime = mainClock.getElapsedTime();
 
-	{
-		int x;
-		while (timePacket >> x);
-	}
+	emptyPacket(timePacket);
 
 	//Sends latency to server
 	createPacket(timePacket, pongTime - pingTime, PING);
@@ -178,10 +175,7 @@ void Combat::Setup(string IPAddress, unsigned short addressPort)
 		errorReport("Can't send latency to server");
 	}
 
-	{
-		int x;
-		while (timePacket >> x);
-	}
+	emptyPacket(timePacket);
 
 	//Receives the delay until the beginning of the fight from the server
 	if (onlinePort.receive(timePacket) != Socket::Done)
@@ -189,6 +183,7 @@ void Combat::Setup(string IPAddress, unsigned short addressPort)
 		errorReport("Can't receive launch delay from server");
 	}
 	onlineMutex.unlock();
+	/// \todo Change this
 	timePacket >> timeUntilLaunch;
 	timeAtLaunchDelay = mainClock.getElapsedTime();
 
