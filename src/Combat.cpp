@@ -10,10 +10,7 @@ CombatEntity::CombatEntity(EntityModel *entity):
 						lastInteractionTime(milliseconds(0)),
 						interactionCooldown(milliseconds(0))
 {
-	if(ID == 0)
-	{
-		ID = ((unsigned long)((long long int)this%4200000000));
-	}
+
 }
 
 void CombatEntity::changeTarget(CombatEntity *newTarget)
@@ -183,7 +180,7 @@ void Combat::Setup(string IPAddress, unsigned short addressPort)
 		errorReport("Can't receive launch delay from server");
 	}
 	onlineMutex.unlock();
-	/// \todo Change this
+
 	timePacket >> timeUntilLaunch;
 	timeAtLaunchDelay = mainClock.getElapsedTime();
 
@@ -392,7 +389,7 @@ CombatEntity* Combat::IDToEntity(unsigned long entityID)
 {
 		for (vector<CombatEntity>::iterator it = team1Fighters.begin(); it != team1Fighters.end(); it++)
 		{
-			if (it->getID() == entityID)
+			if (it->getEntity()->getID() == entityID)
 			{
 				return &*it;
 			}
@@ -400,7 +397,7 @@ CombatEntity* Combat::IDToEntity(unsigned long entityID)
 
 		for (vector<CombatEntity>::iterator it = team2Fighters.begin(); it != team2Fighters.end(); it++)
 		{
-			if (it->getID() == entityID)
+			if (it->getEntity()->getID() == entityID)
 			{
 				return &*it;
 			}
@@ -605,7 +602,7 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, string spellName)
 {
 	Packet       packetToSend;
-	InteractionInfos informationsToSend{attacker.getID(), target.getID(), type, spellName};
+	InteractionInfos informationsToSend{attacker.getEntity()->getID(), target.getEntity()->getID(), type, spellName};
 
 	createPacket(packetToSend, informationsToSend, FIGHT_INTERACTION);
 

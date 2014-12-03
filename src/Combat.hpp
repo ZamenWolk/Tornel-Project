@@ -57,7 +57,7 @@ public:
 	* \param[in] entity Entity to copy to the created entity
 	*/
 
-	CombatEntity(EntityModel *entity, unsigned long ID = 0);
+	CombatEntity(EntityModel *entity);
 
 	void operator=(const CombatEntity &a);
 
@@ -76,9 +76,6 @@ public:
 
 	/// \return Effects of the entity
 	CombatEffects getEffects() const;
-
-	/// \return ID of the entity
-	unsigned long getID() const;
 
 protected:
 
@@ -131,6 +128,7 @@ public:
 	* \brief sets up the class with the server before using it
 	* \param[in] IPAddress Address of the server to connect to
 	* \param[in] addressPort Port to connect to on the server
+	* \todo Change time until launch to use of ctime
 	*/
 
 	void Setup(std::string IPAddress = "localhost", unsigned short addressPort = 2715);
