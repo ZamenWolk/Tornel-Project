@@ -106,6 +106,8 @@ sf::Packet &operator>>(sf::Packet &packet, std::vector<EntityInformations> &team
 
 sf::Packet &operator<<(sf::Packet &packet, const CombatEntity &entity);
 
+sf::Packet &operator<<(sf::Packet &packet, const EntityInformations &entity);
+
 /**
 * \brief Completion of the packet with an InteractionInfos
 * \param[out] packet Packet to complete
@@ -160,11 +162,14 @@ sf::Packet &operator>>(sf::Packet &packet, VersionNumber &version);
 
 sf::Packet &operator<<(sf::Packet &packet, const std::vector<CombatEntity> &team);
 
+sf::Packet &operator<<(sf::Packet &packet, const std::vector<EntityInformations> &team);
+
 /**
 * \brief Extraction from a packet to a CombatEntity vector
 * \param[in] packet Packet to extract from
 * \param[out] team CombatEntity vector to get from the packet
 * \return Updated packet
+* \todo Change the system of dynamic allocation
 */
 
 sf::Packet &operator>>(sf::Packet &packet, std::vector<CombatEntity> &team);
@@ -186,6 +191,10 @@ sf::Packet &operator<<(sf::Packet &packet, const sf::Time &time);
 */
 
 sf::Packet &operator>>(sf::Packet &packet, sf::Time &time);
+
+sf::Packet &operator<<(sf::Packet &packet, const tm &time);
+
+sf::Packet &operator>>(sf::Packet &packet, tm &time);
 
 
 /// @}

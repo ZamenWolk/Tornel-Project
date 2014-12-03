@@ -71,23 +71,42 @@ int main()
 					{
 						logReport("Received info !");
 
-						InteractionInfos           receivedInteraction;
-						vector<EntityInformations> receivedTeam;
-						bool                       isTeam1;
+						EventsUnion				   eventsInfos;
 						SentInfosType              infosType;
 						sf::Packet                 receivedPacket;
 
 						clientsVector[i]->receive(receivedPacket);
 						infoTypeInPacket(receivedPacket, infosType);
 
-						if (infosType == FIGHT_INTERACTION)
+						switch (infosType)
 						{
-							deconstructPacket(receivedPacket, receivedInteraction, infosType);
-							subservers[i/2]->newEvent(receivedInteraction);
-						}
-						else if (infosType == PING)
-						{
-
+							case FIGHT_INTERACTION:
+								deconstructPacket(receivedPacket, eventsInfos.intEv, infosType);
+								subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
+								break;
+							case VERSION_NUMBER:
+								deconstructPacket(receivedPacket, eventsInfos.versEv, infosType);
+								subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
+								break;
+							case TEAM_DATA:
+								deconstructPacket(receivedPacket, eventsInfos.teamEv, infosType);
+								subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
+								break;
+							case TIME:
+								deconstructPacket(receivedPacket, eventsInfos.timeEv, infosType);
+								subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
+								break;
+							case PING:
+							{
+								Packet pong;
+								int buffer(0);
+								createPacket(pong, buffer, PONG);
+								clientsVector[i]->send(pong);
+							}
+								break;
+							case PONG:break;
+							default:
+								errorReport("The information type contained in the packet is not supported be the server");
 						}
 					}
 				}
@@ -112,7 +131,7 @@ int main()
 		subservers.pop_back();
 	}
 
-	logReport("End of program\n", true);
+	logReport("End of program", true);
 
 	return EXIT_SUCCESS;
 }

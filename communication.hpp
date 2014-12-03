@@ -48,6 +48,11 @@ struct VersionNumber
 
 	}
 
+	~VersionNumber()
+	{
+
+	}
+
 	std::string status; ///< Status of the game
 	sf::Int32   major; ///< Major number of the game version
 	sf::Int32   minor; ///< Minor number of the game version
@@ -75,6 +80,11 @@ struct InteractionInfos
 
 	InteractionInfos() :
 			attackerID(0), targetID(0), type(WEAPON_ATTACK), spellName("")
+	{
+
+	}
+
+	~InteractionInfos()
 	{
 
 	}
@@ -145,9 +155,11 @@ struct EntityInformations
 template<typename T>
 sf::Packet &createPacket(sf::Packet &packet, const T &infos, SentInfosType type)
 {
-	if ((typeid(infos) == typeid(VersionNumber const) && type == VERSION_NUMBER)
-		|| (typeid(infos) == typeid(const sf::Time) && type == PING)
-		|| (typeid(infos) == typeid(const std::vector<CombatEntity>) && type == TEAM_DATA))
+	if (   (typeid(infos) == typeid(const VersionNumber) 			  && type == VERSION_NUMBER)
+	    || (typeid(infos) == typeid(const InteractionInfos)   		  && type == FIGHT_INTERACTION)
+		|| (typeid(infos) == typeid(tm) 				  			  && type == TIME)
+		|| (typeid(infos) == typeid(const std::vector<CombatEntity>)  && type == TEAM_DATA)
+		|| (typeid(infos) == typeid(const int) 						  && (type == PING || type == PONG)))
 	{
 		return packet << type << infos;
 	}
@@ -163,9 +175,11 @@ sf::Packet & infoTypeInPacket(sf::Packet &packet, SentInfosType &type);
 template<typename T>
 sf::Packet &deconstructPacket(sf::Packet &packet, T &infos, SentInfosType type)
 {
-	if ((typeid(infos) == typeid(VersionNumber const) && type == VERSION_NUMBER)
-		|| (typeid(infos) == typeid(const sf::Time) && type == PING)
-		|| (typeid(infos) == typeid(const std::vector<CombatEntity>) && type == TEAM_DATA))
+	if (   (typeid(infos) == typeid(VersionNumber) 			 	&& type == VERSION_NUMBER)
+	    || (typeid(infos) == typeid(InteractionInfos)   		&& type == FIGHT_INTERACTION)
+	    || (typeid(infos) == typeid(tm) 				  		&& type == TIME)
+	    || (typeid(infos) == typeid(std::vector<CombatEntity>)  && type == TEAM_DATA)
+	    || (typeid(infos) == typeid(int) 						&& (type == PING || type == PONG)))
 	{
 		return packet >> infos;
 	}

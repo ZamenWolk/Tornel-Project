@@ -169,7 +169,7 @@ sf::Packet &operator>>(sf::Packet &packet, std::vector<EntityInformations> &team
 
 sf::Packet &operator<<(sf::Packet &packet, const CombatEntity &entity)
 {
-	packet << (sf::Uint32)(entity.getID());
+	packet << (sf::Uint32)(entity.getEntity()->getID());
 	packet << entity.getEntity()->getName();
 	packet << entity.getEntity()->getLife();
 	packet << entity.getEntity()->getMana();
@@ -177,6 +177,20 @@ sf::Packet &operator<<(sf::Packet &packet, const CombatEntity &entity)
 	packet << entity.getEntity()->getKnownAbilities();
 	packet << entity.getEntity()->getKnownSpells();
 	packet << entity.getEffects();
+
+	return packet;
+}
+
+sf::Packet &operator<<(sf::Packet &packet, const EntityInformations &entity)
+{
+	packet << entity.ID;
+	packet << entity.name;
+	packet << entity.life;
+	packet << entity.mana;
+	packet << entity.stamina;
+	packet << entity.knownAbilities;
+	packet << entity.knownSpells;
+	packet << entity.effects;
 
 	return packet;
 }
@@ -213,6 +227,9 @@ sf::Packet &operator>>(sf::Packet &packet, SentInfosType &infosType)
 		case PONG:
 			infosType = PONG;
 			break;
+		case TIME:
+			infosType = TIME;
+			break;
 		default:
 			errorReport("Server tried to send an unknown information type");
 	}
@@ -235,6 +252,18 @@ sf::Packet &operator<<(sf::Packet &packet, const std::vector<CombatEntity> &team
 	packet << team.size();
 
 	for (std::vector<CombatEntity>::const_iterator it = team.begin(); it != team.end(); it++)
+	{
+		packet << *it;
+	}
+
+	return packet;
+}
+
+sf::Packet &operator<<(sf::Packet &packet, const std::vector<EntityInformations> &team)
+{
+	packet << team.size();
+
+	for (std::vector<EntityInformations>::const_iterator it = team.begin(); it != team.end(); it++)
 	{
 		packet << *it;
 	}
@@ -273,4 +302,14 @@ sf::Packet &operator>>(sf::Packet &packet, sf::Time &time)
 	time = sf::milliseconds(timeMilliseconds);
 
 	return packet;
+}
+
+sf::Packet &operator<<(sf::Packet &packet, const tm &time)
+{
+	return packet << time.tm_sec << time.tm_min << time.tm_hour << time.tm_mday << time.tm_mon << time.tm_year << time.tm_isdst;
+}
+
+sf::Packet &operator>>(sf::Packet &packet, tm &time)
+{
+	return packet >> time.tm_sec >> time.tm_min >> time.tm_hour >> time.tm_mday >> time.tm_mon >> time.tm_year >> time.tm_isdst;
 }
