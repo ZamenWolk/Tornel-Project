@@ -46,7 +46,10 @@ set(SOURCE_FILES
     communication.hpp
     enums.hpp
     src/IndexesIndex.hpp
-    src/IndexesIndex.cpp)
+    src/IndexesIndex.cpp
+    src/Menu.hpp
+    src/Menu.cpp
+    define.hpp)
 
 set(SERVER_FILES
     src/constants.cpp
@@ -79,7 +82,8 @@ set(SERVER_FILES
     version.hpp
     communication.cpp
     communication.hpp
-    enums.hpp)
+    enums.hpp
+    define.hpp)
 
 find_package(SFML COMPONENTS network audio graphics window system REQUIRED)
 
@@ -102,7 +106,7 @@ target_link_libraries(${PROJECT_NAME} ${THOR_LIBRARY} ${SFML_LIBRARIES} ${SFML_D
 
 set(PROJECT_NAME TornelServer)
 project(${PROJECT_NAME})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSERVER")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 add_executable(${PROJECT_NAME} ${SERVER_FILES})
 target_link_libraries(${PROJECT_NAME} ${THOR_LIBRARY} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})

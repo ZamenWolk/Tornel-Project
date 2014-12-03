@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "IndexesIndex.hpp"
+#include "../define.hpp"
 
 using namespace std;
 
@@ -51,5 +52,5 @@ void logReport(std::string logMessage, bool hidden)
 	if (!hidden)
 	#endif
 	cout << logMessage << endl;
-	eventlog << buffer << " " << logMessage << endl;
+	eventlog << buffer << "[" << SOFT << "] " << logMessage << endl;
 }

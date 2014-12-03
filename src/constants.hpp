@@ -77,6 +77,7 @@ enum Controls
 
 void errorReport(std::string errorMessage, bool isFatal = 1);
 
+/// \todo Create different log files
 void logReport(std::string logMessage, bool hidden = false);
 
 /// @}
