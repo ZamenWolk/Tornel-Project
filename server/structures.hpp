@@ -7,6 +7,7 @@
 */
 
 #include <vector>
+#include <ctime>
 
 #include "../src/constants.hpp"
 #include "../src/AIControlledEntity.hpp"
@@ -21,6 +22,14 @@
 * \brief Structure keeping data from the different communications from the client to the server
 */
 
+struct EventsUnion
+{
+	InteractionInfos intEv;
+	std::vector<EntityInformations> teamEv;
+	VersionNumber versEv;
+	std::tm timeEv;
+};
+
 struct EventsStructure
 {
 	/**
@@ -32,21 +41,17 @@ struct EventsStructure
 	* \param[in] versEv_number Version number sent from the client
 	*/
 
-	EventsStructure(SentInfosType typeOfEvent,
+	EventsStructure(	 SentInfosType typeOfEvent,
 						 bool isEventTreated,
-						 InteractionInfos intEv_infos,
-						 std::vector<EntityInformations> teamEv_infos,
-						 bool event_team1,
-						 VersionNumber versEv_number);
+						 bool event_team1);
 
 	EventsStructure();
 
-	SentInfosType                   typeOfEvent; ///< Type of the event
-	bool                            isEventTreated; ///< Does the event still have to be treated
-	InteractionInfos                intEv_infos; ///< InteractionInfos structure, in case of a fight interaction
-	std::vector<EntityInformations> teamEv_infos; ///< EntityInformations vector, in case of team data
-	bool                            event_team1; ///< Which team does the event concern. true if the event concerns team1, false if team2
-	VersionNumber                   versEv_number; ///< Version number sent from the client
+	SentInfosType   typeOfEvent; ///< Type of the event
+	bool            isEventTreated; ///< Does the event still have to be treated
+	bool            team1; ///< Which team does the event concern. true if the event concerns team1, false if team2
+	EventsUnion		infos;
+
 };
 
 /// @}

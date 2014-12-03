@@ -2,6 +2,9 @@
 
 #include "FightSubserver.hpp"
 
+using namespace std;
+using namespace sf;
+
 FightSubserver::FightSubserver():
 		clients(),
 		serverThread(&FightSubserver::threadFunction, this),
@@ -32,13 +35,11 @@ void FightSubserver::reset()
 	disconnect(false);
 }
 
-ServerClient* FightSubserver::connect(sf::TcpListener *listener, sf::SocketSelector *socketSelector)
+ServerClient* FightSubserver::connect(TcpListener *listener, SocketSelector *socketSelector)
 {
 	ServerClient                    *concernedClient(nullptr);
 	std::vector<EntityInformations> *concernedTeamVector(nullptr);
 	bool                            isClient1(false);
-	SentInfosType 					type;
-	sf::Packet 						versionPacket;
 
 	if (clients[0].isSocketFree())
 	{
@@ -61,27 +62,47 @@ ServerClient* FightSubserver::connect(sf::TcpListener *listener, sf::SocketSelec
 	}
 
 	concernedClient->connect(*listener, socketSelector);
-	concernedClient->receive(versionPacket);
 
-	infoTypeInPacket(versionPacket, type);
-	deconstructPacket(versionPacket, eventsStructure.versEv_number, type);
-	eventsStructure.isEventTreated = true;
-
-	if (eventsStructure.versEv_number.status == AutoVersion::STATUS && eventsStructure.versEv_number.major == AutoVersion::MAJOR)
+	while (eventsStructure.isEventTreated || eventsStructure.team1 != isClient1)
 	{
-		concernedTeamVector = new std::vector<EntityInformations>;
-		if (isFull())
-		{
-			serverThread.launch();
-		}
-		return concernedClient;
+		sleep(milliseconds(1000));
 	}
-	else
+
+	if (eventsStructure.typeOfEvent != VERSION_NUMBER)
+	{
+		errorReport("The information received is not a VERSION_NUMBER");
+		concernedClient->disconnect();
+	}
+
+	if (eventsStructure.infos.versEv.status != AutoVersion::STATUS || eventsStructure.infos.versEv.major != AutoVersion::MAJOR)
 	{
 		disconnect(true);
 		eventsStructure.isEventTreated = true;
 		return 0;
 	}
+
+	concernedTeamVector = new std::vector<EntityInformations>;
+
+	while (eventsStructure.isEventTreated || eventsStructure.team1 != isClient1)
+	{
+		sleep(milliseconds(1000));
+	}
+
+	if (eventsStructure.typeOfEvent != TEAM_DATA)
+	{
+		errorReport("The infformation received is not a TEAM_DATA");
+		concernedClient->disconnect();
+	}
+
+	*concernedTeamVector = eventsStructure.infos.teamEv;
+
+	if (isFull())
+	{
+		serverThread.launch();
+	}
+
+	eventsStructure.isEventTreated = true;
+	return concernedClient;
 }
 
 ServerClient* FightSubserver::disconnect(bool isClient1)
@@ -100,26 +121,11 @@ ServerClient* FightSubserver::disconnect(bool isClient1)
 	}
 }
 
-void FightSubserver::newEvent(const InteractionInfos &eventInfos)
+void FightSubserver::newEvent(SentInfosType infoType, const EventsUnion &eventInfos, bool isTeam1)
 {
-	eventsStructure.typeOfEvent    = FIGHT_INTERACTION;
-	eventsStructure.intEv_infos    = eventInfos;
-	eventsStructure.isEventTreated = false;
-}
-
-void FightSubserver::newEvent(std::vector<EntityInformations> &teamInfo, bool isTeam1)
-{
-	eventsStructure.typeOfEvent    = TEAM_DATA;
-	eventsStructure.teamEv_infos   = teamInfo;
-	eventsStructure.event_team1    = isTeam1;
-	eventsStructure.isEventTreated = false;
-}
-
-void FightSubserver::newEvent(const VersionNumber &versionNumber, bool isTeam1)
-{
-	eventsStructure.typeOfEvent    = VERSION_NUMBER;
-	eventsStructure.versEv_number  = versionNumber;
-	eventsStructure.event_team1    = isTeam1;
+	eventsStructure.typeOfEvent    = infoType;
+	eventsStructure.infos    	   = eventInfos;
+	eventsStructure.team1          = isTeam1;
 	eventsStructure.isEventTreated = false;
 }
 
@@ -130,6 +136,10 @@ bool FightSubserver::isLastEventTreated()
 
 void FightSubserver::threadFunction()
 {
+	sf::Packet teamsPacket;
+
+	teamsPacket << TEAM_DATA << *teams[1];
+
 	while (isFull() && !stopSubServer)
 	{
 		if (!eventsStructure.isEventTreated)

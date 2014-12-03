@@ -55,7 +55,6 @@ public:
 	* \param[in] listener Listener to receive the incoming connection request from
 	* \param[in] socketSelector to link the Socket to
 	* \return Pointer to the newly connected ServerClient
-	* \todo Handle team data reception
 	*/
 
 	ServerClient *connect(sf::TcpListener *listener, sf::SocketSelector *socketSelector = 0);
@@ -73,23 +72,7 @@ public:
 	* \param[in] eventInfos Description of the interaction requested from server
 	*/
 
-	void newEvent(const InteractionInfos &eventInfos);
-
-	/**
-	* \brief Transfers a new event from the client-server thread to the subserver
-	* \param[in] teamInfo Team sent to server by client
-	* \param[in] isTeam1 Is the described team team1 or team2
-	*/
-
-	void newEvent(std::vector<EntityInformations> &teamInfo, bool isTeam1);
-
-	/**
-	* \brief Transfers a new event from the client-server thread to the subserver
-	* \param versionNumber Version number of the client
-	* \param isTeam1 Is the version number team1's or team2's
-	*/
-
-	void newEvent(const VersionNumber &versionNumber, bool isTeam1);
+	void newEvent(SentInfosType infoType, const EventsUnion &eventInfos, bool isTeam1);
 
 	/**
 	* \return Whether the last event has already been treated
@@ -105,7 +88,8 @@ protected:
 
 private:
 
-	///\todo Finish that
+	/// \todo Finish that
+	/// \todo Create the sending of time of combat debut
 	void threadFunction();
 
 	sf::Thread serverThread; ///< Thread running the subserver
