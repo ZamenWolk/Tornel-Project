@@ -4,7 +4,9 @@ using namespace std;
 using namespace sf;
 
 ServerClient::ServerClient() :
-		isFree(true), socketSelector(0), lastInteractionClock()
+		isFree(true),
+		socketSelector(0),
+		lastInteractionClock()
 {
 
 }

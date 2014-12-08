@@ -30,16 +30,16 @@ Packet &operator>>(Packet &packet, ActionType &action)
 	{
 		case NONE:
 			action = NONE;
-			break;
+	        break;
 		case DEAL_DAMAGE:
 			action = DEAL_DAMAGE;
-			break;
+	        break;
 		case HEAL:
 			action = HEAL;
-			break;
+	        break;
 		case END_OF_FIGHT:
 			action = END_OF_FIGHT;
-			break;
+	        break;
 		default:
 			errorReport("Server sent an unknown action", false);
 	}
@@ -56,22 +56,22 @@ Packet &operator>>(Packet &packet, SpecialAttribute &attribute)
 	{
 		case NO_SPECIAL:
 			attribute = NO_SPECIAL;
-			break;
+	        break;
 		case NOT_ENOUGH_CP:
 			attribute = NOT_ENOUGH_CP;
-			break;
+	        break;
 		case MISSED:
 			attribute = MISSED;
-			break;
+	        break;
 		case DODGED:
 			attribute = DODGED;
-			break;
+	        break;
 		case BLOCKED:
 			attribute = BLOCKED;
-			break;
+	        break;
 		case CRITICAL:
 			attribute = CRITICAL;
-			break;
+	        break;
 		default:
 			errorReport("Server sent an unknown attribute", 0);
 	}
@@ -88,13 +88,13 @@ Packet &operator>>(Packet &packet, AttackType &attackType)
 	{
 		case WEAPON_ATTACK:
 			attackType = WEAPON_ATTACK;
-			break;
+	        break;
 		case SPELL:
 			attackType = SPELL;
-			break;
+	        break;
 		case ABILITY:
 			attackType = ABILITY;
-			break;
+	        break;
 		default:
 			errorReport("Unknown action type", 0);
 	}
@@ -217,22 +217,22 @@ Packet &operator>>(Packet &packet, SentInfosType &infosType)
 	{
 		case CTS_INTERACTION:
 			infosType = CTS_INTERACTION;
-			break;
+	        break;
 		case CTS_TEAM_DATA:
 			infosType = CTS_TEAM_DATA;
-			break;
+	        break;
 		case VERSION_NUMBER:
 			infosType = VERSION_NUMBER;
-			break;
+	        break;
 		case PING:
 			infosType = PING;
-			break;
+	        break;
 		case PONG:
 			infosType = PONG;
-			break;
+	        break;
 		case TIME:
 			infosType = TIME;
-			break;
+	        break;
 		default:
 			errorReport("Server tried to send an unknown information type");
 	}
@@ -315,4 +315,15 @@ Packet &operator<<(Packet &packet, const tm &time)
 Packet &operator>>(Packet &packet, tm &time)
 {
 	return packet >> time.tm_sec >> time.tm_min >> time.tm_hour >> time.tm_mday >> time.tm_mon >> time.tm_year >> time.tm_isdst;
+}
+
+
+Packet &operator<<(Packet &packet, const FightAction &action)
+{
+	return packet << action.actionType << action.specialAttribute << action.subjectID << action.targetID << action.skillName << action.attackType << action.attackDamage;
+}
+
+Packet &operator>>(Packet &packet, FightAction &action)
+{
+	return packet >> action.actionType >> action.specialAttribute >> action.subjectID >> action.targetID >> action.skillName >> action.attackType >> action.attackDamage;
 }

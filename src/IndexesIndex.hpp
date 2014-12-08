@@ -23,9 +23,9 @@ struct IndexesIndex
 	EquipmentIndex<Weapon> weaponIndex; ///< Index of weapons
 
 	EquipmentIndex<Equipment> helmetIndex, ///< Index of helmets
-							  chestplateIndex, ///< Index of chestplates
-							  leggingsIndex, ///< Index of leggings
-							  bootsIndex; ///< Index of boots
+	                          chestplateIndex, ///< Index of chestplates
+	                          leggingsIndex, ///< Index of leggings
+	                          bootsIndex; ///< Index of boots
 
 	thor::ActionMap<std::string> keyboardMap; ///< Map of all the controls in-game
 

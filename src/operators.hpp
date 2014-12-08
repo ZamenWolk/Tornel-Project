@@ -15,6 +15,7 @@ struct CombatEffects;
 struct EntityInformations;
 struct VersionNumber;
 struct InteractionInfos;
+struct FightAction;
 
 /**
 * \file operators.hpp
@@ -196,6 +197,9 @@ sf::Packet &operator<<(sf::Packet &packet, const tm &time);
 
 sf::Packet &operator>>(sf::Packet &packet, tm &time);
 
+sf::Packet &operator<<(sf::Packet &packet, const FightAction &action);
+
+sf::Packet &operator>>(sf::Packet &packet, FightAction &action);
 
 /// @}
 

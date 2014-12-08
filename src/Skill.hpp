@@ -39,14 +39,11 @@ struct Skill
 	std::string getName() const;
 
 	std::string name; ///< Name of the Skill
-
-	int baseDamage, ///< Base damage of the skill
-		manaCost, ///< Mana cost for using the skill
-		staminaCost; ///< Stamina cost for using the skill
-
-	sf::Time cooldown; ///< Cooldown after the skill
-
-	AttackType skillType; ///< Type of the skill
+	int         baseDamage, ///< Base damage of the skill
+	            manaCost, ///< Mana cost for using the skill
+	            staminaCost; ///< Stamina cost for using the skill
+	sf::Time    cooldown; ///< Cooldown after the skill
+	AttackType  skillType; ///< Type of the skill
 
 };
 
@@ -65,7 +62,7 @@ struct LevelingSkill
 	LevelingSkill(Skill *skill, int learnLevel = 0);
 
 	Skill *skill; ///< Skill the class is built around
-	int learnLevel; ///< Level at which the skill is learnt
+	int   learnLevel; ///< Level at which the skill is learnt
 };
 
 /// @}

@@ -15,7 +15,7 @@ int main()
 	vector<FightSubserver *> subservers;
 	vector<ServerClient *>   clientsVector;
 	SocketSelector           selector;
-	InputFonctor input(&subservers, stopServer);
+	InputFonctor             input(&subservers, stopServer);
 	Thread                   inputThread(input);
 
 	listener.listen(2715);
@@ -70,9 +70,9 @@ int main()
 					{
 						logReport("Received info !");
 
-						EventsUnion				   eventsInfos;
-						SentInfosType              infosType;
-						Packet                 receivedPacket;
+						EventsUnion   eventsInfos;
+						SentInfosType infosType;
+						Packet        receivedPacket;
 
 						clientsVector[i]->receive(receivedPacket);
 						infoTypeInPacket(receivedPacket, infosType);
@@ -81,29 +81,30 @@ int main()
 						{
 							case CTS_INTERACTION:
 								deconstructPacket(receivedPacket, eventsInfos.intEv, infosType);
-								subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
-								break;
+						        subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
+						        break;
 							case VERSION_NUMBER:
 								deconstructPacket(receivedPacket, eventsInfos.versEv, infosType);
-								subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
-								break;
+						        subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
+						        break;
 							case CTS_TEAM_DATA:
 								deconstructPacket(receivedPacket, eventsInfos.teamEv, infosType);
-								subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
-								break;
+						        subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
+						        break;
 							case TIME:
 								deconstructPacket(receivedPacket, eventsInfos.timeEv, infosType);
-								subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
-								break;
+						        subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
+						        break;
 							case PING:
 							{
 								Packet pong;
-								int buffer(0);
+								int    buffer(0);
 								createPacket(pong, buffer, PONG);
 								clientsVector[i]->send(pong);
 							}
+						        break;
+							case PONG:
 								break;
-							case PONG:break;
 							default:
 								errorReport("The information type contained in the packet is not supported be the server");
 						}

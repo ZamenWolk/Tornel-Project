@@ -79,11 +79,11 @@ public:
 
 protected:
 
-	EntityModel  *entity; ///< Subject of the CombatEntity
-	CombatEntity *target; ///< Current target of the entity
+	EntityModel   *entity; ///< Subject of the CombatEntity
+	CombatEntity  *target; ///< Current target of the entity
 	CombatEffects effects; ///< Effects of the entity
 	sf::Time      lastInteractionTime, ///< Time of last interaction
-				  interactionCooldown; ///< Current cooldown
+	              interactionCooldown; ///< Current cooldown
 };
 
 /**
@@ -103,8 +103,7 @@ public:
 	* \warning Each teams can contain at max 5 fighters
 	*/
 
-	Combat(const Controls team1Control,
-		   const Controls team2Control);
+	Combat(const Controls team1Control, const Controls team2Control);
 
 	/**
 	* \brief Change the current enemy team with the new team
@@ -122,7 +121,7 @@ public:
 	* \todo Edit main loop so it considers inputs to other Screen
 	*/
 
-	virtual std::string Run(sf::RenderWindow &app, std::map<std::string, Screen*> &screens);
+	virtual std::string Run(sf::RenderWindow &app, std::map<std::string, Screen *> &screens);
 
 	/**
 	* \brief sets up the class with the server before using it
@@ -188,23 +187,18 @@ protected:
 	void sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, std::string spellName = "");
 
 	std::vector<CombatEntity> team1Fighters, ///< Array of the members of Team 1
-							  team2Fighters; ///< Array of the members of Team 2
-
-	const Controls team1Control, ///< Way the team 1 is controlled
-				   team2Control; ///< Way the team 2 is controlled
-
-	bool team1EventProcessed, ///< Is true if the team 1 thread processed the actual event
-		 team2EventProcessed, ///< Is true if the team 2 thread processed the actual event
-		 aboutToStop, ///< Becomes true when the end of fuction Run is reached
-		 launched;
-
-	sf::Thread team1Thread, ///< Thread in charge of processing team 1's events
-			   team2Thread, ///< Thread in charge of processing team 2's events
-			   serverThread; ///< Thread in charge of receiving and handling returns from server
-
-	sf::TcpSocket onlinePort; ///< Port to connect to in case of an online fight
-
-	sf::Mutex onlineMutex; ///< Mutex protecting calls to onlinePort
+	                          team2Fighters; ///< Array of the members of Team 2
+	const Controls            team1Control, ///< Way the team 1 is controlled
+	                          team2Control; ///< Way the team 2 is controlled
+	bool                      team1EventProcessed, ///< Is true if the team 1 thread processed the actual event
+	                          team2EventProcessed, ///< Is true if the team 2 thread processed the actual event
+	                          aboutToStop, ///< Becomes true when the end of fuction Run is reached
+	                          launched;
+	sf::Thread                team1Thread, ///< Thread in charge of processing team 1's events
+	                          team2Thread, ///< Thread in charge of processing team 2's events
+	                          serverThread; ///< Thread in charge of receiving and handling returns from server
+	sf::TcpSocket             onlinePort; ///< Port to connect to in case of an online fight
+	sf::Mutex                 onlineMutex; ///< Mutex protecting calls to onlinePort
 };
 
 /// @}

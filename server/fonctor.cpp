@@ -3,8 +3,9 @@
 using namespace std;
 using namespace sf;
 
-InputFonctor::InputFonctor(vector<FightSubserver *> *subservers, bool &stopServer):
-					subservers(subservers), stopServer(stopServer)
+InputFonctor::InputFonctor(vector<FightSubserver *> *subservers, bool &stopServer) :
+		subservers(subservers),
+		stopServer(stopServer)
 {
 
 }
@@ -30,7 +31,7 @@ void InputFonctor::operator()()
 			{
 				subservers->operator[](servNumber - 1)->reset();
 				string message("Server #");
-				message +=  servNumber;
+				message += servNumber;
 				message += " was succesfully reset";
 				logReport(message);
 			}

@@ -115,19 +115,15 @@ protected:
 	virtual void getKnownSkillsFromLevel();
 
 	sf::Uint32 ID;
-	int level, ///< Level of the entity
-		life, ///< Current life of the entity
-		mana, ///< Current mana of the entity
-		stamina; ///< Current stamina of the entity
-
-	const std::string name; ///< Name of the entity
-
-	Effects effects; ///< Bonuses of the entity
-
-	EntityClass *entityClass; ///< Class of the entity
-
+	int        level, ///< Level of the entity
+	           life, ///< Current life of the entity
+	           mana, ///< Current mana of the entity
+	                     stamina; ///< Current stamina of the entity
+	const std::string    name; ///< Name of the entity
+	Effects              effects; ///< Bonuses of the entity
+	EntityClass          *entityClass; ///< Class of the entity
 	std::vector<Skill *> knownAbilities, ///< Abilities known by the player
-						 knownSpells; ///< Skills known by the Entity
+	                     knownSpells; ///< Skills known by the Entity
 
 };
 

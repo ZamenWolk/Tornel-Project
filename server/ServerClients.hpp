@@ -54,7 +54,7 @@ protected:
 
 	bool               isFree; ///< Is the Socket free or not
 	sf::SocketSelector *socketSelector; ///< SocketSelector the Socket is in
-	sf::Clock		   lastInteractionClock;
+	sf::Clock          lastInteractionClock;
 };
 
 /// @}

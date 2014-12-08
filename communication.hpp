@@ -37,13 +37,19 @@ struct VersionNumber
 	*/
 
 	VersionNumber(std::string status, sf::Int32 major, sf::Int32 minor, sf::Int32 patch) :
-			status(status), major(major), minor(minor), patch(patch)
+			status(status),
+			major(major),
+			minor(minor),
+			patch(patch)
 	{
 
 	}
 
 	VersionNumber() :
-			status(""), major(0), minor(0), patch(0)
+			status(""),
+			major(0),
+			minor(0),
+			patch(0)
 	{
 
 	}
@@ -73,13 +79,19 @@ struct InteractionInfos
 	*/
 
 	InteractionInfos(sf::Uint32 attackerID, sf::Uint32 targetID, AttackType type, std::string spellName) :
-			attackerID(attackerID), targetID(targetID), type(type), spellName(spellName)
+			attackerID(attackerID),
+			targetID(targetID),
+			type(type),
+			spellName(spellName)
 	{
 
 	}
 
 	InteractionInfos() :
-			attackerID(0), targetID(0), type(WEAPON_ATTACK), spellName("")
+			attackerID(0),
+			targetID(0),
+			type(WEAPON_ATTACK),
+			spellName("")
 	{
 
 	}
@@ -90,7 +102,7 @@ struct InteractionInfos
 	}
 
 	sf::Uint32 attackerID, ///< ID of the attacker
-				targetID; ///< ID of the target
+	            targetID; ///< ID of the target
 	AttackType  type; ///< Type of the interaction
 	std::string spellName; ///< Name of the spell, if used
 };
@@ -101,7 +113,7 @@ struct InteractionInfos
 
 struct EntityInformations
 {
-	EntityInformations():
+	EntityInformations() :
 			name(""),
 			life(0),
 			mana(0),
@@ -114,13 +126,13 @@ struct EntityInformations
 	}
 
 	EntityInformations(std::string name,
-					   int life,
-					   int mana,
-					   int stamina,
-					   std::vector<Skill*> knownAbilities,
-					   std::vector<Skill*> knownSpells,
-					   CombatEffects effects,
-					   sf::Uint32 ID = 0):
+	                   int life,
+	                   int mana,
+	                   int stamina,
+	                   std::vector<Skill *> knownAbilities,
+	                   std::vector<Skill *> knownSpells,
+	                   CombatEffects effects,
+	                   sf::Uint32 ID) :
 			name(name),
 			life((sf::Int16)life),
 			mana((sf::Int16)mana),
@@ -130,18 +142,62 @@ struct EntityInformations
 			effects(effects),
 			ID(ID)
 	{
-		if (ID == 0)
-			ID = ((sf::Uint32)((long long int)this%4200000000));
+
 	}
 
-	sf::Uint32 	ID;
+	sf::Uint32  ID;
 	std::string name; ///< Name of the entity
 	sf::Int16   life, ///< Current life of the entity
-				mana, ///< Current mana of the entity
-				stamina; ///< Current stamina of the entity
+	            mana, ///< Current mana of the entity
+	                     stamina; ///< Current stamina of the entity
 	std::vector<Skill *> knownAbilities, ///< Known abilities of the entity
-						 knownSpells; ///< Known spells of the entity
+	                     knownSpells; ///< Known spells of the entity
 	CombatEffects        effects; ///< Current effects of the entity
+};
+
+struct FightAction
+{
+	FightAction() :
+			actionType(),
+			specialAttribute(),
+			subjectID(0),
+			targetID(0),
+			skillName(""),
+			attackType(),
+			attackDamage(0),
+			subject(0),
+			target(0)
+	{
+
+	}
+
+	FightAction(ActionType acctionType,
+	            SpecialAttribute specialAttribute,
+	            sf::Uint32 subjectID,
+	            sf::Uint32 targetID,
+	            std::string skillName,
+	            AttackType attackType,
+	            int attackDamage) :
+			actionType(actionType),
+			specialAttribute(specialAttribute),
+			subjectID(subjectID),
+			targetID(targetID),
+			skillName(skillName),
+			attackType(attackType),
+			attackDamage(attackDamage),
+			subject(0),
+			target(0)
+	{
+
+	}
+
+	ActionType       actionType;
+	SpecialAttribute specialAttribute;
+	sf::Uint32       subjectID, targetID;
+	std::string      skillName;
+	AttackType       attackType;
+	sf::Int32        attackDamage;
+	CombatEntity     *subject, *target;
 };
 
 /**
@@ -155,11 +211,7 @@ struct EntityInformations
 template<typename T>
 sf::Packet &createPacket(sf::Packet &packet, const T &infos, SentInfosType type)
 {
-	if (   (typeid(infos) == typeid(const VersionNumber) 			  && type == VERSION_NUMBER)
-	    || (typeid(infos) == typeid(const InteractionInfos)   		  && type == CTS_INTERACTION)
-		|| (typeid(infos) == typeid(const tm) 				  		  && type == TIME)
-		|| (typeid(infos) == typeid(const std::vector<CombatEntity>)  && type == CTS_TEAM_DATA)
-		|| (typeid(infos) == typeid(const int) 						  && (type == PING || type == PONG)))
+	if ((typeid(infos) == typeid(const VersionNumber) && type == VERSION_NUMBER) || (typeid(infos) == typeid(const InteractionInfos) && type == CTS_INTERACTION) || (typeid(infos) == typeid(const tm) && type == TIME) || (typeid(infos) == typeid(const std::vector<CombatEntity>) && type == CTS_TEAM_DATA) || (typeid(infos) == typeid(const int) && (type == PING || type == PONG)))
 	{
 		return packet << type << infos;
 	}
@@ -170,16 +222,12 @@ sf::Packet &createPacket(sf::Packet &packet, const T &infos, SentInfosType type)
 	}
 }
 
-sf::Packet & infoTypeInPacket(sf::Packet &packet, SentInfosType &type);
+sf::Packet &infoTypeInPacket(sf::Packet &packet, SentInfosType &type);
 
 template<typename T>
 sf::Packet &deconstructPacket(sf::Packet &packet, T &infos, SentInfosType type)
 {
-	if (   (typeid(infos) == typeid(VersionNumber) 			 	&& type == VERSION_NUMBER)
-	    || (typeid(infos) == typeid(InteractionInfos)   		&& type == CTS_INTERACTION)
-	    || (typeid(infos) == typeid(tm) 				  		&& type == TIME)
-	    || (typeid(infos) == typeid(std::vector<CombatEntity>)  && type == CTS_TEAM_DATA)
-	    || (typeid(infos) == typeid(int) 						&& (type == PING || type == PONG)))
+	if ((typeid(infos) == typeid(VersionNumber) && type == VERSION_NUMBER) || (typeid(infos) == typeid(InteractionInfos) && type == CTS_INTERACTION) || (typeid(infos) == typeid(tm) && type == TIME) || (typeid(infos) == typeid(std::vector<CombatEntity>) && type == CTS_TEAM_DATA) || (typeid(infos) == typeid(int) && (type == PING || type == PONG)))
 	{
 		return packet >> infos;
 	}

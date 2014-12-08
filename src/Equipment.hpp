@@ -68,13 +68,7 @@ struct Effects
 	* \param[in] mentalResistanceGain Mental resistance boost effect
 	*/
 
-	Effects(int lifeGain,
-			int manaGain,
-			int staminaGain,
-			int strengthGain,
-			int wisdomGain,
-			int toughnessGain,
-			int mentalResistanceGain);
+	Effects(int lifeGain, int manaGain, int staminaGain, int strengthGain, int wisdomGain, int toughnessGain, int mentalResistanceGain);
 
 	/**
 	* \brief Addition of 2 Effects instances
@@ -83,12 +77,12 @@ struct Effects
 	void operator+=(const Effects &a);
 
 	int life, ///< Life boost effect
-		mana, ///< Mana boost effect
-		stamina, ///< Stamina boost effect
-		strength, ///< Strength boost effect
-		wisdom, ///< Wisdom boost effect
-		toughness, ///< Toughness boost effect
-		mentalResistance; ///< Mental resistance boost effect
+	    mana, ///< Mana boost effect
+	    stamina, ///< Stamina boost effect
+	    strength, ///< Strength boost effect
+	    wisdom, ///< Wisdom boost effect
+	    toughness, ///< Toughness boost effect
+	    mentalResistance; ///< Mental resistance boost effect
 };
 
 bool operator==(Effects const &a, Effects const &b);
@@ -150,14 +144,14 @@ struct CombatEffects : public Effects, public WeaponEffects
 	*/
 
 	CombatEffects(int lifeGain,
-					  int manaGain,
-					  int staminaGain,
-					  int strengthGain,
-					  int wisdomGain,
-					  int toughnessGain,
-					  int mentalResistanceGain,
-					  int baseDamage,
-					  sf::Time cooldownTime);
+	              int manaGain,
+	              int staminaGain,
+	              int strengthGain,
+	              int wisdomGain,
+	              int toughnessGain,
+	              int mentalResistanceGain,
+	              int baseDamage,
+	              sf::Time cooldownTime);
 };
 
 /// @}
@@ -182,7 +176,7 @@ public:
 	* \param[in] effects Effects given by the equipement
 	*/
 
-	Equipment(std::string name, std::string type, Effects effects,int prerequisiteLevel = 0, Effects prerequisites = Effects(0, 0, 0, 0, 0, 0, 0));
+	Equipment(std::string name, std::string type, Effects effects, int prerequisiteLevel = 0, Effects prerequisites = Effects(0, 0, 0, 0, 0, 0, 0));
 
 	/**
 	* \param[in] equipment Equipment to copy to new instance
@@ -206,10 +200,10 @@ public:
 protected:
 
 	std::string name, ///< Name of the equipement
-				type; ///< Type of the equipement
+	            type; ///< Type of the equipement
 
 	Effects equipmentEffects, ///< Effects given by the equipment
-			prerequisites;
+	        prerequisites;
 
 	int prerequisiteLevel;
 
@@ -230,10 +224,7 @@ public:
 	* \param[in] weaponEffects Weapon part of the effects given by the weapon
 	*/
 
-	Weapon(const std::string &name,
-		   std::string type,
-		   const Effects &equipmentEffects,
-		   const WeaponEffects &weaponEffects);
+	Weapon(const std::string &name, std::string type, const Effects &equipmentEffects, const WeaponEffects &weaponEffects);
 
 	/**
 	* \param[in] weapon Weapon instance to copy for the new class

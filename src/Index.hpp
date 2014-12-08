@@ -39,13 +39,13 @@ struct EntityClass
 	*/
 
 	EntityClass(std::string name,
-				ThirdPowerFunction maxLifeIncrement,
-				ThirdPowerFunction maxManaIncrement,
-				ThirdPowerFunction maxStaminaIncrement,
-				ThirdPowerFunction strengthIncrement,
-				ThirdPowerFunction wisdomIncrement,
-				ThirdPowerFunction toughnessIncrement,
-				ThirdPowerFunction mentalResistanceIncrement);
+	            ThirdPowerFunction maxLifeIncrement,
+	            ThirdPowerFunction maxManaIncrement,
+	            ThirdPowerFunction maxStaminaIncrement,
+	            ThirdPowerFunction strengthIncrement,
+	            ThirdPowerFunction wisdomIncrement,
+	            ThirdPowerFunction toughnessIncrement,
+	            ThirdPowerFunction mentalResistanceIncrement);
 
 	/// \return name of the member
 	std::string getName() const;
@@ -55,12 +55,12 @@ struct EntityClass
 
 	std::string        name; ///< Name of the class
 	ThirdPowerFunction maxLifeIncrement, ///< Evolution followed by the index member's life
-					   maxManaIncrement, ///< Evolution followed by the index member's mana
-					   maxStaminaIncrement, ///< Evolution followed by the index member's stamina
-					   strengthIncrement, ///< Evolution followed by the index member's strength
-					   wisdomIncrement, ///< Evolution followed by the index member's wisdom
-					   toughnessIncrement, ///< Evolution followed by the index member's toughness
-					   mentalResistanceIncrement; ///< Evolution followed by the index member's mental resistance
+	                   maxManaIncrement, ///< Evolution followed by the index member's mana
+	                   maxStaminaIncrement, ///< Evolution followed by the index member's stamina
+	                   strengthIncrement, ///< Evolution followed by the index member's strength
+	                   wisdomIncrement, ///< Evolution followed by the index member's wisdom
+	                   toughnessIncrement, ///< Evolution followed by the index member's toughness
+	                   mentalResistanceIncrement; ///< Evolution followed by the index member's mental resistance
 };
 
 /**
@@ -70,7 +70,7 @@ struct EntityClass
 class UsableEquipTypes
 {
 public:
-	UsableEquipTypes():
+	UsableEquipTypes() :
 			usableHelmetTypes(1, "Admin"),
 			usableChestTypes(1, "Admin"),
 			usableLeggingsTypes(1, "Admin"),
@@ -99,17 +99,17 @@ public:
 	*/
 
 	UsableEquipTypes(std::vector<std::string> helmetTypes,
-					 std::vector<std::string> chestTypes,
-					 std::vector<std::string> leggingsTypes,
-					 std::vector<std::string> bootsTypes,
-					 std::vector<std::string> weaponTypes);
+	                 std::vector<std::string> chestTypes,
+	                 std::vector<std::string> leggingsTypes,
+	                 std::vector<std::string> bootsTypes,
+	                 std::vector<std::string> weaponTypes);
 
 protected:
-	std::vector<std::string>	usableHelmetTypes, ///< Types of helmet
-								usableChestTypes, ///< Types of chestplate
-								usableLeggingsTypes, ///< Types of leggings
-								usableBootsTypes, ///< Types of boots
-								usableWeaponTypes; ///< Types of weapon
+	std::vector<std::string> usableHelmetTypes, ///< Types of helmet
+	                         usableChestTypes, ///< Types of chestplate
+	                         usableLeggingsTypes, ///< Types of leggings
+	                         usableBootsTypes, ///< Types of boots
+	                         usableWeaponTypes; ///< Types of weapon
 };
 
 /**
@@ -133,19 +133,19 @@ struct HeroClass : public EntityClass
 	*/
 
 	HeroClass(std::string name,
-			  ThirdPowerFunction maxLifeIncrement,
-			  ThirdPowerFunction maxManaIncrement,
-			  ThirdPowerFunction maxStaminaIncrement,
-			  ThirdPowerFunction strengthIncrement,
-			  ThirdPowerFunction wisdomIncrement,
-			  ThirdPowerFunction toughnessIncrement,
-			  ThirdPowerFunction mentalResistanceIncrement,
-			  UsableEquipTypes usableTypes,
-			  std::vector<LevelingSkill> learnableSkills);
+	          ThirdPowerFunction maxLifeIncrement,
+	          ThirdPowerFunction maxManaIncrement,
+	          ThirdPowerFunction maxStaminaIncrement,
+	          ThirdPowerFunction strengthIncrement,
+	          ThirdPowerFunction wisdomIncrement,
+	          ThirdPowerFunction toughnessIncrement,
+	          ThirdPowerFunction mentalResistanceIncrement,
+	          UsableEquipTypes usableTypes,
+	          std::vector<LevelingSkill> learnableSkills);
 
 	virtual std::vector<LevelingSkill> getSkills();
 
-	UsableEquipTypes		   usableTypes; ///< Equipment types the hero can equip and use
+	UsableEquipTypes           usableTypes; ///< Equipment types the hero can equip and use
 	std::vector<LevelingSkill> learnableSkills; ///< All the skills the class can learn through the levels
 };
 
@@ -170,19 +170,19 @@ struct MonsterClass : public EntityClass
 	*/
 
 	MonsterClass(std::string name,
-				 ThirdPowerFunction maxLifeIncrement,
-				 ThirdPowerFunction maxManaIncrement,
-				 ThirdPowerFunction maxStaminaIncrement,
-				 ThirdPowerFunction strengthIncrement,
-				 ThirdPowerFunction wisdomIncrement,
-				 ThirdPowerFunction toughnessIncrement,
-				 ThirdPowerFunction mentalResistanceIncrement,
-				 std::vector<Skill *> skills,
-				 WeaponEffects effects);
+	             ThirdPowerFunction maxLifeIncrement,
+	             ThirdPowerFunction maxManaIncrement,
+	             ThirdPowerFunction maxStaminaIncrement,
+	             ThirdPowerFunction strengthIncrement,
+	             ThirdPowerFunction wisdomIncrement,
+	             ThirdPowerFunction toughnessIncrement,
+	             ThirdPowerFunction mentalResistanceIncrement,
+	             std::vector<Skill *> skills,
+	             WeaponEffects effects);
 
 	virtual std::vector<LevelingSkill> getSkills();
 
-	WeaponEffects effects; ///< Basic attacks' informations
+	WeaponEffects        effects; ///< Basic attacks' informations
 	std::vector<Skill *> skills; ///< All the skills the monster has
 };
 
@@ -197,8 +197,9 @@ class Index
 public:
 
 	/// \param[in] identifier Name of the index for use in the error reports
-	Index(std::string identifier):
-			index(), identifier(identifier)
+	Index(std::string identifier) :
+			index(),
+			identifier(identifier)
 	{
 
 	}
@@ -283,7 +284,8 @@ public:
 
 	/// \param[in] identifier Name of the index for use in the error reports
 	EquipmentIndex(std::string identifier) :
-			Index<T>(identifier), typeIndex()
+			Index<T>(identifier),
+			typeIndex()
 	{
 
 	}

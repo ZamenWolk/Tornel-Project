@@ -18,16 +18,17 @@ extern IndexesIndex indexes;
 
 int main()
 {
-	RenderWindow window;
-	string screen("main");
-	map<string, Screen*> screens;
+	RenderWindow          window;
+	string                screen("main");
+	map<string, Screen *> screens;
 
 	screens["fight"] = new Combat(KEYBOARD, ONLINE);
-	screens["main"] = new Menu();
+	screens["main"]  = new Menu();
 
 	string message("Welcome to Tornel'Fighters v.");
 	message += AutoVersion::FULLVERSION_STRING;
-	logReport(message, true); cout << endl;
+	logReport(message, true);
+	cout << endl;
 
 	window.create(VideoMode(1067, 800), "Tornel'Fighters");
 	window.setFramerateLimit(45);

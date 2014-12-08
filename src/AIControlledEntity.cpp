@@ -3,14 +3,14 @@
 using namespace std;
 using namespace sf;
 
-EntityModel::EntityModel(const string &name, int level, EntityClass *monsterClass):
-					name(name),
-					level(level),
-					effects{0, 0, 0, monsterClass->strengthIncrement.iresult(level), monsterClass->wisdomIncrement.iresult(level),
-							monsterClass->toughnessIncrement.iresult(level), monsterClass->mentalResistanceIncrement.iresult(level)},
-					entityClass(monsterClass),
-					knownAbilities(0),
-					knownSpells(0)
+EntityModel::EntityModel(const string &name, int level, EntityClass *monsterClass) :
+		name(name),
+		level(level),
+		effects{0, 0, 0, monsterClass->strengthIncrement.iresult(level), monsterClass->wisdomIncrement.iresult(level), monsterClass->toughnessIncrement.iresult(
+				level), monsterClass->mentalResistanceIncrement.iresult(level)},
+		entityClass(monsterClass),
+		knownAbilities(0),
+		knownSpells(0)
 {
 	ID = ((Uint32)((long long int)this%4200000000));
 
@@ -30,7 +30,7 @@ EntityModel::EntityModel(const string &name, int level, EntityClass *monsterClas
 	getKnownSkillsFromLevel();
 }
 
-EntityModel::EntityModel(const EntityModel &entity):
+EntityModel::EntityModel(const EntityModel &entity) :
 		name(entity.name),
 		level(entity.level),
 		life(entity.life),
@@ -45,17 +45,17 @@ EntityModel::EntityModel(const EntityModel &entity):
 
 }
 
-EntityModel::EntityModel(EntityInformations &entity):
-					name(entity.name),
-					level(1),
-					life(entity.life),
-					mana(entity.mana),
-					stamina(entity.stamina),
-					effects(entity.effects),
-					entityClass(indexes.heroClassIndex.searchByName("default")),
-					knownAbilities(entity.knownAbilities),
-					knownSpells(entity.knownSpells),
-					ID(entity.ID)
+EntityModel::EntityModel(EntityInformations &entity) :
+		name(entity.name),
+		level(1),
+		life(entity.life),
+		mana(entity.mana),
+		stamina(entity.stamina),
+		effects(entity.effects),
+		entityClass(indexes.heroClassIndex.searchByName("default")),
+		knownAbilities(entity.knownAbilities),
+		knownSpells(entity.knownSpells),
+		ID(entity.ID)
 {
 
 }
@@ -198,20 +198,23 @@ void EntityModel::getKnownSkillsFromLevel()
 	}
 }
 
-Entity::Entity(const string &name, int level, MonsterClass *monsterClass):
-		EntityModel(name, level, (EntityClass *)monsterClass), weaponEffects(monsterClass->effects)
+Entity::Entity(const string &name, int level, MonsterClass *monsterClass) :
+		EntityModel(name, level, (EntityClass *)monsterClass),
+		weaponEffects(monsterClass->effects)
 {
 
 }
 
-Entity::Entity(const Entity &entity):
-		EntityModel(entity), weaponEffects(entity.weaponEffects)
+Entity::Entity(const Entity &entity) :
+		EntityModel(entity),
+		weaponEffects(entity.weaponEffects)
 {
 
 }
 
-Entity::Entity(EntityInformations &entity):
-			EntityModel(entity), weaponEffects(entity.effects)
+Entity::Entity(EntityInformations &entity) :
+		EntityModel(entity),
+		weaponEffects(entity.effects)
 {
 
 }

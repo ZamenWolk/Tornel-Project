@@ -24,10 +24,10 @@
 
 struct EventsUnion
 {
-	InteractionInfos intEv;
+	InteractionInfos                intEv;
 	std::vector<EntityInformations> teamEv;
-	VersionNumber versEv;
-	std::tm timeEv;
+	VersionNumber                   versEv;
+	std::tm                         timeEv;
 };
 
 struct EventsStructure
@@ -41,16 +41,14 @@ struct EventsStructure
 	* \param[in] versEv_number Version number sent from the client
 	*/
 
-	EventsStructure(	 SentInfosType typeOfEvent,
-						 bool isEventTreated,
-						 bool event_team1);
+	EventsStructure(SentInfosType typeOfEvent, bool isEventTreated, bool event_team1);
 
 	EventsStructure();
 
-	SentInfosType   typeOfEvent; ///< Type of the event
-	bool            isEventTreated; ///< Does the event still have to be treated
-	bool            team1; ///< Which team does the event concern. true if the event concerns team1, false if team2
-	EventsUnion		infos;
+	SentInfosType typeOfEvent; ///< Type of the event
+	bool          isEventTreated; ///< Does the event still have to be treated
+	bool          team1; ///< Which team does the event concern. true if the event concerns team1, false if team2
+	EventsUnion   infos;
 
 };
 

@@ -3,12 +3,12 @@
 using namespace std;
 using namespace sf;
 
-CombatEntity::CombatEntity(EntityModel *entity):
-						entity(entity),
-						target(nullptr),
-						effects(entity->getEffects(), entity->basicAttackEffects()),
-						lastInteractionTime(milliseconds(0)),
-						interactionCooldown(milliseconds(0))
+CombatEntity::CombatEntity(EntityModel *entity) :
+		entity(entity),
+		target(nullptr),
+		effects(entity->getEffects(), entity->basicAttackEffects()),
+		lastInteractionTime(milliseconds(0)),
+		interactionCooldown(milliseconds(0))
 {
 
 }
@@ -19,12 +19,12 @@ void CombatEntity::changeTarget(CombatEntity *newTarget)
 		target = newTarget;
 }
 
-EntityModel* CombatEntity::getEntity() const
+EntityModel *CombatEntity::getEntity() const
 {
 	return entity;
 }
 
-CombatEntity* CombatEntity::getTarget() const
+CombatEntity *CombatEntity::getTarget() const
 {
 	return target;
 }
@@ -34,20 +34,19 @@ CombatEffects CombatEntity::getEffects() const
 	return effects;
 }
 
-Combat::Combat(const Controls team1Control,
-			   const Controls team2Control):
-			team1Fighters(),
-			team2Fighters(),
-			team1Control(team1Control),
-			team2Control(team2Control),
-			team1EventProcessed(true),
-			team2EventProcessed(true),
-			aboutToStop(false),
-			team1Thread(bind(&Combat::teamInstructions, this, true)),
-			team2Thread(bind(&Combat::teamInstructions, this, false)),
-			serverThread(&Combat::serverHandling, this),
-			onlineMutex(),
-			launched(false)
+Combat::Combat(const Controls team1Control, const Controls team2Control) :
+		team1Fighters(),
+		team2Fighters(),
+		team1Control(team1Control),
+		team2Control(team2Control),
+		team1EventProcessed(true),
+		team2EventProcessed(true),
+		aboutToStop(false),
+		team1Thread(bind(&Combat::teamInstructions, this, true)),
+		team2Thread(bind(&Combat::teamInstructions, this, false)),
+		serverThread(&Combat::serverHandling, this),
+		onlineMutex(),
+		launched(false)
 {
 	combatChecking();
 }
@@ -72,7 +71,7 @@ void Combat::changeEnemyTeam(vector<CombatEntity> newTeam)
 	}
 }
 
-string Combat::Run(RenderWindow &app, map<string, Screen*> &screens)
+string Combat::Run(RenderWindow &app, map<string, Screen *> &screens)
 {
 	if (team1Fighters.size() < 1 || team1Fighters.size() > 5 || team2Fighters.size() < 1 || team2Fighters.size() > 5)
 	{
@@ -111,14 +110,10 @@ string Combat::Run(RenderWindow &app, map<string, Screen*> &screens)
 
 void Combat::Setup(string IPAddress, unsigned short addressPort)
 {
-	Packet                versionNumber, charactersPacket, packetFromServer, timePacket;
-	VersionNumber             version(AutoVersion::STATUS,
-									  AutoVersion::MAJOR,
-									  AutoVersion::MINOR,
-									  AutoVersion::PATCH);
+	Packet               versionNumber, charactersPacket, packetFromServer, timePacket;
+	VersionNumber        version(AutoVersion::STATUS, AutoVersion::MAJOR, AutoVersion::MINOR, AutoVersion::PATCH);
 	vector<CombatEntity> teamFromServer;
-	Time                  pingTime(milliseconds(0)), pongTime(milliseconds(0)), timeUntilLaunch(milliseconds(0)),
-							  timeAtLaunchDelay(milliseconds(0));
+	Time                 pingTime(milliseconds(0)), pongTime(milliseconds(0)), timeUntilLaunch(milliseconds(0)), timeAtLaunchDelay(milliseconds(0));
 
 	//Connects to the server
 	onlineMutex.lock();
@@ -195,7 +190,7 @@ string Combat::endOfCombat()
 {
 	aboutToStop = true;
 	Packet packetFromServer;
-	bool wonBattle;
+	bool   wonBattle;
 
 	//Terminates all server threads
 	team1Thread.wait();
@@ -227,19 +222,21 @@ void Combat::combatChecking()
 void Combat::teamInstructions(bool team1)
 {
 	vector<CombatEntity> *currentTeam(nullptr), *currentEnemies(nullptr);
-	const Controls            *currentControl(nullptr);
-	bool                      *currentTeamEventProcessed(nullptr);
+	const Controls       *currentControl(nullptr);
+	bool                 *currentTeamEventProcessed(nullptr);
 
 	//Sets up all the pointers so the program can be the same for both team
 	if (team1)
 	{
-		currentTeam               = &team1Fighters, currentEnemies = &team2Fighters;
+		currentTeam               = &team1Fighters;
+		currentEnemies            = &team2Fighters;
 		currentControl            = &team1Control;
 		currentTeamEventProcessed = &team1EventProcessed;
 	}
 	else
 	{
-		currentTeam               = &team2Fighters, currentEnemies = &team1Fighters;
+		currentTeam               = &team2Fighters;
+		currentEnemies            = &team1Fighters;
 		currentControl            = &team2Control;
 		currentTeamEventProcessed = &team2EventProcessed;
 	}
@@ -262,12 +259,12 @@ void Combat::serverHandling()
 {
 	while (!aboutToStop)
 	{
-		Packet       packetFromServer;
+		Packet           packetFromServer;
 		ActionType       actionType;
 		SpecialAttribute specialAttribute;
-		Uint32       subjectID(0);
-		CombatEntity *subject(nullptr);
-		Socket::Status result;
+		Uint32           subjectID(0);
+		CombatEntity     *subject(nullptr);
+		Socket::Status   result;
 
 		//Receives packet of information from the server
 		onlineMutex.lock();
@@ -301,7 +298,8 @@ void Combat::serverHandling()
 					//Reaction not handled by the client
 				else
 				{
-					errorReport("The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
+					errorReport(
+							"The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
 				}
 			}
 				//If damages were dealt
@@ -310,10 +308,10 @@ void Combat::serverHandling()
 				Uint32 targetID;
 				packetFromServer >> targetID;
 				CombatEntity *target(IDToEntity(targetID));
-				int         attackDamage;
-				AttackType  attackType;
-				string skillName;
-				Skill       *skill(nullptr);
+				int          attackDamage;
+				AttackType   attackType;
+				string       skillName;
+				Skill        *skill(nullptr);
 
 				//Searches who was hit
 				packetFromServer >> attackDamage;
@@ -355,7 +353,8 @@ void Combat::serverHandling()
 					//Attribute of attack not handled by function
 				else
 				{
-					errorReport("The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
+					errorReport(
+							"The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
 				}
 			}
 				/**else if (actionType == HEAL)
@@ -377,7 +376,8 @@ void Combat::serverHandling()
 				//Action requested not handled by server
 			else
 			{
-				errorReport("The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
+				errorReport(
+						"The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
 			}
 		}
 
@@ -385,33 +385,33 @@ void Combat::serverHandling()
 	}
 }
 
-CombatEntity* Combat::IDToEntity(unsigned long entityID)
+CombatEntity *Combat::IDToEntity(unsigned long entityID)
 {
-		for (vector<CombatEntity>::iterator it = team1Fighters.begin(); it != team1Fighters.end(); it++)
+	for (vector<CombatEntity>::iterator it = team1Fighters.begin(); it != team1Fighters.end(); it++)
+	{
+		if (it->getEntity()->getID() == entityID)
 		{
-			if (it->getEntity()->getID() == entityID)
-			{
-				return &*it;
-			}
+			return &*it;
 		}
-
-		for (vector<CombatEntity>::iterator it = team2Fighters.begin(); it != team2Fighters.end(); it++)
-		{
-			if (it->getEntity()->getID() == entityID)
-			{
-				return &*it;
-			}
-		}
-
-		errorReport("Server sent an unknown fighter ID");
-		return &team1Fighters[0];
 	}
+
+	for (vector<CombatEntity>::iterator it = team2Fighters.begin(); it != team2Fighters.end(); it++)
+	{
+		if (it->getEntity()->getID() == entityID)
+		{
+			return &*it;
+		}
+	}
+
+	errorReport("Server sent an unknown fighter ID");
+	return &team1Fighters[0];
+}
 
 void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<CombatEntity> *currentEnemies)
 {
 
-	static CombatMenu currentMenu(MAIN);
-	static int        spellPage(0), abilityPage(0);
+	static CombatMenu   currentMenu(MAIN);
+	static int          spellPage(0), abilityPage(0);
 	static unsigned int selectorVariable(0);
 	static CombatEntity *currentCharacter(&currentTeam->at(0));
 
@@ -489,14 +489,14 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 			case ABILITY_CHOOSING:
 				if (abilityPage > 0)
 					abilityPage--;
-				logReport("Ability page : " + abilityPage);
-				break;
+		        logReport("Ability page : " + abilityPage);
+		        break;
 
 			case SPELL_CHOOSING:
 				if (spellPage > 0)
 					spellPage--;
-				logReport("Spell page : " + spellPage);
-				break;
+		        logReport("Spell page : " + spellPage);
+		        break;
 			case MAIN:
 				break;
 			case CHARACTER_CHOOSING:
@@ -506,7 +506,7 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 		}
 	}
 
-	//If user wants to go to the next page
+		//If user wants to go to the next page
 	else if (indexes.keyboardMap.isActive("nextPage"))
 	{
 		switch (currentMenu)
@@ -514,14 +514,14 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 			case ABILITY_CHOOSING:
 				if (currentCharacter->getEntity()->getKnownAbilities().size() >= (abilityPage*6 + 7))
 					abilityPage++;
-				logReport("Ability page : " + abilityPage);
-				break;
+		        logReport("Ability page : " + abilityPage);
+		        break;
 
 			case SPELL_CHOOSING:
 				if (currentCharacter->getEntity()->getKnownSpells().size() >= (spellPage*6 + 7))
 					spellPage++;
-				logReport("Spell page : " + spellPage);
-				break;
+		        logReport("Spell page : " + spellPage);
+		        break;
 			case MAIN:
 				break;
 			case CHARACTER_CHOOSING:
@@ -546,7 +546,7 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 						currentCharacter = &currentTeam->at(selectorVariable);
 						logReport("New character : " + currentCharacter->getEntity()->getName());
 					}
-					break;
+			        break;
 
 				case TARGET_CHOOSING:
 					//Only changes the target if he is still alive
@@ -555,7 +555,7 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 						currentCharacter->changeTarget(&currentEnemies->at(selectorVariable));
 						logReport("New target : " + currentCharacter->getTarget()->getEntity()->getName());
 					}
-					break;
+			        break;
 				case MAIN:
 					break;
 				case SPELL_CHOOSING:
@@ -571,21 +571,21 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 				if (currentCharacter->getEntity()->getKnownAbilities().size() >= abilityPage*6 + selectorVariable + 1)
 				{
 					sendToServer(*currentCharacter,
-								 *currentCharacter->getTarget(),
-								 ABILITY,
-								 currentCharacter->getEntity()->getKnownAbilities().at(abilityPage*6 + selectorVariable)->name);
+					             *currentCharacter->getTarget(),
+					             ABILITY,
+					             currentCharacter->getEntity()->getKnownAbilities().at(abilityPage*6 + selectorVariable)->name);
 				}
-				break;
+		        break;
 
 			case SPELL_CHOOSING:
 				if (currentCharacter->getEntity()->getKnownSpells().size() >= spellPage*6 + selectorVariable + 1)
 				{
 					sendToServer(*currentCharacter,
-								 *currentCharacter->getTarget(),
-								 SPELL,
-								 currentCharacter->getEntity()->getKnownSpells().at(spellPage*6 + selectorVariable)->name);
+					             *currentCharacter->getTarget(),
+					             SPELL,
+					             currentCharacter->getEntity()->getKnownSpells().at(spellPage*6 + selectorVariable)->name);
 				}
-				break;
+		        break;
 			case MAIN:
 				break;
 			case CHARACTER_CHOOSING:
@@ -595,13 +595,13 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 		}
 
 		selectorVariable = 0;
-		currentMenu = MAIN;
+		currentMenu      = MAIN;
 	}
 }
 
 void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, string spellName)
 {
-	Packet       packetToSend;
+	Packet           packetToSend;
 	InteractionInfos informationsToSend{attacker.getEntity()->getID(), target.getEntity()->getID(), type, spellName};
 
 	createPacket(packetToSend, informationsToSend, CTS_INTERACTION);
@@ -641,9 +641,9 @@ int Combat::fillFightersVector(vector<CombatEntity> &teamVector, bool isTeam1)
 
 void CombatEntity::operator=(const CombatEntity &a)
 {
-	entity = a.entity;
-	target = a.target;
-	effects = a.effects;
+	entity              = a.entity;
+	target              = a.target;
+	effects             = a.effects;
 	lastInteractionTime = a.lastInteractionTime;
 	interactionCooldown = a.interactionCooldown;
 }

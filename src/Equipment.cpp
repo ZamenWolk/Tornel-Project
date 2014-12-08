@@ -3,13 +3,19 @@
 using namespace std;
 using namespace sf;
 
-Effects::Effects():
-		life(0), mana(0), stamina(0), strength(0), wisdom(0), toughness(0), mentalResistance(0)
+Effects::Effects() :
+		life(0),
+		mana(0),
+		stamina(0),
+		strength(0),
+		wisdom(0),
+		toughness(0),
+		mentalResistance(0)
 {
 
 }
 
-Effects::Effects(const Effects &equipmentEffects):
+Effects::Effects(const Effects &equipmentEffects) :
 		life(equipmentEffects.life),
 		mana(equipmentEffects.mana),
 		stamina(equipmentEffects.stamina),
@@ -21,13 +27,7 @@ Effects::Effects(const Effects &equipmentEffects):
 
 }
 
-Effects::Effects(int lifeGain,
-				 int manaGain,
-				 int staminaGain,
-				 int strengthGain,
-				 int wisdomGain,
-				 int toughnessGain,
-				 int mentalResistanceGain) :
+Effects::Effects(int lifeGain, int manaGain, int staminaGain, int strengthGain, int wisdomGain, int toughnessGain, int mentalResistanceGain) :
 		life(lifeGain),
 		mana(manaGain),
 		stamina(staminaGain),
@@ -50,45 +50,50 @@ void Effects::operator+=(const Effects &a)
 	mentalResistance += a.mentalResistance;
 }
 
-WeaponEffects::WeaponEffects():
-		baseDamage(3), cooldownTime(milliseconds(1500))
+WeaponEffects::WeaponEffects() :
+		baseDamage(3),
+		cooldownTime(milliseconds(1500))
 {
 
 }
 
-WeaponEffects::WeaponEffects(const WeaponEffects &weaponEffects):
-		baseDamage(weaponEffects.baseDamage), cooldownTime(weaponEffects.cooldownTime)
+WeaponEffects::WeaponEffects(const WeaponEffects &weaponEffects) :
+		baseDamage(weaponEffects.baseDamage),
+		cooldownTime(weaponEffects.cooldownTime)
 {
 
 }
 
-WeaponEffects::WeaponEffects(int baseDamage, Time cooldownTime):
-		baseDamage(baseDamage), cooldownTime(cooldownTime)
+WeaponEffects::WeaponEffects(int baseDamage, Time cooldownTime) :
+		baseDamage(baseDamage),
+		cooldownTime(cooldownTime)
 {
 
 }
 
 CombatEffects::CombatEffects() :
-		Effects(), WeaponEffects()
+		Effects(),
+		WeaponEffects()
 {
 
 }
 
 CombatEffects::CombatEffects(const Effects &equipmentEffects, const WeaponEffects &weaponEffects) :
-		Effects(equipmentEffects), WeaponEffects(weaponEffects)
+		Effects(equipmentEffects),
+		WeaponEffects(weaponEffects)
 {
 
 }
 
 CombatEffects::CombatEffects(int lifeGain,
-							 int manaGain,
-							 int staminaGain,
-							 int strengthGain,
-							 int wisdomGain,
-							 int toughnessGain,
-							 int mentalResistanceGain,
-							 int baseDamage,
-							 Time cooldownTime) :
+                             int manaGain,
+                             int staminaGain,
+                             int strengthGain,
+                             int wisdomGain,
+                             int toughnessGain,
+                             int mentalResistanceGain,
+                             int baseDamage,
+                             Time cooldownTime) :
 		Effects(lifeGain, manaGain, staminaGain, strengthGain, wisdomGain, toughnessGain, mentalResistanceGain),
 		WeaponEffects(baseDamage, cooldownTime)
 {
@@ -96,14 +101,21 @@ CombatEffects::CombatEffects(int lifeGain,
 }
 
 Equipment::Equipment(string name, string type, Effects effects, int prerequisiteLevel, Effects prerequisites) :
-		name(name), type(type), equipmentEffects(effects), prerequisites(prerequisites), prerequisiteLevel(prerequisiteLevel)
+		name(name),
+		type(type),
+		equipmentEffects(effects),
+		prerequisites(prerequisites),
+		prerequisiteLevel(prerequisiteLevel)
 {
 
 }
 
-Equipment::Equipment(const Equipment *equipment):
-		name(equipment->name), type(equipment->type), equipmentEffects(equipment->equipmentEffects),
-		prerequisites(equipment->prerequisites), prerequisiteLevel(equipment->prerequisiteLevel)
+Equipment::Equipment(const Equipment *equipment) :
+		name(equipment->name),
+		type(equipment->type),
+		equipmentEffects(equipment->equipmentEffects),
+		prerequisites(equipment->prerequisites),
+		prerequisiteLevel(equipment->prerequisiteLevel)
 {
 
 }
@@ -130,35 +142,17 @@ Effects Equipment::getPrerequisites() const
 
 bool operator==(Effects const &a, Effects const &b)
 {
-	return (a.life == b.life
-   			&& a.mana == b.mana
-   			&& a.mentalResistance == b.mentalResistance
-   			&& a.stamina == b.stamina
-   			&& a.strength == b.strength
-   			&& a.toughness == b.toughness
-   			&& a.wisdom == b.wisdom);
+	return (a.life == b.life && a.mana == b.mana && a.mentalResistance == b.mentalResistance && a.stamina == b.stamina && a.strength == b.strength && a.toughness == b.toughness && a.wisdom == b.wisdom);
 }
 
 bool operator>=(Effects const &a, Effects const &b)
 {
-	return ((a == b) || (a.life >= b.life
-   			&& a.mana >= b.mana
-   			&& a.mentalResistance >= b.mentalResistance
-   			&& a.stamina >= b.stamina
-   			&& a.strength >= b.strength
-   			&& a.toughness >= b.toughness
-   			&& a.wisdom >= b.wisdom));
+	return ((a == b) || (a.life >= b.life && a.mana >= b.mana && a.mentalResistance >= b.mentalResistance && a.stamina >= b.stamina && a.strength >= b.strength && a.toughness >= b.toughness && a.wisdom >= b.wisdom));
 }
 
 bool operator>(Effects const &a, Effects const &b)
 {
-	return (a.life > b.life
-			&& a.mana > b.mana
-			&& a.mentalResistance > b.mentalResistance
-			&& a.stamina > b.stamina
-			&& a.strength > b.strength
-			&& a.toughness > b.toughness
-			&& a.wisdom > b.wisdom);
+	return (a.life > b.life && a.mana > b.mana && a.mentalResistance > b.mentalResistance && a.stamina > b.stamina && a.strength > b.strength && a.toughness > b.toughness && a.wisdom > b.wisdom);
 }
 
 int Equipment::getPrerequisiteLevel() const
@@ -166,17 +160,16 @@ int Equipment::getPrerequisiteLevel() const
 	return prerequisiteLevel;
 }
 
-Weapon::Weapon(const string &name,
-			   string type,
-			   const Effects &equipmentEffects,
-			   const WeaponEffects &weaponEffects) :
-		Equipment(name, type, equipmentEffects), weaponEffects(weaponEffects)
+Weapon::Weapon(const string &name, string type, const Effects &equipmentEffects, const WeaponEffects &weaponEffects) :
+		Equipment(name, type, equipmentEffects),
+		weaponEffects(weaponEffects)
 {
 
 }
 
 Weapon::Weapon(const Weapon *weapon) :
-		Equipment(weapon->name, weapon->type, weapon->equipmentEffects), weaponEffects(weapon->weaponEffects)
+		Equipment(weapon->name, weapon->type, weapon->equipmentEffects),
+		weaponEffects(weapon->weaponEffects)
 {
 
 }

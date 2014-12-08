@@ -9,7 +9,7 @@ public:
 
 	Menu();
 
-	virtual std::string Run(sf::RenderWindow &app, std::map<std::string, Screen*> &screens);
+	virtual std::string Run(sf::RenderWindow &app, std::map<std::string, Screen *> &screens);
 
 protected:
 

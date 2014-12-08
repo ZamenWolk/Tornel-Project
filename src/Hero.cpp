@@ -32,8 +32,7 @@ WeaponEffects Hero::basicAttackEffects() const
 
 void Hero::actualizeCharacteristics()
 {
-	int newMaxLife(0), oldMaxLife(effects.life), newMaxMana(0), oldMaxMana(effects.mana), newMaxStamina(0), oldMaxStamina(
-			effects.stamina);
+	int newMaxLife(0), oldMaxLife(effects.life), newMaxMana(0), oldMaxMana(effects.mana), newMaxStamina(0), oldMaxStamina(effects.stamina);
 
 	//Resets the effects
 	effects = Effects();
@@ -80,23 +79,23 @@ void Hero::changeEquipment(EquipmentType type, Equipment *newEquipment)
 		{
 			case HELMET:
 				newEquipment = indexes.helmetIndex.searchByName("Default");
-				break;
+		        break;
 
 			case CHESTPLATE:
 				newEquipment = indexes.chestplateIndex.searchByName("Default");
-				break;
+		        break;
 
 			case LEGGINGS:
 				newEquipment = indexes.leggingsIndex.searchByName("Default");
-				break;
+		        break;
 
 			case BOOTS:
 				newEquipment = indexes.bootsIndex.searchByName("Default");
-				break;
+		        break;
 
 			case WEAPON:
 				newEquipment = indexes.weaponIndex.searchByName("Default");
-				break;
+		        break;
 		}
 	}
 
@@ -107,23 +106,23 @@ void Hero::changeEquipment(EquipmentType type, Equipment *newEquipment)
 		{
 			case HELMET:
 				helmet = newEquipment;
-				break;
+		        break;
 
 			case CHESTPLATE:
 				chestplate = newEquipment;
-				break;
+		        break;
 
 			case LEGGINGS:
 				leggings = newEquipment;
-				break;
+		        break;
 
 			case BOOTS:
 				boots = newEquipment;
-				break;
+		        break;
 
 			case WEAPON:
 				weapon = (Weapon *)newEquipment;
-				break;
+		        break;
 		}
 	}
 

@@ -37,10 +37,10 @@ public:
 	virtual double result(double x) = 0;
 
 	/**
-    * \brief Applies the function for the given number
-    * \param[in] x Number to give to the math function
-    * \return \f$ f(x) \f$
-    */
+	* \brief Applies the function for the given number
+	* \param[in] x Number to give to the math function
+	* \return \f$ f(x) \f$
+	*/
 
 	virtual double result(int x) = 0;
 
@@ -63,7 +63,7 @@ public:
 protected:
 
 	int minimalXValue, ///< Minimal value of x as handled in the game. -1 is none
-		maximalXValue; ///< Maximal value of x as handled in the game. -1 is none
+	    maximalXValue; ///< Maximal value of x as handled in the game. -1 is none
 };
 
 /**
@@ -85,11 +85,11 @@ public:
 	*/
 
 	ThirdPowerFunction(double yIntercept = 0,
-						   double firstPowerFactor = 0,
-						   double secondPowerFactor = 0,
-						   double thirdPowerFactor = 0,
-						   int minimalXValue = -1,
-						   int maximalXValue = -1);
+	                   double firstPowerFactor = 0,
+	                   double secondPowerFactor = 0,
+	                   double thirdPowerFactor = 0,
+	                   int minimalXValue = -1,
+	                   int maximalXValue = -1);
 
 	virtual double result(double x);
 
@@ -98,9 +98,9 @@ public:
 protected:
 
 	double thirdPowerFactor, ///< Factor of \f$ x^3 \f$ when calculating \f$ f(x) \f$
-		   secondPowerFactor, ///< Factor of \f$ x^2 \f$ when calculating \f$ f(x) \f$
-		   firstPowerFactor, ///< Factor of \f$ x \f$ when calculating \f$ f(x) \f$
-		   yIntercept; ///< Value of \f$ f(x) \f$ when \f$ x=0 \f$
+	       secondPowerFactor, ///< Factor of \f$ x^2 \f$ when calculating \f$ f(x) \f$
+	       firstPowerFactor, ///< Factor of \f$ x \f$ when calculating \f$ f(x) \f$
+	       yIntercept; ///< Value of \f$ f(x) \f$ when \f$ x=0 \f$
 
 };
 
@@ -123,11 +123,11 @@ public:
 	*/
 
 	InvertFunction(double yIntercept = 0,
-					   double firstPowerFactor = 0,
-					   double secondPowerFactor = 0,
-					   double thirdPowerFactor = 0,
-					   int minimalXValue = -1,
-					   int maximalXValue = -1);
+	               double firstPowerFactor = 0,
+	               double secondPowerFactor = 0,
+	               double thirdPowerFactor = 0,
+	               int minimalXValue = -1,
+	               int maximalXValue = -1);
 
 	virtual double result(double x);
 
@@ -136,9 +136,9 @@ public:
 protected:
 
 	double thirdPowerFactor, ///< Factor of \f$ cbrt(x) \f$ when calculating \f$ f(x) \f$
-		   secondPowerFactor, ///< Factor of \f$ sqrt(x) \f$ when calculating \f$ f(x) \f$
-		   firstPowerFactor, ///< Factor of \f$ x \f$ when calculating \f$ f(x) \f$
-		   yIntercept; ///< Value of \f$ f(x) \f$ when \f$ x=0 \f$
+	       secondPowerFactor, ///< Factor of \f$ sqrt(x) \f$ when calculating \f$ f(x) \f$
+	       firstPowerFactor, ///< Factor of \f$ x \f$ when calculating \f$ f(x) \f$
+	       yIntercept; ///< Value of \f$ f(x) \f$ when \f$ x=0 \f$
 
 };
 
@@ -159,11 +159,7 @@ public:
 	* \param[in] maximalXValue Maximal value of x as handled in the game. -1 is none
 	*/
 
-	RecurrentSequence(double valueAtMinimumX = 0,
-						  double commonDifference = 0,
-						  double commonRatio = 1,
-						  int minimalXValue = 0,
-						  int maximalXValue = -1);
+	RecurrentSequence(double valueAtMinimumX = 0, double commonDifference = 0, double commonRatio = 1, int minimalXValue = 0, int maximalXValue = -1);
 
 	virtual double result(double x);
 
@@ -172,8 +168,8 @@ public:
 protected:
 
 	double valueAtMinimumX, ///< Value of \f$ u(x) \f$ at the minimum value of x
-		   commonDifference, ///< Value to add to the sequence at each occuring
-		   commonRatio; ///< Value to multiply the sequence with at each occuring
+	       commonDifference, ///< Value to add to the sequence at each occuring
+	       commonRatio; ///< Value to multiply the sequence with at each occuring
 };
 
 /**
@@ -195,11 +191,11 @@ public:
 	*/
 
 	SequenceUsing_Sequence(double valueAtMinimumX = 0,
-							   double commonDifference = 0,
-							   double commonRatio = 1,
-							   RecurrentSequence usedSequence = RecurrentSequence(),
-							   int minimalXValue = 0,
-							   int maximalXValue = -1);
+	                       double commonDifference = 0,
+	                       double commonRatio = 1,
+	                       RecurrentSequence usedSequence = RecurrentSequence(),
+	                       int minimalXValue = 0,
+	                       int maximalXValue = -1);
 
 	virtual double result(double x);
 
@@ -229,11 +225,11 @@ public:
 	*/
 
 	ExponentialFunction(bool negativeOfExponential = false,
-						double exponentialFactor = 1,
-						double horizontalTranslater = 0,
-						double verticalTranslater = 0,
-						int minimalXValue = -1,
-						int maximalXValue = -1);
+	                    double exponentialFactor = 1,
+	                    double horizontalTranslater = 0,
+	                    double verticalTranslater = 0,
+	                    int minimalXValue = -1,
+	                    int maximalXValue = -1);
 
 	virtual double result(double x);
 
@@ -243,8 +239,8 @@ protected:
 
 	bool   negativeOfExponential; ///< Whether the exponential factor is inverted or not
 	double exponentialFactor, ///< Factor of the exponential
-		   horizontalTranslater, ///< Horizontal translater of the function
-		   verticalTranslater; ///< Vertical translater of the function
+	       horizontalTranslater, ///< Horizontal translater of the function
+	       verticalTranslater; ///< Vertical translater of the function
 };
 
 /// @}

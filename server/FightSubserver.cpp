@@ -5,7 +5,7 @@
 using namespace std;
 using namespace sf;
 
-FightSubserver::FightSubserver():
+FightSubserver::FightSubserver() :
 		clients(),
 		serverThread(&FightSubserver::threadFunction, this),
 		stopSubServer(0),
@@ -35,11 +35,11 @@ void FightSubserver::reset()
 	disconnect(false);
 }
 
-ServerClient* FightSubserver::connect(TcpListener *listener, SocketSelector *socketSelector)
+ServerClient *FightSubserver::connect(TcpListener *listener, SocketSelector *socketSelector)
 {
-	ServerClient                    *concernedClient(nullptr);
+	ServerClient               *concernedClient(nullptr);
 	vector<EntityInformations> *concernedTeamVector(nullptr);
-	bool                            isClient1(false);
+	bool                       isClient1(false);
 
 	if (clients[0].isSocketFree())
 	{
@@ -105,7 +105,7 @@ ServerClient* FightSubserver::connect(TcpListener *listener, SocketSelector *soc
 	return concernedClient;
 }
 
-ServerClient* FightSubserver::disconnect(bool isClient1)
+ServerClient *FightSubserver::disconnect(bool isClient1)
 {
 	if (isClient1)
 	{
@@ -124,7 +124,7 @@ ServerClient* FightSubserver::disconnect(bool isClient1)
 void FightSubserver::newEvent(SentInfosType infoType, const EventsUnion &eventInfos, bool isTeam1)
 {
 	eventsStructure.typeOfEvent    = infoType;
-	eventsStructure.infos    	   = eventInfos;
+	eventsStructure.infos          = eventInfos;
 	eventsStructure.team1          = isTeam1;
 	eventsStructure.isEventTreated = false;
 }

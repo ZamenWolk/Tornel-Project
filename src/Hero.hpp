@@ -70,14 +70,12 @@ public:
 
 protected:
 
-	int experiencePoints; ///< Number of experience points the hero have
-
-	Weapon 			 *weapon; ///< Weapon the hero is wearing
-
-	Equipment 		 *helmet, ///< Helmet the hero is wearing
-			   		 *chestplate, ///< Chestplate the hero is wearing
-			   		 *leggings, ///< Leggings the hero is wearing
-			   		 *boots; ///< Boots the hero is wearing
+	int       experiencePoints; ///< Number of experience points the hero have
+	Weapon    *weapon; ///< Weapon the hero is wearing
+	Equipment *helmet, ///< Helmet the hero is wearing
+	          *chestplate, ///< Chestplate the hero is wearing
+	          *leggings, ///< Leggings the hero is wearing
+	          *boots; ///< Boots the hero is wearing
 };
 
 /// @}

@@ -3,7 +3,8 @@
 using namespace std;
 
 MathFunction::MathFunction(int minimalXValue, int maximalXValue) :
-		minimalXValue(minimalXValue), maximalXValue(maximalXValue)
+		minimalXValue(minimalXValue),
+		maximalXValue(maximalXValue)
 {
 
 }
@@ -19,11 +20,11 @@ int MathFunction::iresult(int x)
 }
 
 ThirdPowerFunction::ThirdPowerFunction(double yIntercept,
-									   double firstPowerFactor,
-									   double secondPowerFactor,
-									   double thirdPowerFactor,
-									   int minimalXValue,
-									   int maximalXValue) :
+                                       double firstPowerFactor,
+                                       double secondPowerFactor,
+                                       double thirdPowerFactor,
+                                       int minimalXValue,
+                                       int maximalXValue) :
 		MathFunction(minimalXValue, maximalXValue),
 		thirdPowerFactor(thirdPowerFactor),
 		secondPowerFactor(secondPowerFactor),
@@ -67,11 +68,11 @@ double ThirdPowerFunction::result(int x)
 }
 
 InvertFunction::InvertFunction(double yIntercept,
-							   double firstPowerFactor,
-							   double secondPowerFactor,
-							   double thirdPowerFactor,
-							   int minimalXValue,
-							   int maximalXValue) :
+                               double firstPowerFactor,
+                               double secondPowerFactor,
+                               double thirdPowerFactor,
+                               int minimalXValue,
+                               int maximalXValue) :
 		MathFunction(minimalXValue, maximalXValue),
 		thirdPowerFactor(thirdPowerFactor),
 		secondPowerFactor(secondPowerFactor),
@@ -114,11 +115,7 @@ double InvertFunction::result(int x)
 	}
 }
 
-RecurrentSequence::RecurrentSequence(double valueAtMinimumX,
-									 double commonDifference,
-									 double commonRatio,
-									 int minimalXValue,
-									 int maximalXValue) :
+RecurrentSequence::RecurrentSequence(double valueAtMinimumX, double commonDifference, double commonRatio, int minimalXValue, int maximalXValue) :
 		MathFunction(minimalXValue, maximalXValue),
 		valueAtMinimumX(valueAtMinimumX),
 		commonDifference(commonDifference),
@@ -162,11 +159,11 @@ double RecurrentSequence::result(int x)
 }
 
 SequenceUsing_Sequence::SequenceUsing_Sequence(double valueAtMinimumX,
-											   double commonDifference,
-											   double commonRatio,
-											   RecurrentSequence usedSequence,
-											   int minimalXValue,
-											   int maximalXValue) :
+                                               double commonDifference,
+                                               double commonRatio,
+                                               RecurrentSequence usedSequence,
+                                               int minimalXValue,
+                                               int maximalXValue) :
 		RecurrentSequence(valueAtMinimumX, commonDifference, commonRatio, minimalXValue, maximalXValue),
 		usedSequence(usedSequence)
 {
@@ -208,11 +205,11 @@ double SequenceUsing_Sequence::result(int x)
 }
 
 ExponentialFunction::ExponentialFunction(bool negativeOfExponential,
-										 double exponentialFactor,
-										 double horizontalTranslater,
-										 double verticalTranslater,
-										 int minimalXValue,
-										 int maximalXValue) :
+                                         double exponentialFactor,
+                                         double horizontalTranslater,
+                                         double verticalTranslater,
+                                         int minimalXValue,
+                                         int maximalXValue) :
 		MathFunction(minimalXValue, maximalXValue),
 		negativeOfExponential(negativeOfExponential),
 		exponentialFactor(exponentialFactor),

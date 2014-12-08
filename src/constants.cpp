@@ -25,9 +25,9 @@ void errorReport(string errorMessage, bool isFatal)
 	strftime(buffer, 100, "[%d/%m/%y %H:%M:%S]", timeinfo);
 
 	//Prints the strings in the console and the error log file
-	#ifndef NDEBUG
+#ifndef NDEBUG
 	cerr << buffer << " " << errorMessage << endl;
-	#endif
+#endif
 	errlog << buffer << " " << errorMessage << endl;
 
 	if (isFatal)
@@ -48,7 +48,7 @@ void logReport(string logMessage, bool hidden)
 
 	//Prints the strings in the console and the event log file
 
-	#ifdef NDEBUG
+#ifdef NDEBUG
 	if (!hidden)
 	#endif
 	cout << logMessage << endl;
