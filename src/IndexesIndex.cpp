@@ -1,5 +1,8 @@
 #include "IndexesIndex.hpp"
 
+using namespace std;
+using namespace sf;
+
 IndexesIndex::IndexesIndex():
 		heroClassIndex("Hero classes"),
 		monsterIndex("Monsters"),
@@ -33,7 +36,7 @@ void IndexesIndex::heroClassInit()
 									  ThirdPowerFunction(1),
 									  ThirdPowerFunction(1),
 									  UsableEquipTypes(),
-									  std::vector<LevelingSkill>()));
+									  vector<LevelingSkill>()));
 	heroClassIndex.addEntry(HeroClass("Arcanist",
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
@@ -43,7 +46,7 @@ void IndexesIndex::heroClassInit()
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  UsableEquipTypes(),
-									  std::vector<LevelingSkill>()));
+									  vector<LevelingSkill>()));
 	heroClassIndex.addEntry(HeroClass("Arnegon",
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
@@ -53,7 +56,7 @@ void IndexesIndex::heroClassInit()
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  UsableEquipTypes(),
-									  std::vector<LevelingSkill>()));
+									  vector<LevelingSkill>()));
 	heroClassIndex.addEntry(HeroClass("Barrkian",
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
@@ -63,7 +66,7 @@ void IndexesIndex::heroClassInit()
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  UsableEquipTypes(),
-									  std::vector<LevelingSkill>()));
+									  vector<LevelingSkill>()));
 	heroClassIndex.addEntry(HeroClass("Knight",
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
 									  ThirdPowerFunction(5.8302f, 0.1689f, 0.000844531f),
@@ -73,7 +76,7 @@ void IndexesIndex::heroClassInit()
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  UsableEquipTypes(),
-									  std::vector<LevelingSkill>()));
+									  vector<LevelingSkill>()));
 	heroClassIndex.addEntry(HeroClass("White mage",
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
@@ -83,7 +86,7 @@ void IndexesIndex::heroClassInit()
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  UsableEquipTypes(),
-									  std::vector<LevelingSkill>()));
+									  vector<LevelingSkill>()));
 	heroClassIndex.addEntry(HeroClass("Black mage",
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
@@ -93,7 +96,7 @@ void IndexesIndex::heroClassInit()
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  UsableEquipTypes(),
-									  std::vector<LevelingSkill>()));
+									  vector<LevelingSkill>()));
 	heroClassIndex.addEntry(HeroClass("Shalian",
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
@@ -103,7 +106,7 @@ void IndexesIndex::heroClassInit()
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  UsableEquipTypes(),
-									  std::vector<LevelingSkill>()));
+									  vector<LevelingSkill>()));
 	heroClassIndex.addEntry(HeroClass("Assassin",
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
 									  ThirdPowerFunction(22.6f, 2.47f, -0.007f),
@@ -113,7 +116,7 @@ void IndexesIndex::heroClassInit()
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  ThirdPowerFunction(7.7f, 2.3f, -0.007f),
 									  UsableEquipTypes(),
-									  std::vector<LevelingSkill>()));
+									  vector<LevelingSkill>()));
 }
 
 void IndexesIndex::monsterInit()
@@ -126,8 +129,8 @@ void IndexesIndex::monsterInit()
 									   ThirdPowerFunction(3, 2),
 									   ThirdPowerFunction(3, 2),
 									   ThirdPowerFunction(3, 2),
-									   std::vector<Skill *>(0),
-									   WeaponEffects(3, sf::milliseconds(1500))));
+									   vector<Skill *>(0),
+									   WeaponEffects(3, milliseconds(1500))));
 }
 
 void IndexesIndex::spellInit()
@@ -172,20 +175,20 @@ void IndexesIndex::bootsInit()
 
 void IndexesIndex::mapsInit()
 {
-	keyboardMap["characterMenu"] = thor::Action(sf::Keyboard::A, thor::Action::PressOnce);
-	keyboardMap["targetMenu"]    = thor::Action(sf::Keyboard::Z, thor::Action::PressOnce);
-	keyboardMap["abilityMenu"]   = thor::Action(sf::Keyboard::E, thor::Action::PressOnce);
-	keyboardMap["spellMenu"]     = thor::Action(sf::Keyboard::R, thor::Action::PressOnce);
-	keyboardMap["weaponAttack"]  = thor::Action(sf::Keyboard::D, thor::Action::PressOnce);
-	keyboardMap["mainMenu"]      = thor::Action(sf::Keyboard::Numpad8, thor::Action::PressOnce);
-	keyboardMap["precPage"]      = thor::Action(sf::Keyboard::Numpad7, thor::Action::PressOnce);
-	keyboardMap["nextPage"]      = thor::Action(sf::Keyboard::Numpad9, thor::Action::PressOnce);
-	keyboardMap["selector1"]     = thor::Action(sf::Keyboard::Numpad4, thor::Action::PressOnce);
-	keyboardMap["selector2"]     = thor::Action(sf::Keyboard::Numpad5, thor::Action::PressOnce);
-	keyboardMap["selector3"]     = thor::Action(sf::Keyboard::Numpad6, thor::Action::PressOnce);
-	keyboardMap["selector4"]     = thor::Action(sf::Keyboard::Numpad1, thor::Action::PressOnce);
-	keyboardMap["selector5"]     = thor::Action(sf::Keyboard::Numpad2, thor::Action::PressOnce);
-	keyboardMap["selector6"]     = thor::Action(sf::Keyboard::Numpad3, thor::Action::PressOnce);
+	keyboardMap["characterMenu"] = thor::Action(Keyboard::A, thor::Action::PressOnce);
+	keyboardMap["targetMenu"]    = thor::Action(Keyboard::Z, thor::Action::PressOnce);
+	keyboardMap["abilityMenu"]   = thor::Action(Keyboard::E, thor::Action::PressOnce);
+	keyboardMap["spellMenu"]     = thor::Action(Keyboard::R, thor::Action::PressOnce);
+	keyboardMap["weaponAttack"]  = thor::Action(Keyboard::D, thor::Action::PressOnce);
+	keyboardMap["mainMenu"]      = thor::Action(Keyboard::Numpad8, thor::Action::PressOnce);
+	keyboardMap["precPage"]      = thor::Action(Keyboard::Numpad7, thor::Action::PressOnce);
+	keyboardMap["nextPage"]      = thor::Action(Keyboard::Numpad9, thor::Action::PressOnce);
+	keyboardMap["selector1"]     = thor::Action(Keyboard::Numpad4, thor::Action::PressOnce);
+	keyboardMap["selector2"]     = thor::Action(Keyboard::Numpad5, thor::Action::PressOnce);
+	keyboardMap["selector3"]     = thor::Action(Keyboard::Numpad6, thor::Action::PressOnce);
+	keyboardMap["selector4"]     = thor::Action(Keyboard::Numpad1, thor::Action::PressOnce);
+	keyboardMap["selector5"]     = thor::Action(Keyboard::Numpad2, thor::Action::PressOnce);
+	keyboardMap["selector6"]     = thor::Action(Keyboard::Numpad3, thor::Action::PressOnce);
 	keyboardMap["charSelector"]  = keyboardMap["selector1"] || keyboardMap["selector2"] || keyboardMap["selector3"] || keyboardMap["selector4"] || keyboardMap["selector5"];
 	keyboardMap["selector"]      = keyboardMap["selector6"] || keyboardMap["charSelector"];
 }

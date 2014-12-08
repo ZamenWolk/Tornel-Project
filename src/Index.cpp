@@ -1,8 +1,11 @@
 #include "IndexesIndex.hpp"
 
+using namespace std;
+using namespace sf;
+
 extern IndexesIndex indexes;
 
-EntityClass::EntityClass(std::string name,
+EntityClass::EntityClass(string name,
 						 ThirdPowerFunction maxLifeIncrement,
 				   		 ThirdPowerFunction maxManaIncrement,
 						 ThirdPowerFunction maxStaminaIncrement,
@@ -22,12 +25,12 @@ EntityClass::EntityClass(std::string name,
 
 }
 
-std::string EntityClass::getName() const
+string EntityClass::getName() const
 {
 	return name;
 }
 
-bool UsableEquipTypes::addUsableType(std::string &typeName, EquipmentType equipmentType)
+bool UsableEquipTypes::addUsableType(string &typeName, EquipmentType equipmentType)
 {
 	bool isAdded(false);
 	switch (equipmentType)
@@ -77,39 +80,39 @@ bool UsableEquipTypes::addUsableType(std::string &typeName, EquipmentType equipm
 	return isAdded;
 }
 
-UsableEquipTypes::UsableEquipTypes(std::vector<std::string> helmetTypes,
-								   std::vector<std::string> chestTypes,
-								   std::vector<std::string> leggingsTypes,
-								   std::vector<std::string> bootsTypes,
-								   std::vector<std::string> weaponTypes)
+UsableEquipTypes::UsableEquipTypes(vector<string> helmetTypes,
+								   vector<string> chestTypes,
+								   vector<string> leggingsTypes,
+								   vector<string> bootsTypes,
+								   vector<string> weaponTypes)
 {
-	for(std::vector<std::string>::iterator it = helmetTypes.begin(); it != helmetTypes.end(); it++)
+	for(vector<string>::iterator it = helmetTypes.begin(); it != helmetTypes.end(); it++)
 	{
 		addUsableType(*it, HELMET);
 	}
 
-	for(std::vector<std::string>::iterator it = chestTypes.begin(); it != chestTypes.end(); it++)
+	for(vector<string>::iterator it = chestTypes.begin(); it != chestTypes.end(); it++)
 	{
 		addUsableType(*it, CHESTPLATE);
 	}
 
-	for(std::vector<std::string>::iterator it = leggingsTypes.begin(); it != leggingsTypes.end(); it++)
+	for(vector<string>::iterator it = leggingsTypes.begin(); it != leggingsTypes.end(); it++)
 	{
 		addUsableType(*it, LEGGINGS);
 	}
 
-	for(std::vector<std::string>::iterator it = bootsTypes.begin(); it != bootsTypes.end(); it++)
+	for(vector<string>::iterator it = bootsTypes.begin(); it != bootsTypes.end(); it++)
 	{
 		addUsableType(*it, BOOTS);
 	}
 
-	for(std::vector<std::string>::iterator it = weaponTypes.begin(); it != weaponTypes.end(); it++)
+	for(vector<string>::iterator it = weaponTypes.begin(); it != weaponTypes.end(); it++)
 	{
 		addUsableType(*it, WEAPON);
 	}
 }
 
-HeroClass::HeroClass(std::string name,
+HeroClass::HeroClass(string name,
 					 ThirdPowerFunction maxLifeIncrement,
 				   	 ThirdPowerFunction maxManaIncrement,
 					 ThirdPowerFunction maxStaminaIncrement,
@@ -118,7 +121,7 @@ HeroClass::HeroClass(std::string name,
 				   	 ThirdPowerFunction toughnessIncrement,
 				   	 ThirdPowerFunction mentalResistanceIncrement,
 				   	 UsableEquipTypes usableTypes,
-				   	 std::vector<LevelingSkill> learnableSkills):
+				   	 vector<LevelingSkill> learnableSkills):
 				EntityClass(name,
 						maxLifeIncrement,
 						maxManaIncrement,
@@ -133,12 +136,12 @@ HeroClass::HeroClass(std::string name,
 
 }
 
-std::vector<LevelingSkill> HeroClass::getSkills()
+vector<LevelingSkill> HeroClass::getSkills()
 {
 	return learnableSkills;
 }
 
-MonsterClass::MonsterClass(std::string name,
+MonsterClass::MonsterClass(string name,
 						   ThirdPowerFunction maxLifeIncrement,
 						   ThirdPowerFunction maxManaIncrement,
 						   ThirdPowerFunction maxStaminaIncrement,
@@ -146,7 +149,7 @@ MonsterClass::MonsterClass(std::string name,
 						   ThirdPowerFunction wisdomIncrement,
 						   ThirdPowerFunction toughnessIncrement,
 						   ThirdPowerFunction mentalResistanceIncrement,
-						   std::vector<Skill *> skills,
+						   vector<Skill *> skills,
 						   WeaponEffects effects):
 						EntityClass(name,
 								maxLifeIncrement,
@@ -162,10 +165,10 @@ MonsterClass::MonsterClass(std::string name,
 
 }
 
-std::vector<LevelingSkill> MonsterClass::getSkills()
+vector<LevelingSkill> MonsterClass::getSkills()
 {
-	std::vector<LevelingSkill> leveledSkills;
-	for (std::vector<Skill *>::iterator it = skills.begin(); it != skills.end(); it++)
+	vector<LevelingSkill> leveledSkills;
+	for (vector<Skill *>::iterator it = skills.begin(); it != skills.end(); it++)
 	{
 		leveledSkills.push_back(LevelingSkill(*it));
 	}

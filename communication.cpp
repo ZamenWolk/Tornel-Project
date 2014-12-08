@@ -1,13 +1,16 @@
 #include "communication.hpp"
 
-sf::Packet &emptyPacket(sf::Packet &packet)
+using namespace std;
+using namespace sf;
+
+Packet &emptyPacket(Packet &packet)
 {
 	int x;
 	while (packet >> x);
 	return packet;
 }
 
-sf::Packet &infoTypeInPacket(sf::Packet &packet, SentInfosType &type)
+Packet &infoTypeInPacket(Packet &packet, SentInfosType &type)
 {
 	packet >> type;
 	return packet;

@@ -1,11 +1,14 @@
 #include "Menu.hpp"
 
+using namespace std;
+using namespace sf;
+
 Menu::Menu()
 {
 
 }
 
-std::string Menu::Run(sf::RenderWindow &app, std::map<std::string, Screen *> &screens)
+string Menu::Run(RenderWindow &app, map<string, Screen *> &screens)
 {
 	logReport("Lol test 1 2");
 

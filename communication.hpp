@@ -156,9 +156,9 @@ template<typename T>
 sf::Packet &createPacket(sf::Packet &packet, const T &infos, SentInfosType type)
 {
 	if (   (typeid(infos) == typeid(const VersionNumber) 			  && type == VERSION_NUMBER)
-	    || (typeid(infos) == typeid(const InteractionInfos)   		  && type == FIGHT_INTERACTION)
-		|| (typeid(infos) == typeid(tm) 				  			  && type == TIME)
-		|| (typeid(infos) == typeid(const std::vector<CombatEntity>)  && type == TEAM_DATA)
+	    || (typeid(infos) == typeid(const InteractionInfos)   		  && type == CTS_INTERACTION)
+		|| (typeid(infos) == typeid(const tm) 				  		  && type == TIME)
+		|| (typeid(infos) == typeid(const std::vector<CombatEntity>)  && type == CTS_TEAM_DATA)
 		|| (typeid(infos) == typeid(const int) 						  && (type == PING || type == PONG)))
 	{
 		return packet << type << infos;
@@ -176,9 +176,9 @@ template<typename T>
 sf::Packet &deconstructPacket(sf::Packet &packet, T &infos, SentInfosType type)
 {
 	if (   (typeid(infos) == typeid(VersionNumber) 			 	&& type == VERSION_NUMBER)
-	    || (typeid(infos) == typeid(InteractionInfos)   		&& type == FIGHT_INTERACTION)
+	    || (typeid(infos) == typeid(InteractionInfos)   		&& type == CTS_INTERACTION)
 	    || (typeid(infos) == typeid(tm) 				  		&& type == TIME)
-	    || (typeid(infos) == typeid(std::vector<CombatEntity>)  && type == TEAM_DATA)
+	    || (typeid(infos) == typeid(std::vector<CombatEntity>)  && type == CTS_TEAM_DATA)
 	    || (typeid(infos) == typeid(int) 						&& (type == PING || type == PONG)))
 	{
 		return packet >> infos;
@@ -190,7 +190,7 @@ sf::Packet &deconstructPacket(sf::Packet &packet, T &infos, SentInfosType type)
 	}
 }
 
-sf::Packet & emptyPacket(sf::Packet &packet);
+sf::Packet &emptyPacket(sf::Packet &packet);
 
 /// @}
 

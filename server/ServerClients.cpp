@@ -1,12 +1,15 @@
 #include "ServerClients.hpp"
 
+using namespace std;
+using namespace sf;
+
 ServerClient::ServerClient() :
 		isFree(true), socketSelector(0), lastInteractionClock()
 {
 
 }
 
-void ServerClient::connect(sf::TcpListener &listener, sf::SocketSelector *selector)
+void ServerClient::connect(TcpListener &listener, SocketSelector *selector)
 {
 	listener.accept(*this);
 	socketSelector = selector;
@@ -19,7 +22,7 @@ void ServerClient::connect(sf::TcpListener &listener, sf::SocketSelector *select
 
 void ServerClient::disconnect()
 {
-	sf::TcpSocket::disconnect();
+	TcpSocket::disconnect();
 	if (socketSelector != 0)
 	{
 		socketSelector->remove(*this);
@@ -33,23 +36,23 @@ bool ServerClient::isSocketFree() const
 	return isFree;
 }
 
-sf::Socket::Status ServerClient::send(sf::Packet &packet)
+Socket::Status ServerClient::send(Packet &packet)
 {
 	lastInteractionClock.restart();
-	sf::Socket::Status status = TcpSocket::send(packet);
+	Socket::Status status = TcpSocket::send(packet);
 	lastInteractionClock.restart();
 	return status;
 }
 
-sf::Socket::Status ServerClient::receive(sf::Packet &packet)
+Socket::Status ServerClient::receive(Packet &packet)
 {
 	lastInteractionClock.restart();
-	sf::Socket::Status status = TcpSocket::receive(packet);
+	Socket::Status status = TcpSocket::receive(packet);
 	lastInteractionClock.restart();
 	return status;
 }
 
-sf::Time ServerClient::timeSinceLastInteraction() const
+Time ServerClient::timeSinceLastInteraction() const
 {
 	return lastInteractionClock.getElapsedTime();
 }

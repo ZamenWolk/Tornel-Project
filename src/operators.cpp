@@ -6,11 +6,14 @@
 #include "operators.hpp"
 #include "Combat.hpp"
 
-sf::Packet &operator<<(sf::Packet &packet, const std::vector<Skill *> &source)
+using namespace std;
+using namespace sf;
+
+Packet &operator<<(Packet &packet, const vector<Skill *> &source)
 {
 	packet << source.size();
 
-	for (std::vector<Skill *>::const_iterator it = source.begin(); it != source.end(); it++)
+	for (vector<Skill *>::const_iterator it = source.begin(); it != source.end(); it++)
 	{
 		packet << (*it)->getName();
 	}
@@ -18,7 +21,7 @@ sf::Packet &operator<<(sf::Packet &packet, const std::vector<Skill *> &source)
 	return packet;
 }
 
-sf::Packet &operator>>(sf::Packet &packet, ActionType &action)
+Packet &operator>>(Packet &packet, ActionType &action)
 {
 	int actionNumber;
 	packet >> actionNumber;
@@ -44,7 +47,7 @@ sf::Packet &operator>>(sf::Packet &packet, ActionType &action)
 	return packet;
 }
 
-sf::Packet &operator>>(sf::Packet &packet, SpecialAttribute &attribute)
+Packet &operator>>(Packet &packet, SpecialAttribute &attribute)
 {
 	int attributeNumber;
 	packet >> attributeNumber;
@@ -76,7 +79,7 @@ sf::Packet &operator>>(sf::Packet &packet, SpecialAttribute &attribute)
 	return packet;
 }
 
-sf::Packet &operator>>(sf::Packet &packet, AttackType &attackType)
+Packet &operator>>(Packet &packet, AttackType &attackType)
 {
 	int typeNumber;
 	packet >> typeNumber;
@@ -99,23 +102,23 @@ sf::Packet &operator>>(sf::Packet &packet, AttackType &attackType)
 	return packet;
 }
 
-sf::Packet &operator<<(sf::Packet &packet, const CombatEffects &source)
+Packet &operator<<(Packet &packet, const CombatEffects &source)
 {
 	return packet << source.life << source.mana << source.stamina << source.strength << source.wisdom << source.toughness << source.mentalResistance << source.baseDamage << source.cooldownTime.asMilliseconds();
 }
 
-sf::Packet &operator>>(sf::Packet &packet, CombatEffects &source)
+Packet &operator>>(Packet &packet, CombatEffects &source)
 {
 	int cooldownTime;
 
 	packet >> source.life >> source.mana >> source.stamina >> source.strength >> source.wisdom >> source.toughness >> source.mentalResistance >> source.baseDamage >> cooldownTime;
 
-	source.cooldownTime = sf::milliseconds(cooldownTime);
+	source.cooldownTime = milliseconds(cooldownTime);
 
 	return packet;
 }
 
-sf::Packet &operator>>(sf::Packet &packet, EntityInformations &entity)
+Packet &operator>>(Packet &packet, EntityInformations &entity)
 {
 	packet >> entity.ID;
 	packet >> entity.name;
@@ -128,7 +131,7 @@ sf::Packet &operator>>(sf::Packet &packet, EntityInformations &entity)
 
 	for (int i = 0; i < vectorSize; i++)
 	{
-		std::string skillName;
+		string skillName;
 		packet >> skillName;
 
 		entity.knownAbilities.push_back(indexes.skillIndex.searchByName(skillName));
@@ -138,7 +141,7 @@ sf::Packet &operator>>(sf::Packet &packet, EntityInformations &entity)
 
 	for (int i = 0; i < vectorSize; i++)
 	{
-		std::string skillName;
+		string skillName;
 		packet >> skillName;
 
 		entity.knownSpells.push_back(indexes.skillIndex.searchByName(skillName));
@@ -149,7 +152,7 @@ sf::Packet &operator>>(sf::Packet &packet, EntityInformations &entity)
 	return packet;
 }
 
-sf::Packet &operator>>(sf::Packet &packet, std::vector<EntityInformations> &teamVector)
+Packet &operator>>(Packet &packet, vector<EntityInformations> &teamVector)
 {
 	int numberOfElements(0);
 
@@ -167,9 +170,9 @@ sf::Packet &operator>>(sf::Packet &packet, std::vector<EntityInformations> &team
 	return packet;
 }
 
-sf::Packet &operator<<(sf::Packet &packet, const CombatEntity &entity)
+Packet &operator<<(Packet &packet, const CombatEntity &entity)
 {
-	packet << (sf::Uint32)(entity.getEntity()->getID());
+	packet << (Uint32)(entity.getEntity()->getID());
 	packet << entity.getEntity()->getName();
 	packet << entity.getEntity()->getLife();
 	packet << entity.getEntity()->getMana();
@@ -181,7 +184,7 @@ sf::Packet &operator<<(sf::Packet &packet, const CombatEntity &entity)
 	return packet;
 }
 
-sf::Packet &operator<<(sf::Packet &packet, const EntityInformations &entity)
+Packet &operator<<(Packet &packet, const EntityInformations &entity)
 {
 	packet << entity.ID;
 	packet << entity.name;
@@ -195,28 +198,28 @@ sf::Packet &operator<<(sf::Packet &packet, const EntityInformations &entity)
 	return packet;
 }
 
-sf::Packet &operator<<(sf::Packet &packet, const InteractionInfos &infos)
+Packet &operator<<(Packet &packet, const InteractionInfos &infos)
 {
 	return packet << infos.attackerID << infos.targetID << infos.type << infos.spellName;
 }
 
-sf::Packet &operator>>(sf::Packet &packet, InteractionInfos &infos)
+Packet &operator>>(Packet &packet, InteractionInfos &infos)
 {
 	return packet >> infos.attackerID >> infos.targetID >> infos.type >> infos.spellName;
 }
 
-sf::Packet &operator>>(sf::Packet &packet, SentInfosType &infosType)
+Packet &operator>>(Packet &packet, SentInfosType &infosType)
 {
 	int infosTypeNumber;
 	packet >> infosTypeNumber;
 
 	switch (infosTypeNumber)
 	{
-		case FIGHT_INTERACTION:
-			infosType = FIGHT_INTERACTION;
+		case CTS_INTERACTION:
+			infosType = CTS_INTERACTION;
 			break;
-		case TEAM_DATA:
-			infosType = TEAM_DATA;
+		case CTS_TEAM_DATA:
+			infosType = CTS_TEAM_DATA;
 			break;
 		case VERSION_NUMBER:
 			infosType = VERSION_NUMBER;
@@ -237,21 +240,21 @@ sf::Packet &operator>>(sf::Packet &packet, SentInfosType &infosType)
 	return packet;
 }
 
-sf::Packet &operator<<(sf::Packet &packet, const VersionNumber &version)
+Packet &operator<<(Packet &packet, const VersionNumber &version)
 {
 	return packet << version.status << version.major << version.minor << version.patch;
 }
 
-sf::Packet &operator>>(sf::Packet &packet, VersionNumber &version)
+Packet &operator>>(Packet &packet, VersionNumber &version)
 {
 	return packet >> version.status >> version.major >> version.minor >> version.patch;
 }
 
-sf::Packet &operator<<(sf::Packet &packet, const std::vector<CombatEntity> &team)
+Packet &operator<<(Packet &packet, const vector<CombatEntity> &team)
 {
 	packet << team.size();
 
-	for (std::vector<CombatEntity>::const_iterator it = team.begin(); it != team.end(); it++)
+	for (vector<CombatEntity>::const_iterator it = team.begin(); it != team.end(); it++)
 	{
 		packet << *it;
 	}
@@ -259,11 +262,11 @@ sf::Packet &operator<<(sf::Packet &packet, const std::vector<CombatEntity> &team
 	return packet;
 }
 
-sf::Packet &operator<<(sf::Packet &packet, const std::vector<EntityInformations> &team)
+Packet &operator<<(Packet &packet, const vector<EntityInformations> &team)
 {
 	packet << team.size();
 
-	for (std::vector<EntityInformations>::const_iterator it = team.begin(); it != team.end(); it++)
+	for (vector<EntityInformations>::const_iterator it = team.begin(); it != team.end(); it++)
 	{
 		packet << *it;
 	}
@@ -271,7 +274,7 @@ sf::Packet &operator<<(sf::Packet &packet, const std::vector<EntityInformations>
 	return packet;
 }
 
-sf::Packet &operator>>(sf::Packet &packet, std::vector<CombatEntity> &team)
+Packet &operator>>(Packet &packet, vector<CombatEntity> &team)
 {
 	int teamSize;
 	packet >> teamSize;
@@ -289,27 +292,27 @@ sf::Packet &operator>>(sf::Packet &packet, std::vector<CombatEntity> &team)
 	return packet;
 }
 
-sf::Packet &operator<<(sf::Packet &packet, const sf::Time &time)
+Packet &operator<<(Packet &packet, const Time &time)
 {
 	return packet << time.asMilliseconds();
 }
 
-sf::Packet &operator>>(sf::Packet &packet, sf::Time &time)
+Packet &operator>>(Packet &packet, Time &time)
 {
-	sf::Int32 timeMilliseconds;
+	Int32 timeMilliseconds;
 
 	packet >> timeMilliseconds;
-	time = sf::milliseconds(timeMilliseconds);
+	time = milliseconds(timeMilliseconds);
 
 	return packet;
 }
 
-sf::Packet &operator<<(sf::Packet &packet, const tm &time)
+Packet &operator<<(Packet &packet, const tm &time)
 {
 	return packet << time.tm_sec << time.tm_min << time.tm_hour << time.tm_mday << time.tm_mon << time.tm_year << time.tm_isdst;
 }
 
-sf::Packet &operator>>(sf::Packet &packet, tm &time)
+Packet &operator>>(Packet &packet, tm &time)
 {
 	return packet >> time.tm_sec >> time.tm_min >> time.tm_hour >> time.tm_mday >> time.tm_mon >> time.tm_year >> time.tm_isdst;
 }

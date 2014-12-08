@@ -3,7 +3,6 @@
 
 #include "FightSubserver.hpp"
 #include "fonctor.hpp"
-#include "../communication.hpp"
 
 using namespace std;
 using namespace sf;
@@ -73,14 +72,14 @@ int main()
 
 						EventsUnion				   eventsInfos;
 						SentInfosType              infosType;
-						sf::Packet                 receivedPacket;
+						Packet                 receivedPacket;
 
 						clientsVector[i]->receive(receivedPacket);
 						infoTypeInPacket(receivedPacket, infosType);
 
 						switch (infosType)
 						{
-							case FIGHT_INTERACTION:
+							case CTS_INTERACTION:
 								deconstructPacket(receivedPacket, eventsInfos.intEv, infosType);
 								subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
 								break;
@@ -88,7 +87,7 @@ int main()
 								deconstructPacket(receivedPacket, eventsInfos.versEv, infosType);
 								subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
 								break;
-							case TEAM_DATA:
+							case CTS_TEAM_DATA:
 								deconstructPacket(receivedPacket, eventsInfos.teamEv, infosType);
 								subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
 								break;
@@ -115,7 +114,7 @@ int main()
 			logReport("Searching for event");
 		}
 
-		sf::sleep(sf::milliseconds(25));
+		sleep(milliseconds(25));
 	}
 
 	logReport("Stopping the server");

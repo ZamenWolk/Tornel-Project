@@ -10,8 +10,8 @@ else()
 endif()
 
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../SFML-updated/cmake/Modules")
-set(SFML_ROOT "../SFML-updated")
+set(CMAKE_MODULE_PATH "C:/SFML/cmake/Modules")
+set(SFML_ROOT "C:/SFML")
 
 set(SFML_STATIC_LIBRARIES true)
 

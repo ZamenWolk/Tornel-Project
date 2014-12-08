@@ -1,5 +1,8 @@
 #include "Equipment.hpp"
 
+using namespace std;
+using namespace sf;
+
 Effects::Effects():
 		life(0), mana(0), stamina(0), strength(0), wisdom(0), toughness(0), mentalResistance(0)
 {
@@ -48,7 +51,7 @@ void Effects::operator+=(const Effects &a)
 }
 
 WeaponEffects::WeaponEffects():
-		baseDamage(3), cooldownTime(sf::milliseconds(1500))
+		baseDamage(3), cooldownTime(milliseconds(1500))
 {
 
 }
@@ -59,7 +62,7 @@ WeaponEffects::WeaponEffects(const WeaponEffects &weaponEffects):
 
 }
 
-WeaponEffects::WeaponEffects(int baseDamage, sf::Time cooldownTime):
+WeaponEffects::WeaponEffects(int baseDamage, Time cooldownTime):
 		baseDamage(baseDamage), cooldownTime(cooldownTime)
 {
 
@@ -85,14 +88,14 @@ CombatEffects::CombatEffects(int lifeGain,
 							 int toughnessGain,
 							 int mentalResistanceGain,
 							 int baseDamage,
-							 sf::Time cooldownTime) :
+							 Time cooldownTime) :
 		Effects(lifeGain, manaGain, staminaGain, strengthGain, wisdomGain, toughnessGain, mentalResistanceGain),
 		WeaponEffects(baseDamage, cooldownTime)
 {
 
 }
 
-Equipment::Equipment(std::string name, std::string type, Effects effects, int prerequisiteLevel, Effects prerequisites) :
+Equipment::Equipment(string name, string type, Effects effects, int prerequisiteLevel, Effects prerequisites) :
 		name(name), type(type), equipmentEffects(effects), prerequisites(prerequisites), prerequisiteLevel(prerequisiteLevel)
 {
 
@@ -105,12 +108,12 @@ Equipment::Equipment(const Equipment *equipment):
 
 }
 
-std::string Equipment::getName() const
+string Equipment::getName() const
 {
 	return name;
 }
 
-std::string Equipment::getType() const
+string Equipment::getType() const
 {
 	return type;
 }
@@ -163,8 +166,8 @@ int Equipment::getPrerequisiteLevel() const
 	return prerequisiteLevel;
 }
 
-Weapon::Weapon(const std::string &name,
-			   std::string type,
+Weapon::Weapon(const string &name,
+			   string type,
 			   const Effects &equipmentEffects,
 			   const WeaponEffects &weaponEffects) :
 		Equipment(name, type, equipmentEffects), weaponEffects(weaponEffects)

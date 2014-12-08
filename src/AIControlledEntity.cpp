@@ -1,6 +1,9 @@
 #include "AIControlledEntity.hpp"
 
-EntityModel::EntityModel(const std::string &name, int level, EntityClass *monsterClass):
+using namespace std;
+using namespace sf;
+
+EntityModel::EntityModel(const string &name, int level, EntityClass *monsterClass):
 					name(name),
 					level(level),
 					effects{0, 0, 0, monsterClass->strengthIncrement.iresult(level), monsterClass->wisdomIncrement.iresult(level),
@@ -9,7 +12,7 @@ EntityModel::EntityModel(const std::string &name, int level, EntityClass *monste
 					knownAbilities(0),
 					knownSpells(0)
 {
-	ID = ((sf::Uint32)((long long int)this%4200000000));
+	ID = ((Uint32)((long long int)this%4200000000));
 
 	effects.life = monsterClass->maxLifeIncrement.iresult(level);
 	effects.life += TOUGHNESS_TO_LIFE.result(effects.toughness);
@@ -125,7 +128,7 @@ bool EntityModel::isAlive() const
 	return life > 0;
 }
 
-std::string EntityModel::getName() const
+string EntityModel::getName() const
 {
 	return name;
 }
@@ -155,12 +158,12 @@ Effects EntityModel::getEffects() const
 	return effects;
 }
 
-std::vector<Skill *> EntityModel::getKnownAbilities() const
+vector<Skill *> EntityModel::getKnownAbilities() const
 {
 	return knownAbilities;
 }
 
-std::vector<Skill *> EntityModel::getKnownSpells() const
+vector<Skill *> EntityModel::getKnownSpells() const
 {
 	return knownSpells;
 }
@@ -179,7 +182,7 @@ void EntityModel::getKnownSkillsFromLevel()
 	}
 
 	//Adds every skill that meets level requirement to the appropriate vector
-	for (std::vector<LevelingSkill>::iterator it = entityClass->getSkills().begin(); it != entityClass->getSkills().end(); it++)
+	for (vector<LevelingSkill>::iterator it = entityClass->getSkills().begin(); it != entityClass->getSkills().end(); it++)
 	{
 		if (level >= it->learnLevel)
 		{
@@ -195,7 +198,7 @@ void EntityModel::getKnownSkillsFromLevel()
 	}
 }
 
-Entity::Entity(const std::string &name, int level, MonsterClass *monsterClass):
+Entity::Entity(const string &name, int level, MonsterClass *monsterClass):
 		EntityModel(name, level, (EntityClass *)monsterClass), weaponEffects(monsterClass->effects)
 {
 
@@ -218,7 +221,7 @@ WeaponEffects Entity::basicAttackEffects() const
 	return weaponEffects;
 }
 
-sf::Uint32 EntityModel::getID() const
+Uint32 EntityModel::getID() const
 {
 	return ID;
 }

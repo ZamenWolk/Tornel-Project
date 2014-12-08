@@ -30,7 +30,7 @@ public:
 	* \param[in] socketSelector SocketSelector to add the socket to
 	*/
 
-	void connect(sf::TcpListener &listener, sf::SocketSelector *socketSelector = 0);
+	void connect(sf::TcpListener &listener, sf::SocketSelector *selector = 0);
 
 	/**
 	* \brief Disconnect the Socket

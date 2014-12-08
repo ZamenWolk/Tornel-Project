@@ -1,5 +1,8 @@
 #include "structures.hpp"
 
+using namespace std;
+using namespace sf;
+
 EventsStructure::EventsStructure(SentInfosType typeOfEvent,
 								 bool isEventTreated,
 								 bool event_team1):
@@ -11,7 +14,7 @@ EventsStructure::EventsStructure(SentInfosType typeOfEvent,
 }
 
 EventsStructure::EventsStructure():
-		typeOfEvent(FIGHT_INTERACTION), isEventTreated(true), team1(true)
+		typeOfEvent(CTS_INTERACTION), isEventTreated(true), team1(true)
 {
 
 }

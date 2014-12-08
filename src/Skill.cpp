@@ -1,6 +1,9 @@
 #include "Skill.hpp"
 
-Skill::Skill(std::string name, int baseDamage, int manaCost, int staminaCost, sf::Time cooldown, AttackType skillType) :
+using namespace std;
+using namespace sf;
+
+Skill::Skill(string name, int baseDamage, int manaCost, int staminaCost, Time cooldown, AttackType skillType) :
 		name(name),
 		baseDamage(baseDamage),
 		manaCost(manaCost),
@@ -11,7 +14,7 @@ Skill::Skill(std::string name, int baseDamage, int manaCost, int staminaCost, sf
 
 }
 
-std::string Skill::getName() const
+string Skill::getName() const
 {
 	return name;
 }

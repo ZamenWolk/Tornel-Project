@@ -1,5 +1,4 @@
 #include <SFML/System.hpp>
-#include <SFML/Window.hpp>
 #include <fstream>
 #include <iostream>
 
@@ -7,10 +6,11 @@
 #include "../define.hpp"
 
 using namespace std;
+using namespace sf;
 
 IndexesIndex indexes;
 
-sf::Clock mainClock;
+Clock mainClock;
 
 void errorReport(string errorMessage, bool isFatal)
 {
@@ -34,7 +34,7 @@ void errorReport(string errorMessage, bool isFatal)
 		exit(EXIT_FAILURE);
 }
 
-void logReport(std::string logMessage, bool hidden)
+void logReport(string logMessage, bool hidden)
 {
 	time_t    rawtime;
 	struct tm *timeinfo;

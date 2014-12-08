@@ -72,7 +72,7 @@ void Combat::changeEnemyTeam(vector<CombatEntity> newTeam)
 	}
 }
 
-string Combat::Run(RenderWindow &app, std::map<std::string, Screen*> &screens)
+string Combat::Run(RenderWindow &app, map<string, Screen*> &screens)
 {
 	if (team1Fighters.size() < 1 || team1Fighters.size() > 5 || team2Fighters.size() < 1 || team2Fighters.size() > 5)
 	{
@@ -135,7 +135,7 @@ void Combat::Setup(string IPAddress, unsigned short addressPort)
 	}
 
 	//Sends team's character vector to the server
-	createPacket(charactersPacket, team1Fighters, TEAM_DATA);
+	createPacket(charactersPacket, team1Fighters, CTS_TEAM_DATA);
 	if (onlinePort.send(charactersPacket) != Socket::Done)
 	{
 		errorReport("Can't send team informations to server");
@@ -604,7 +604,7 @@ void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackTy
 	Packet       packetToSend;
 	InteractionInfos informationsToSend{attacker.getEntity()->getID(), target.getEntity()->getID(), type, spellName};
 
-	createPacket(packetToSend, informationsToSend, FIGHT_INTERACTION);
+	createPacket(packetToSend, informationsToSend, CTS_INTERACTION);
 
 	onlineMutex.lock();
 	if (onlinePort.send(packetToSend) != Socket::Done)
@@ -614,7 +614,7 @@ void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackTy
 	onlineMutex.unlock();
 }
 
-int Combat::fillFightersVector(std::vector<CombatEntity> &teamVector, bool isTeam1)
+int Combat::fillFightersVector(vector<CombatEntity> &teamVector, bool isTeam1)
 {
 	int deletedEntities(0);
 	if (isTeam1)

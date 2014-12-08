@@ -1,6 +1,9 @@
 #include "Hero.hpp"
 
-Hero::Hero(const std::string &name, int experiencePoints, EntityClass *heroClass) :
+using namespace std;
+using namespace sf;
+
+Hero::Hero(const string &name, int experiencePoints, EntityClass *heroClass) :
 		experiencePoints(experiencePoints),
 		EntityModel(name, EXPERIENCE_TO_LEVEL.iresult(experiencePoints), heroClass),
 		weapon(indexes.weaponIndex.searchByName("Default")),

@@ -1,8 +1,9 @@
 #include "fonctor.hpp"
 
 using namespace std;
+using namespace sf;
 
-InputFonctor::InputFonctor(std::vector<FightSubserver *> *subservers, bool &stopServer):
+InputFonctor::InputFonctor(vector<FightSubserver *> *subservers, bool &stopServer):
 					subservers(subservers), stopServer(stopServer)
 {
 
@@ -10,11 +11,11 @@ InputFonctor::InputFonctor(std::vector<FightSubserver *> *subservers, bool &stop
 
 void InputFonctor::operator()()
 {
-	std::string input("");
+	string input("");
 
 	while (!stopServer)
 	{
-		std::cin >> input;
+		cin >> input;
 
 		if (input == "stop")
 		{
@@ -23,7 +24,7 @@ void InputFonctor::operator()()
 		else if (input == "reset")
 		{
 			unsigned int servNumber(0);
-			std::cin >> servNumber;
+			cin >> servNumber;
 
 			if (servNumber != 0 && servNumber <= subservers->size())
 			{

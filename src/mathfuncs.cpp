@@ -1,5 +1,7 @@
 #include "mathfuncs.hpp"
 
+using namespace std;
+
 MathFunction::MathFunction(int minimalXValue, int maximalXValue) :
 		minimalXValue(minimalXValue), maximalXValue(maximalXValue)
 {

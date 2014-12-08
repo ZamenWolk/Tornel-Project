@@ -38,7 +38,7 @@ void FightSubserver::reset()
 ServerClient* FightSubserver::connect(TcpListener *listener, SocketSelector *socketSelector)
 {
 	ServerClient                    *concernedClient(nullptr);
-	std::vector<EntityInformations> *concernedTeamVector(nullptr);
+	vector<EntityInformations> *concernedTeamVector(nullptr);
 	bool                            isClient1(false);
 
 	if (clients[0].isSocketFree())
@@ -81,16 +81,16 @@ ServerClient* FightSubserver::connect(TcpListener *listener, SocketSelector *soc
 		return 0;
 	}
 
-	concernedTeamVector = new std::vector<EntityInformations>;
+	concernedTeamVector = new vector<EntityInformations>;
 
 	while (eventsStructure.isEventTreated || eventsStructure.team1 != isClient1)
 	{
 		sleep(milliseconds(1000));
 	}
 
-	if (eventsStructure.typeOfEvent != TEAM_DATA)
+	if (eventsStructure.typeOfEvent != CTS_TEAM_DATA)
 	{
-		errorReport("The infformation received is not a TEAM_DATA");
+		errorReport("The infformation received is not a CTS_TEAM_DATA");
 		concernedClient->disconnect();
 	}
 
@@ -136,9 +136,9 @@ bool FightSubserver::isLastEventTreated()
 
 void FightSubserver::threadFunction()
 {
-	sf::Packet teamsPacket;
+	Packet teamsPacket;
 
-	teamsPacket << TEAM_DATA << *teams[1];
+	teamsPacket << CTS_TEAM_DATA << *teams[1];
 
 	while (isFull() && !stopSubServer)
 	{
@@ -150,7 +150,7 @@ void FightSubserver::threadFunction()
 }
 
 
-bool findOpenSubserver(std::vector<FightSubserver *> &serverVector, FightSubserver **returnedSubserver)
+bool findOpenSubserver(vector<FightSubserver *> &serverVector, FightSubserver **returnedSubserver)
 {
 	for (unsigned int i = 0; i < serverVector.size(); i++)
 	{
