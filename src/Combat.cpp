@@ -213,7 +213,11 @@ string Combat::endOfCombat()
 
 void Combat::combatChecking()
 {
-	if (team1Control == AI || team1Control == ONLINE || team1Control == FROM_FILE || team1Control == KEYBOARD && team2Control == KEYBOARD || team1Control == CONTROLLER && team2Control == CONTROLLER)
+	if (   team1Control == AI
+	    || team1Control == ONLINE
+	    || team1Control == FROM_FILE
+	    || team1Control == KEYBOARD && team2Control == KEYBOARD
+	    || team1Control == CONTROLLER && team2Control == CONTROLLER)
 	{
 		errorReport("Error in combat checking", true);
 	}
@@ -260,10 +264,8 @@ void Combat::serverHandling()
 	while (!aboutToStop)
 	{
 		Packet           packetFromServer;
-		ActionType       actionType;
-		SpecialAttribute specialAttribute;
-		Uint32           subjectID(0);
-		CombatEntity     *subject(nullptr);
+		SentInfosType    infoType;
+		FightAction      action;
 		Socket::Status   result;
 
 		//Receives packet of information from the server
@@ -277,107 +279,90 @@ void Combat::serverHandling()
 		}
 		else
 		{
-			packetFromServer >> actionType;
-			packetFromServer >> specialAttribute;
-			packetFromServer >> subjectID;
-			subject = IDToEntity(subjectID);
-
-			//If no action happened
-			if (actionType == NONE)
+			infoTypeInPacket(packetFromServer, infoType);
+			if(infoType != STC_ACTION)
 			{
-				//If it is because there is not enough capacity points
-				if (specialAttribute == NOT_ENOUGH_CP)
-				{
-					string skillName;
-					packetFromServer >> skillName;
-
-					Skill *skill(indexes.skillIndex.searchByName(skillName));
-
-					logReport(subject->getEntity()->getName() + " needs more Capacity Points to use " + skill->name);
-				}
-					//Reaction not handled by the client
-				else
-				{
-					errorReport(
-							"The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
-				}
+				errorReport("Information from server is not a STC_ACTION");
 			}
-				//If damages were dealt
-			else if (actionType == DEAL_DAMAGE)
-			{
-				Uint32 targetID;
-				packetFromServer >> targetID;
-				CombatEntity *target(IDToEntity(targetID));
-				int          attackDamage;
-				AttackType   attackType;
-				string       skillName;
-				Skill        *skill(nullptr);
-
-				//Searches who was hit
-				packetFromServer >> attackDamage;
-				packetFromServer >> attackType;
-
-				if (attackType != WEAPON_ATTACK)
-				{
-					packetFromServer >> skillName;
-					skill = indexes.skillIndex.searchByName(skillName);
-				}
-
-				//Cjanges target's life and displays it
-				target->getEntity()->changeLife(-attackDamage);
-				if (specialAttribute == NO_SPECIAL)
-				{
-					if (attackType == WEAPON_ATTACK)
-					{
-						string message(subject->getEntity()->getName());
-						message += " attacked ";
-						message += target->getEntity()->getName();
-						message += ", dealing ";
-						message += attackDamage;
-						message += " damage";
-						logReport(message);
-					}
-					else
-					{
-						string message(subject->getEntity()->getName());
-						message += " used ";
-						message += skill->name;
-						message += " on ";
-						message += target->getEntity()->getName();
-						message += ", dealing ";
-						message += attackDamage;
-						message += " damage";
-						logReport(message);
-					}
-				}
-					//Attribute of attack not handled by function
-				else
-				{
-					errorReport(
-							"The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
-				}
-			}
-				/**else if (actionType == HEAL)
-				{
-				if (specialAttribute == NO_SPECIAL)
-				{
-
-				}
-				else if (specialAttribute == CRITICAL)
-				{
-
-				}
-				}**/
-				//End of fight
-			else if (actionType == END_OF_FIGHT)
-			{
-				aboutToStop = true;
-			}
-				//Action requested not handled by server
 			else
 			{
-				errorReport(
-						"The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
+				deconstructPacket(packetFromServer, action, infoType);
+				action.subject = IDToEntity(action.subjectID);
+
+				switch (action.actionType)
+				{
+				case NONE:
+					switch (action.specialAttribute)
+					{
+					case NOT_ENOUGH_CP:
+
+				        action.skill = indexes.skillIndex.searchByName(action.skillName);
+
+				        logReport(action.subject->getEntity()->getName() + " needs more Capacity Points to use " + action.skill->name);
+				        break;
+					case NO_SPECIAL:
+					case MISSED:
+					case DODGED:
+					case BLOCKED:
+					case CRITICAL:
+					default:
+				        errorReport(
+						        "The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
+					}
+					break;
+				case DEAL_DAMAGE:
+					action.target = IDToEntity(action.targetID);
+
+					if (action.attackType != WEAPON_ATTACK)
+					{
+						action.skill = indexes.skillIndex.searchByName(action.skillName);
+					}
+					action.target->getEntity()->changeLife(-action.attackDamage);
+
+			        switch (action.specialAttribute)
+					{
+					case NO_SPECIAL:
+						if (action.attackType == WEAPON_ATTACK)
+						{
+							string message(action.subject->getEntity()->getName());
+							message += " attacked ";
+							message += action.target->getEntity()->getName();
+							message += ", dealing ";
+							message += action.attackDamage;
+							message += " damage";
+							logReport(message);
+						}
+						else
+						{
+							string message(action.subject->getEntity()->getName());
+							message += " used ";
+							message += action.skill->name;
+							message += " on ";
+							message += action.target->getEntity()->getName();
+							message += ", dealing ";
+							message += action.attackDamage;
+							message += " damage";
+							logReport(message);
+						}
+						break;
+					case NOT_ENOUGH_CP:
+					case MISSED:
+					case DODGED:
+					case BLOCKED:
+					case CRITICAL:
+					default:
+						errorReport(
+								"The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
+					}
+				    break;
+				case END_OF_FIGHT:
+					aboutToStop = true;
+					break;
+				case HEAL:
+				default:
+					errorReport(
+								"The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
+				}
 			}
 		}
 
@@ -411,78 +396,77 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 {
 
 	static CombatMenu   currentMenu(MAIN);
-	static int          spellPage(0), abilityPage(0);
-	static unsigned int selectorVariable(0);
+	static int          spellPage(0), abilityPage(0), selectorVariable(-1);
 	static CombatEntity *currentCharacter(&currentTeam->at(0));
 
 	//Reads keypresses
 	//If user wants to go to the character menu
-	if (indexes.keyboardMap.isActive("characterMenu"))
+	if (K_CHARMENU)
 	{
 		currentMenu = CHARACTER_CHOOSING;
 		logReport("Current menu : Character choosing");
 	}
 		//If user wants to go to the target menu
-	else if (indexes.keyboardMap.isActive("targetMenu"))
+	else if (K_TARGMENU)
 	{
 		currentMenu = TARGET_CHOOSING;
 		logReport("Current menu : Target choosing");
 	}
 		//If user wants to go to the ability menu
-	else if (indexes.keyboardMap.isActive("abilityMenu"))
+	else if (K_ABILMENU)
 	{
 		currentMenu = ABILITY_CHOOSING;
 		logReport("Current menu : Ability choosing");
 	}
 		//If user wants to go to the spell menu
-	else if (indexes.keyboardMap.isActive("spellMenu"))
+	else if (K_SPELLMENU)
 	{
 		currentMenu = SPELL_CHOOSING;
 		logReport("Current menu : Spell choosing");
 	}
 		//If user wants to attack
-	else if (indexes.keyboardMap.isActive("weaponAttack"))
+	else if (K_WEAPATK)
 	{
 		sendToServer(*currentCharacter, *currentCharacter->getTarget(), WEAPON_ATTACK);
 	}
 		//If user wants to go back to main menu
-	else if (indexes.keyboardMap.isActive("mainMenu"))
+	else if (K_MAINMENU)
 	{
 		currentMenu = MAIN;
 		logReport("Current menu : Main");
 	}
 		//If user selects the number 1
-	else if (indexes.keyboardMap.isActive("selector1"))
+	else if (K_SELEC1)
 	{
 		selectorVariable = 0;
 	}
 		//If user selects the number 2
-	else if (indexes.keyboardMap.isActive("selector2"))
+	else if (K_SELEC2)
 	{
 		selectorVariable = 1;
 	}
 		//If user selects the number 3
-	else if (indexes.keyboardMap.isActive("selector3"))
+	else if (K_SELEC3)
 	{
 		selectorVariable = 2;
 	}
 		//If user selects the number 4
-	else if (indexes.keyboardMap.isActive("selector4"))
+	else if (K_SELEC4)
 	{
 		selectorVariable = 3;
 	}
 		//If user selects the number 5
-	else if (indexes.keyboardMap.isActive("selector5"))
+	else if (K_SELEC5)
 	{
 		selectorVariable = 4;
 	}
 		//If user selects the number 6
-	else if (indexes.keyboardMap.isActive("selector6"))
+	else if (K_SELEC6)
 	{
 		selectorVariable = 5;
 	}
 		//If user wants to go to the previous page
-	else if (indexes.keyboardMap.isActive("prevPage"))
+	else if (K_PREVPAGE)
 	{
 		switch (currentMenu)
 		{
@@ -507,7 +491,7 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 	}
 
 		//If user wants to go to the next page
-	else if (indexes.keyboardMap.isActive("nextPage"))
+	else if (K_NEXTPAGE)
 	{
 		switch (currentMenu)
 		{
@@ -532,10 +516,10 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 	}
 
 	//If a selector key was pressed
-	if (indexes.keyboardMap.isActive("selector") && !selectorVariable)
+	if (K_SELEC && selectorVariable != -1)
 	{
 		//Only runs tests for Character and target choosing if selector 6 was not pressed
-		if (indexes.keyboardMap.isActive("charSelector"))
+		if (K_CHARSELEC)
 		{
 			switch (currentMenu)
 			{
@@ -594,7 +578,7 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 				break;
 		}
 
-		selectorVariable = 0;
+		selectorVariable = -1;
 		currentMenu      = MAIN;
 	}
 }

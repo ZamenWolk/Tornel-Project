@@ -25,7 +25,6 @@
 
 /**
 * \brief Subserver handling a fight between 2 clients
-* \todo Change functions so there is only one thread receiving inputs from clients
 */
 
 class FightSubserver

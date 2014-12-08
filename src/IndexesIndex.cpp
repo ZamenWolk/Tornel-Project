@@ -181,7 +181,7 @@ void IndexesIndex::mapsInit()
 	keyboardMap["spellMenu"]     = thor::Action(Keyboard::R, thor::Action::PressOnce);
 	keyboardMap["weaponAttack"]  = thor::Action(Keyboard::D, thor::Action::PressOnce);
 	keyboardMap["mainMenu"]      = thor::Action(Keyboard::Numpad8, thor::Action::PressOnce);
-	keyboardMap["precPage"]      = thor::Action(Keyboard::Numpad7, thor::Action::PressOnce);
+	keyboardMap["prevPage"]      = thor::Action(Keyboard::Numpad7, thor::Action::PressOnce);
 	keyboardMap["nextPage"]      = thor::Action(Keyboard::Numpad9, thor::Action::PressOnce);
 	keyboardMap["selector1"]     = thor::Action(Keyboard::Numpad4, thor::Action::PressOnce);
 	keyboardMap["selector2"]     = thor::Action(Keyboard::Numpad5, thor::Action::PressOnce);

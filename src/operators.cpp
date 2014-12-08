@@ -233,6 +233,9 @@ Packet &operator>>(Packet &packet, SentInfosType &infosType)
 		case TIME:
 			infosType = TIME;
 	        break;
+		case STC_ACTION:
+			infosType = STC_ACTION;
+			break;
 		default:
 			errorReport("Server tried to send an unknown information type");
 	}

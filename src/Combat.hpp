@@ -155,8 +155,6 @@ protected:
 
 	void teamInstructions(bool team1);
 
-	/// \todo Complete if statements
-	/// \todo Create InteractionReturn structure for returns from server
 	/// \todo Shift Capacity points control from server to client
 	void serverHandling();
 

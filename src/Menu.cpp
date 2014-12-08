@@ -8,7 +8,7 @@ Menu::Menu()
 
 }
 
-string Menu::Run(RenderWindow &app, map<string, Screen *> &screens)
+string Menu::Run(RenderWindow &app, std::map<string, Screen *> &screens)
 {
 	logReport("Lol test 1 2");
 

@@ -6,6 +6,23 @@
 
 #include "Index.hpp"
 
+#define K_CHARMENU indexes.keyboardMap.isActive("characterMenu")
+#define K_TARGMENU indexes.keyboardMap.isActive("targetMenu")
+#define K_ABILMENU indexes.keyboardMap.isActive("abilityMenu")
+#define K_SPELLMENU indexes.keyboardMap.isActive("spellMenu")
+#define K_WEAPATK indexes.keyboardMap.isActive("weaponAttack")
+#define K_MAINMENU indexes.keyboardMap.isActive("mainMenu")
+#define K_PREVPAGE indexes.keyboardMap.isActive("prevPage")
+#define K_NEXTPAGE indexes.keyboardMap.isActive("nextPage")
+#define K_SELEC1 indexes.keyboardMap.isActive("selector1")
+#define K_SELEC2 indexes.keyboardMap.isActive("selector2")
+#define K_SELEC3 indexes.keyboardMap.isActive("selector3")
+#define K_SELEC4 indexes.keyboardMap.isActive("selector4")
+#define K_SELEC5 indexes.keyboardMap.isActive("selector5")
+#define K_SELEC6 indexes.keyboardMap.isActive("selector6")
+#define K_CHARSELEC indexes.keyboardMap.isActive("charSelector")
+#define K_SELEC indexes.keyboardMap.isActive("selector")
+
 /**
 * \brief Class grouping all the indexes of the game with all the data of equipements, classes and skills
 */
