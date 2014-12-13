@@ -59,6 +59,10 @@ public:
 
 	CombatEntity(EntityModel *entity);
 
+	CombatEntity(Entity &entity);
+
+	~CombatEntity();
+
 	void operator=(const CombatEntity &a);
 
 	/**
@@ -84,6 +88,7 @@ protected:
 	CombatEffects effects; ///< Effects of the entity
 	sf::Time      lastInteractionTime, ///< Time of last interaction
 	              interactionCooldown; ///< Current cooldown
+	bool          dynamicallyAllowed;
 };
 
 /**

@@ -50,7 +50,7 @@ int main()
 
 	while (!stopServer)
 	{
-		if (selector.wait(milliseconds(200)))
+		if (selector.wait())
 		{
 			logReport("Found something !");
 

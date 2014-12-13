@@ -21,7 +21,6 @@ enum ActionType
 	NONE         = 0, ///< Do nothing
 	DEAL_DAMAGE  = 1, ///< Deal damage to the target
 	HEAL         = 2, ///< Heal the target
-	END_OF_FIGHT = 3, ///< The fight ended
 };
 
 /**
@@ -47,10 +46,11 @@ enum SentInfosType
 	CTS_INTERACTION = 0, ///< Interaction sent to the server to describe an interaction between players
 	CTS_TEAM_DATA   = 1, ///< Data sent to the server to describe the client's team
 	VERSION_NUMBER  = 2, ///< Data sent to the server to check if client and server version match
-	PING            = 3,
+	END_OF_COMBAT   = 3,
 	PONG            = 4,
 	TIME            = 5,
 	STC_ACTION      = 6,
+	PING            = 7,
 };
 
 #endif

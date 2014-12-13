@@ -37,9 +37,6 @@ Packet &operator>>(Packet &packet, ActionType &action)
 		case HEAL:
 			action = HEAL;
 	        break;
-		case END_OF_FIGHT:
-			action = END_OF_FIGHT;
-	        break;
 		default:
 			errorReport("Server sent an unknown action", false);
 	}
@@ -236,6 +233,9 @@ Packet &operator>>(Packet &packet, SentInfosType &infosType)
 		case STC_ACTION:
 			infosType = STC_ACTION;
 			break;
+		case END_OF_COMBAT:
+			infosType = END_OF_COMBAT;
+			break;
 		default:
 			errorReport("Server tried to send an unknown information type");
 	}
@@ -282,12 +282,12 @@ Packet &operator>>(Packet &packet, vector<CombatEntity> &team)
 	int teamSize;
 	packet >> teamSize;
 
-	for (int i = 0; i <= teamSize; i++)
+	for (int i = 0; i < teamSize; i++)
 	{
 		EntityInformations receivedEntity;
 		packet >> receivedEntity;
 
-		EntityModel *receivedCombatEntity(new Entity(receivedEntity));
+		Entity receivedCombatEntity(receivedEntity);
 
 		team.push_back(CombatEntity(receivedCombatEntity));
 	}

@@ -8,9 +8,29 @@ CombatEntity::CombatEntity(EntityModel *entity) :
 		target(nullptr),
 		effects(entity->getEffects(), entity->basicAttackEffects()),
 		lastInteractionTime(milliseconds(0)),
-		interactionCooldown(milliseconds(0))
+		interactionCooldown(milliseconds(0)),
+		dynamicallyAllowed(false)
 {
 
+}
+
+CombatEntity::CombatEntity(Entity &entity) :
+		entity(new Entity(entity)),
+		target(nullptr),
+		effects(entity.getEffects(), entity.basicAttackEffects()),
+		lastInteractionTime(milliseconds(0)),
+		interactionCooldown(milliseconds(0)),
+		dynamicallyAllowed(true)
+{
+
+}
+
+CombatEntity::~CombatEntity()
+{
+	if (dynamicallyAllowed)
+	{
+		delete entity;
+	}
 }
 
 void CombatEntity::changeTarget(CombatEntity *newTarget)
@@ -280,9 +300,13 @@ void Combat::serverHandling()
 		else
 		{
 			infoTypeInPacket(packetFromServer, infoType);
-			if(infoType != STC_ACTION)
+			if(infoType != STC_ACTION && infoType != END_OF_COMBAT)
 			{
 				errorReport("Information from server is not a STC_ACTION");
+			}
+			else if (infoType == END_OF_COMBAT)
+			{
+				aboutToStop = true;
 			}
 			else
 			{
@@ -355,9 +379,6 @@ void Combat::serverHandling()
 								"The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
 					}
 				    break;
-				case END_OF_FIGHT:
-					aboutToStop = true;
-					break;
 				case HEAL:
 				default:
 					errorReport(

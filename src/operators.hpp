@@ -170,7 +170,6 @@ sf::Packet &operator<<(sf::Packet &packet, const std::vector<EntityInformations>
 * \param[in] packet Packet to extract from
 * \param[out] team CombatEntity vector to get from the packet
 * \return Updated packet
-* \todo Change the system of dynamic allocation
 */
 
 sf::Packet &operator>>(sf::Packet &packet, std::vector<CombatEntity> &team);

@@ -203,6 +203,11 @@ struct FightAction
 	Skill            *skill;
 };
 
+struct EOFStruct
+{
+
+};
+
 /**
 * \brief Creates a packet with a some info and the SentInfosType going with it
 * \param[in] packet Packet to flux the informations to
@@ -219,7 +224,8 @@ sf::Packet &createPacket(sf::Packet &packet, const T &infos, SentInfosType type)
 	    || (typeid(infos) == typeid(const tm) && type == TIME)
 	    || (typeid(infos) == typeid(const std::vector<CombatEntity>) && type == CTS_TEAM_DATA)
 	    || (typeid(infos) == typeid(const int) && (type == PING || type == PONG))
-		|| (typeid(infos) == typeid(const FightAction) && type == STC_ACTION))
+		|| (typeid(infos) == typeid(const FightAction) && type == STC_ACTION)
+	    || (typeid(infos) == typeid(const EOFStruct) && type == END_OF_COMBAT))
 	{
 		return packet << type << infos;
 	}
@@ -240,7 +246,8 @@ sf::Packet &deconstructPacket(sf::Packet &packet, T &infos, SentInfosType type)
 	    || (typeid(infos) == typeid(tm) && type == TIME)
 	    || (typeid(infos) == typeid(std::vector<CombatEntity>) && type == CTS_TEAM_DATA)
 	    || (typeid(infos) == typeid(int) && (type == PING || type == PONG))
-	    || (typeid(infos) == typeid(FightAction) && type == STC_ACTION))
+	    || (typeid(infos) == typeid(FightAction) && type == STC_ACTION)
+	    || (typeid(infos) == typeid(EOFStruct) && type == END_OF_COMBAT))
 	{
 		return packet >> infos;
 	}
