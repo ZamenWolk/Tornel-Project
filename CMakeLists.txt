@@ -28,10 +28,14 @@ set(SOURCE_FILES
     src/constants.hpp
     src/Equipment.hpp
     src/Equipment.cpp
+    src/Effects.hpp
+    src/Effects.cpp
     src/Hero.hpp
     src/Hero.cpp
     src/Index.hpp
     src/Index.cpp
+    src/IndexClasses.hpp
+    src/IndexClasses.cpp
     src/main.cpp
     src/mathfuncs.hpp
     src/mathfuncs.cpp
@@ -58,8 +62,12 @@ set(SERVER_FILES
     src/operators.hpp
     src/Equipment.hpp
     src/Equipment.cpp
+    src/Effects.hpp
+    src/Effects.cpp
     src/IndexesIndex.hpp
     src/IndexesIndex.cpp
+    src/IndexClasses.hpp
+    src/IndexClasses.cpp
     src/Skill.cpp
     src/Skill.hpp
     src/AIControlledEntity.cpp
