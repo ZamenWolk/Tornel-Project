@@ -54,9 +54,6 @@ Packet &operator>>(Packet &packet, SpecialAttribute &attribute)
 		case NO_SPECIAL:
 			attribute = NO_SPECIAL;
 	        break;
-		case NOT_ENOUGH_CP:
-			attribute = NOT_ENOUGH_CP;
-	        break;
 		case MISSED:
 			attribute = MISSED;
 	        break;

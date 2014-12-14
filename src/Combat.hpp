@@ -92,8 +92,9 @@ protected:
 };
 
 /**
-* 	\brief Combat-handling class
-* 	\details Contains both team as well as the main loop function
+* \brief Combat-handling class
+* \details Contains both team as well as the main loop function
+* \todo Add fillFightersVector to main function to setup server
 */
 
 class Combat : public Screen
@@ -109,13 +110,6 @@ public:
 	*/
 
 	Combat(const Controls team1Control, const Controls team2Control);
-
-	/**
-	* \brief Change the current enemy team with the new team
-	* \param[in] newTeam team to replace the current team with
-	*/
-
-	void changeEnemyTeam(std::vector<CombatEntity> newTeam);
 
 	/**
 	* \brief Main loop during a combat

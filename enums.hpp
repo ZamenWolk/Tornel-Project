@@ -30,11 +30,10 @@ enum ActionType
 enum SpecialAttribute
 {
 	NO_SPECIAL    = 0, ///< Nothing special
-	NOT_ENOUGH_CP = 1, ///< Not enough capacity points
-	MISSED        = 2, ///< Missed the interaction
-	DODGED        = 3, ///< Target dodged the interaction
-	BLOCKED       = 4, ///< Target blocked the interaction
-	CRITICAL      = 5, ///< Critical output for interaction
+	MISSED        = 1, ///< Missed the interaction
+	DODGED        = 2, ///< Target dodged the interaction
+	BLOCKED       = 3, ///< Target blocked the interaction
+	CRITICAL      = 4, ///< Critical output for interaction
 };
 
 /**

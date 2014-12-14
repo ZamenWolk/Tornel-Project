@@ -71,24 +71,29 @@ Combat::Combat(const Controls team1Control, const Controls team2Control) :
 	combatChecking();
 }
 
-void Combat::changeEnemyTeam(vector<CombatEntity> newTeam)
+int Combat::fillFightersVector(vector<CombatEntity> &teamVector, bool isTeam1)
 {
-	//Resets the vector of team2
-	while (team2Fighters.size() > 0)
+	int deletedEntities(0);
+	if (isTeam1)
 	{
-		team2Fighters.pop_back();
+		team1Fighters = teamVector;
+		while (team1Fighters.size() > 5)
+		{
+			team1Fighters.pop_back();
+			deletedEntities++;
+		}
+	}
+	else
+	{
+		team2Fighters = teamVector;
+		while (team2Fighters.size() > 5)
+		{
+			team2Fighters.pop_back();
+			deletedEntities++;
+		}
 	}
 
-	while (newTeam.size() > 5)
-	{
-		newTeam.pop_back();
-	}
-
-	//Loads the new team into the vector
-	for (vector<CombatEntity>::iterator it = newTeam.begin(); it != newTeam.end(); it++)
-	{
-		team2Fighters.push_back(*it);
-	}
+	return deletedEntities;
 }
 
 string Combat::Run(RenderWindow &app, map<string, Screen *> &screens)
@@ -162,7 +167,7 @@ void Combat::Setup(string IPAddress, unsigned short addressPort)
 		errorReport("Can't receive team informations from server");
 	}
 	packetFromServer >> teamFromServer;
-	changeEnemyTeam(teamFromServer);
+	fillFightersVector(teamFromServer, false);
 
 	//Calculates the ping with the server so both clients can begin at the same time
 	pingTime = mainClock.getElapsedTime();
@@ -318,12 +323,6 @@ void Combat::serverHandling()
 				case NONE:
 					switch (action.specialAttribute)
 					{
-					case NOT_ENOUGH_CP:
-
-				        action.skill = indexes.skillIndex.searchByName(action.skillName);
-
-				        logReport(action.subject->getEntity()->getName() + " needs more Capacity Points to use " + action.skill->name);
-				        break;
 					case NO_SPECIAL:
 					case MISSED:
 					case DODGED:
@@ -369,7 +368,6 @@ void Combat::serverHandling()
 							logReport(message);
 						}
 						break;
-					case NOT_ENOUGH_CP:
 					case MISSED:
 					case DODGED:
 					case BLOCKED:
@@ -546,18 +544,18 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 			{
 				case CHARACTER_CHOOSING:
 					//Only changes the chosen character if he is still alive
-					if (currentTeam->at(selectorVariable).getEntity()->isAlive())
+					if (currentTeam->at((unsigned int)selectorVariable).getEntity()->isAlive())
 					{
-						currentCharacter = &currentTeam->at(selectorVariable);
+						currentCharacter = &currentTeam->at((unsigned int)selectorVariable);
 						logReport("New character : " + currentCharacter->getEntity()->getName());
 					}
 			        break;
 
 				case TARGET_CHOOSING:
 					//Only changes the target if he is still alive
-					if (currentEnemies->at(selectorVariable).getEntity()->isAlive())
+					if (currentEnemies->at((unsigned int)selectorVariable).getEntity()->isAlive())
 					{
-						currentCharacter->changeTarget(&currentEnemies->at(selectorVariable));
+						currentCharacter->changeTarget(&currentEnemies->at((unsigned int)selectorVariable));
 						logReport("New target : " + currentCharacter->getTarget()->getEntity()->getName());
 					}
 			        break;
@@ -573,22 +571,44 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 		switch (currentMenu)
 		{
 			case ABILITY_CHOOSING:
-				if (currentCharacter->getEntity()->getKnownAbilities().size() >= abilityPage*6 + selectorVariable + 1)
+				if ((currentCharacter->getEntity()->getKnownAbilities().size() >= abilityPage*6 + selectorVariable + 1)
+				 && (currentCharacter->getEntity()->getMana()
+				  >= currentCharacter->getEntity()->getKnownAbilities().at((unsigned int)(abilityPage*6 + selectorVariable))->manaCost)
+			     && (currentCharacter->getEntity()->getStamina()
+				  >= currentCharacter->getEntity()->getKnownAbilities().at((unsigned int)(abilityPage*6 + selectorVariable))->staminaCost))
 				{
 					sendToServer(*currentCharacter,
 					             *currentCharacter->getTarget(),
 					             ABILITY,
-					             currentCharacter->getEntity()->getKnownAbilities().at(abilityPage*6 + selectorVariable)->name);
+					             currentCharacter->getEntity()->getKnownAbilities().at((unsigned int)(abilityPage*6 + selectorVariable))->name);
+				}
+				else if ((currentCharacter->getEntity()->getMana()
+					    < currentCharacter->getEntity()->getKnownAbilities().at((unsigned int)(abilityPage*6 + selectorVariable))->manaCost)
+					  || (currentCharacter->getEntity()->getStamina()
+						< currentCharacter->getEntity()->getKnownAbilities().at((unsigned int)(abilityPage*6 + selectorVariable))->staminaCost))
+				{
+					logReport(currentCharacter->getEntity()->getName() + "doesn't have enough CP to use this skill");
 				}
 		        break;
 
 			case SPELL_CHOOSING:
-				if (currentCharacter->getEntity()->getKnownSpells().size() >= spellPage*6 + selectorVariable + 1)
+				if ((currentCharacter->getEntity()->getKnownSpells().size() >= spellPage*6 + selectorVariable + 1)
+			     && (currentCharacter->getEntity()->getMana()
+				  >= currentCharacter->getEntity()->getKnownSpells().at((unsigned int)(spellPage*6 + selectorVariable))->manaCost)
+				 && (currentCharacter->getEntity()->getStamina()
+				  >= currentCharacter->getEntity()->getKnownSpells().at((unsigned int)(spellPage*6 + selectorVariable))->staminaCost))
 				{
 					sendToServer(*currentCharacter,
 					             *currentCharacter->getTarget(),
 					             SPELL,
-					             currentCharacter->getEntity()->getKnownSpells().at(spellPage*6 + selectorVariable)->name);
+					             currentCharacter->getEntity()->getKnownSpells().at((unsigned int)(spellPage*6 + selectorVariable))->name);
+				}
+				else if ((currentCharacter->getEntity()->getMana()
+					    < currentCharacter->getEntity()->getKnownSpells().at((unsigned int)(spellPage*6 + selectorVariable))->manaCost)
+					  || (currentCharacter->getEntity()->getStamina()
+						< currentCharacter->getEntity()->getKnownSpells().at((unsigned int)(spellPage*6 + selectorVariable))->staminaCost))
+				{
+					logReport(currentCharacter->getEntity()->getName() + "doesn't have enough CP to use this skill");
 				}
 		        break;
 			case MAIN:
@@ -617,31 +637,6 @@ void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackTy
 		errorReport("Unable to send informations to combat server");
 	}
 	onlineMutex.unlock();
-}
-
-int Combat::fillFightersVector(vector<CombatEntity> &teamVector, bool isTeam1)
-{
-	int deletedEntities(0);
-	if (isTeam1)
-	{
-		team1Fighters = teamVector;
-		while (team1Fighters.size() > 5)
-		{
-			team1Fighters.pop_back();
-			deletedEntities++;
-		}
-	}
-	else
-	{
-		team2Fighters = teamVector;
-		while (team2Fighters.size() > 5)
-		{
-			team2Fighters.pop_back();
-			deletedEntities++;
-		}
-	}
-
-	return deletedEntities;
 }
 
 void CombatEntity::operator=(const CombatEntity &a)
