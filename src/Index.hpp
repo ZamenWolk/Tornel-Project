@@ -210,8 +210,13 @@ public:
 	* 	\return true if the name exists
 	*/
 
-	T *searchByName(std::string searchName)
+	T *searchByName(std::string searchName = "")
 	{
+		if (searchName == "")
+		{
+			return &index[0];
+		}
+
 		for (typename std::vector<T>::iterator it = index.begin(); it != index.end(); it++)
 		{
 			if (it->getName() == searchName)

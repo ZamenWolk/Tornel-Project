@@ -39,6 +39,12 @@ void CombatEntity::changeTarget(CombatEntity *newTarget)
 		target = newTarget;
 }
 
+void CombatEntity::changeInteractionTimes(sf::Time lastInteracTime, sf::Time interacCooldown)
+{
+	lastInteractionTime = lastInteracTime;
+	interactionCooldown = interacCooldown;
+}
+
 EntityModel *CombatEntity::getEntity() const
 {
 	return entity;
@@ -52,6 +58,16 @@ CombatEntity *CombatEntity::getTarget() const
 CombatEffects CombatEntity::getEffects() const
 {
 	return effects;
+}
+
+sf::Time CombatEntity::getLastInteractionTime() const
+{
+	return lastInteractionTime;
+}
+
+sf::Time CombatEntity::getInteractionCooldown() const
+{
+	return interactionCooldown;
 }
 
 Combat::Combat(const Controls team1Control, const Controls team2Control) :
@@ -571,44 +587,22 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 		switch (currentMenu)
 		{
 			case ABILITY_CHOOSING:
-				if ((currentCharacter->getEntity()->getKnownAbilities().size() >= abilityPage*6 + selectorVariable + 1)
-				 && (currentCharacter->getEntity()->getMana()
-				  >= currentCharacter->getEntity()->getKnownAbilities().at((unsigned int)(abilityPage*6 + selectorVariable))->manaCost)
-			     && (currentCharacter->getEntity()->getStamina()
-				  >= currentCharacter->getEntity()->getKnownAbilities().at((unsigned int)(abilityPage*6 + selectorVariable))->staminaCost))
+				if ((currentCharacter->getEntity()->getKnownAbilities().size() >= abilityPage*6 + selectorVariable + 1))
 				{
-					sendToServer(*currentCharacter,
-					             *currentCharacter->getTarget(),
-					             ABILITY,
-					             currentCharacter->getEntity()->getKnownAbilities().at((unsigned int)(abilityPage*6 + selectorVariable))->name);
-				}
-				else if ((currentCharacter->getEntity()->getMana()
-					    < currentCharacter->getEntity()->getKnownAbilities().at((unsigned int)(abilityPage*6 + selectorVariable))->manaCost)
-					  || (currentCharacter->getEntity()->getStamina()
-						< currentCharacter->getEntity()->getKnownAbilities().at((unsigned int)(abilityPage*6 + selectorVariable))->staminaCost))
-				{
-					logReport(currentCharacter->getEntity()->getName() + "doesn't have enough CP to use this skill");
+					checkActionToSend(*currentCharacter,
+									  *currentCharacter->getTarget(),
+					           		  ABILITY,
+									  currentCharacter->getEntity()->getKnownAbilities().at((unsigned int)(abilityPage*6 + selectorVariable)));
 				}
 		        break;
 
 			case SPELL_CHOOSING:
-				if ((currentCharacter->getEntity()->getKnownSpells().size() >= spellPage*6 + selectorVariable + 1)
-			     && (currentCharacter->getEntity()->getMana()
-				  >= currentCharacter->getEntity()->getKnownSpells().at((unsigned int)(spellPage*6 + selectorVariable))->manaCost)
-				 && (currentCharacter->getEntity()->getStamina()
-				  >= currentCharacter->getEntity()->getKnownSpells().at((unsigned int)(spellPage*6 + selectorVariable))->staminaCost))
+				if ((currentCharacter->getEntity()->getKnownSpells().size() >= spellPage*6 + selectorVariable + 1))
 				{
-					sendToServer(*currentCharacter,
-					             *currentCharacter->getTarget(),
-					             SPELL,
-					             currentCharacter->getEntity()->getKnownSpells().at((unsigned int)(spellPage*6 + selectorVariable))->name);
-				}
-				else if ((currentCharacter->getEntity()->getMana()
-					    < currentCharacter->getEntity()->getKnownSpells().at((unsigned int)(spellPage*6 + selectorVariable))->manaCost)
-					  || (currentCharacter->getEntity()->getStamina()
-						< currentCharacter->getEntity()->getKnownSpells().at((unsigned int)(spellPage*6 + selectorVariable))->staminaCost))
-				{
-					logReport(currentCharacter->getEntity()->getName() + "doesn't have enough CP to use this skill");
+					checkActionToSend(*currentCharacter,
+							          *currentCharacter->getTarget(),
+					                  SPELL,
+					                  currentCharacter->getEntity()->getKnownSpells().at((unsigned int)(spellPage*6 + selectorVariable)));
 				}
 		        break;
 			case MAIN:
@@ -624,10 +618,51 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 	}
 }
 
-void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, string spellName)
+void Combat::checkActionToSend(CombatEntity &attacker, CombatEntity &target, AttackType type, Skill *skill)
+{
+	bool canBeSent = true;
+	
+	if (mainClock.getElapsedTime() < (attacker.getLastInteractionTime() + attacker.getInteractionCooldown()))
+	{
+		canBeSent = false;
+		logReport("Your cooldown is not finished yet !", false);
+	}
+	
+	switch (type)
+	{
+		case WEAPON_ATTACK:
+			if (canBeSent)
+			{
+				attacker.changeInteractionTimes(mainClock.getElapsedTime(), attacker.getEffects().cooldownTime);
+			}
+			break;
+		case SPELL:
+		case ABILITY:
+			if ((attacker.getEntity()->getMana()
+			   < skill->manaCost)
+			 || (attacker.getEntity()->getStamina()
+			   < skill->staminaCost))
+			{
+				canBeSent = false;
+				logReport("You don't have enough CP to use this skill !");
+			}
+			else
+			{
+				attacker.changeInteractionTimes(mainClock.getElapsedTime(), skill->cooldown);
+			}
+			break;
+	}
+	
+	if (canBeSent)
+	{
+		sendToServer(attacker, target, type, skill->name);
+	}
+}
+
+void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, string skillName)
 {
 	Packet           packetToSend;
-	InteractionInfos informationsToSend{attacker.getEntity()->getID(), target.getEntity()->getID(), type, spellName};
+	InteractionInfos informationsToSend{attacker.getEntity()->getID(), target.getEntity()->getID(), type, skillName};
 
 	createPacket(packetToSend, informationsToSend, CTS_INTERACTION);
 
@@ -637,13 +672,4 @@ void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackTy
 		errorReport("Unable to send informations to combat server");
 	}
 	onlineMutex.unlock();
-}
-
-void CombatEntity::operator=(const CombatEntity &a)
-{
-	entity              = a.entity;
-	target              = a.target;
-	effects             = a.effects;
-	lastInteractionTime = a.lastInteractionTime;
-	interactionCooldown = a.interactionCooldown;
 }

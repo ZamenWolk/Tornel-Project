@@ -63,14 +63,14 @@ public:
 
 	~CombatEntity();
 
-	void operator=(const CombatEntity &a);
-
 	/**
 	* \brief Changes the current target of the entity
 	* \param[in] newTarget New current target
 	*/
 
 	void changeTarget(CombatEntity *newTarget = NULL);
+
+	void changeInteractionTimes(sf::Time lastInteracTime, sf::Time interacCooldown);
 
 	/// \return Current entity of the CombatEntity
 	EntityModel *getEntity() const;
@@ -80,6 +80,10 @@ public:
 
 	/// \return Effects of the entity
 	CombatEffects getEffects() const;
+
+	sf::Time getLastInteractionTime() const;
+
+	sf::Time getInteractionCooldown() const;
 
 protected:
 
@@ -94,7 +98,7 @@ protected:
 /**
 * \brief Combat-handling class
 * \details Contains both team as well as the main loop function
-* \todo Add fillFightersVector to main function to setup server
+* \todo Add fillFightersVector to main function to setup fight
 */
 
 class Combat : public Screen
@@ -149,7 +153,6 @@ protected:
 	/**
 	* \brief Function running on a different thread and taking care of processing both team's events (1 function per team)
 	* \param[in] team1 Is true if the function concerns the team 1
-	* \todo Switch the handling of interaction times respect from server to client
 	*/
 
 	void teamInstructions(bool team1);
@@ -172,6 +175,8 @@ protected:
 
 	void keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::vector<CombatEntity> *currentEnemies);
 
+	void checkActionToSend(CombatEntity &attacker, CombatEntity &target, AttackType type, Skill* skill = indexes.skillIndex.searchByName());
+
 	/**
 	* \brief Send an interaction to the server to be handled
 	* \param[in] attacker Address of the attacker to use as an identifier to the server
@@ -180,7 +185,7 @@ protected:
 	* \param[in] spellName Name of the spell for the server to find in the indexes
 	*/
 
-	void sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, std::string spellName = "");
+	void sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, std::string skillName = "");
 
 	std::vector<CombatEntity> team1Fighters, ///< Array of the members of Team 1
 	                          team2Fighters; ///< Array of the members of Team 2
