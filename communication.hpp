@@ -172,7 +172,7 @@ struct FightAction
 
 	}
 
-	FightAction(ActionType acctionType,
+	FightAction(ActionType actionType,
 	            SpecialAttribute specialAttribute,
 	            sf::Uint32 subjectID,
 	            sf::Uint32 targetID,
