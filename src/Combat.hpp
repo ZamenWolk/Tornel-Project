@@ -131,7 +131,6 @@ public:
 	* \brief sets up the class with the server before using it
 	* \param[in] IPAddress Address of the server to connect to
 	* \param[in] addressPort Port to connect to on the server
-	* \todo Change time until launch to use of ctime
 	*/
 
 	void Setup(std::vector<CombatEntity> &yourTeam, Controls controlTeam1, Controls controlTeam2, std::string IPAddress = "localhost", unsigned short addressPort = 2715);

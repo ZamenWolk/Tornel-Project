@@ -50,6 +50,7 @@ enum SentInfosType
 	TIME            = 5,
 	STC_ACTION      = 6,
 	PING            = 7,
+	DEBUT_TIME      = 8,
 };
 
 #endif

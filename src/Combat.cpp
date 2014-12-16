@@ -1,4 +1,5 @@
 #include "Combat.hpp"
+#include "../timeFunc.hpp"
 
 using namespace std;
 using namespace sf;
@@ -172,9 +173,10 @@ void Combat::Reset()
 void Combat::Setup(vector<CombatEntity> &yourTeam, Controls controlTeam1, Controls controlTeam2, string IPAddress, unsigned short addressPort)
 {
 	Packet               versionNumber, charactersPacket, packetFromServer, timePacket;
-	VersionNumber        version(AutoVersion::STATUS, AutoVersion::MAJOR, AutoVersion::MINOR, AutoVersion::PATCH);
+	SentInfosType        type;
 	vector<CombatEntity> teamFromServer;
-	Time                 pingTime(milliseconds(0)), pongTime(milliseconds(0)), timeUntilLaunch(milliseconds(0)), timeAtLaunchDelay(milliseconds(0));
+	tm                   launchTM;
+	time_t               launchTime;
 
 	//Connects to the server
 	onlineMutex.lock();
@@ -184,7 +186,7 @@ void Combat::Setup(vector<CombatEntity> &yourTeam, Controls controlTeam1, Contro
 	}
 
 	//Sends version number to the server
-	createPacket(versionNumber, version, VERSION_NUMBER);
+	createPacket(versionNumber, AutoVersion::VERSION, VERSION_NUMBER);
 	if (onlinePort.send(versionNumber) != Socket::Done)
 	{
 		errorReport("Can't send version information to server");
@@ -207,46 +209,21 @@ void Combat::Setup(vector<CombatEntity> &yourTeam, Controls controlTeam1, Contro
 	{
 		errorReport("Can't receive team informations from server");
 	}
-	packetFromServer >> teamFromServer;
+	infoTypeInPacket(packetFromServer, type);
+	deconstructPacket(packetFromServer, teamFromServer, type);
+
 	fillFightersVector(teamFromServer, false);
 
-	//Calculates the ping with the server so both clients can begin at the same time
-	pingTime = mainClock.getElapsedTime();
-	createPacket(timePacket, pingTime, PING);
-	if (onlinePort.send(timePacket) != Socket::Done)
-	{
-		errorReport("Can't ping server");
-	}
-
-	if (onlinePort.receive(packetFromServer) != Socket::Done)
-	{
-		errorReport("Can't receive pong from server");
-	}
-	pongTime = mainClock.getElapsedTime();
-
-	emptyPacket(timePacket);
-
-	//Sends latency to server
-	createPacket(timePacket, pongTime - pingTime, PING);
-	if (onlinePort.send(timePacket) != Socket::Done)
-	{
-		errorReport("Can't send latency to server");
-	}
-
-	emptyPacket(timePacket);
-
-	//Receives the delay until the beginning of the fight from the server
 	if (onlinePort.receive(timePacket) != Socket::Done)
 	{
-		errorReport("Can't receive launch delay from server");
+		errorReport("Can't receive launch time from server");
 	}
-	onlineMutex.unlock();
+	infoTypeInPacket(timePacket, type);
+	deconstructPacket(timePacket, launchTM, type);
 
-	timePacket >> timeUntilLaunch;
-	timeAtLaunchDelay = mainClock.getElapsedTime();
+	launchTime = mktime(&launchTM) + secondsAheadOfGMT();
 
-	//Waits until the delay until the beginning of fight is over
-	while (mainClock.getElapsedTime() < timeAtLaunchDelay + timeUntilLaunch)
+	while (time(NULL) < launchTime)
 	{
 		sleep(milliseconds(50));
 	}
