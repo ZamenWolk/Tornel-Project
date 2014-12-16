@@ -53,7 +53,8 @@ set(SOURCE_FILES
     src/IndexesIndex.cpp
     src/Menu.hpp
     src/Menu.cpp
-    define.hpp)
+    define.hpp
+    timeFunc.hpp)
 
 set(SERVER_FILES
     src/constants.cpp
@@ -91,7 +92,8 @@ set(SERVER_FILES
     communication.cpp
     communication.hpp
     enums.hpp
-    define.hpp)
+    define.hpp
+    timeFunc.hpp)
 
 find_package(SFML COMPONENTS network audio graphics window system REQUIRED)
 

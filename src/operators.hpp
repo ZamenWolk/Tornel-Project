@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Network.hpp>
 #include <typeinfo>
+#include <ctime>
 
 #include "constants.hpp"
 #include "../enums.hpp"
