@@ -57,6 +57,7 @@
 
 enum Controls
 {
+	NO_CONTROL,
 	KEYBOARD, ///< Controlled by keyboard
 	CONTROLLER, ///< Controlled by a gamepad
 	AI, ///< Controlled by the AI

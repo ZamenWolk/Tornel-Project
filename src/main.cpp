@@ -22,7 +22,8 @@ int main()
 	string                screen("main");
 	map<string, Screen *> screens;
 
-	screens["fight"] = new Combat(KEYBOARD, ONLINE);
+	screens["fight"] = new Combat();
+	(Combat)(*screens["fight"]).Setup(vector<CombatEntity>(), NO_CONTROL, NO_CONTROL);
 	screens["main"]  = new Menu();
 
 	string message("Welcome to Tornel'Fighters v.");

@@ -98,7 +98,6 @@ protected:
 /**
 * \brief Combat-handling class
 * \details Contains both team as well as the main loop function
-* \todo Add fillFightersVector to main function to setup fight
 */
 
 class Combat : public Screen
@@ -113,7 +112,7 @@ public:
 	* \warning Each teams can contain at max 5 fighters
 	*/
 
-	Combat(const Controls team1Control, const Controls team2Control);
+	Combat();
 
 	/**
 	* \brief Main loop during a combat
@@ -126,6 +125,8 @@ public:
 
 	virtual std::string Run(sf::RenderWindow &app, std::map<std::string, Screen *> &screens);
 
+	virtual void Reset();
+
 	/**
 	* \brief sets up the class with the server before using it
 	* \param[in] IPAddress Address of the server to connect to
@@ -133,7 +134,7 @@ public:
 	* \todo Change time until launch to use of ctime
 	*/
 
-	void Setup(std::string IPAddress = "localhost", unsigned short addressPort = 2715);
+	void Setup(std::vector<CombatEntity> &yourTeam, Controls controlTeam1, Controls controlTeam2, std::string IPAddress = "localhost", unsigned short addressPort = 2715);
 
 	/**
 	* \brief Handles end of combat after the actual fight ends
@@ -144,7 +145,7 @@ public:
 	std::string endOfCombat();
 
 	/// Checks if the created Combat function will be able to run
-	void combatChecking();
+	bool combatChecking();
 
 	int fillFightersVector(std::vector<CombatEntity> &teamVector, bool isTeam1);
 
@@ -189,7 +190,7 @@ protected:
 
 	std::vector<CombatEntity> team1Fighters, ///< Array of the members of Team 1
 	                          team2Fighters; ///< Array of the members of Team 2
-	const Controls            team1Control, ///< Way the team 1 is controlled
+	Controls                  team1Control, ///< Way the team 1 is controlled
 	                          team2Control; ///< Way the team 2 is controlled
 	bool                      team1EventProcessed, ///< Is true if the team 1 thread processed the actual event
 	                          team2EventProcessed, ///< Is true if the team 2 thread processed the actual event

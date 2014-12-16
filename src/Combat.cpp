@@ -70,11 +70,11 @@ sf::Time CombatEntity::getInteractionCooldown() const
 	return interactionCooldown;
 }
 
-Combat::Combat(const Controls team1Control, const Controls team2Control) :
+Combat::Combat() :
 		team1Fighters(),
 		team2Fighters(),
-		team1Control(team1Control),
-		team2Control(team2Control),
+		team1Control(NO_CONTROL),
+		team2Control(NO_CONTROL),
 		team1EventProcessed(true),
 		team2EventProcessed(true),
 		aboutToStop(false),
@@ -84,7 +84,7 @@ Combat::Combat(const Controls team1Control, const Controls team2Control) :
 		onlineMutex(),
 		launched(false)
 {
-	combatChecking();
+
 }
 
 int Combat::fillFightersVector(vector<CombatEntity> &teamVector, bool isTeam1)
@@ -114,7 +114,7 @@ int Combat::fillFightersVector(vector<CombatEntity> &teamVector, bool isTeam1)
 
 string Combat::Run(RenderWindow &app, map<string, Screen *> &screens)
 {
-	if (team1Fighters.size() < 1 || team1Fighters.size() > 5 || team2Fighters.size() < 1 || team2Fighters.size() > 5)
+	if (!combatChecking())
 	{
 		errorReport("The combat was not properly initialized");
 		return "menu";
@@ -149,7 +149,27 @@ string Combat::Run(RenderWindow &app, map<string, Screen *> &screens)
 	return endOfCombat();
 }
 
-void Combat::Setup(string IPAddress, unsigned short addressPort)
+void Combat::Reset()
+{
+	team1Fighters = vector<CombatEntity>();
+	team2Fighters = vector<CombatEntity>();
+	team1Control = NO_CONTROL;
+	team2Control = NO_CONTROL;
+	team1EventProcessed = true;
+	team1EventProcessed = true;
+	launched = false;
+	onlinePort.disconnect();
+	onlineMutex.unlock();
+
+	aboutToStop = true;
+	team1Thread.wait();
+	team2Thread.wait();
+	serverThread.wait();
+
+	aboutToStop = false;
+}
+
+void Combat::Setup(vector<CombatEntity> &yourTeam, Controls controlTeam1, Controls controlTeam2, string IPAddress, unsigned short addressPort)
 {
 	Packet               versionNumber, charactersPacket, packetFromServer, timePacket;
 	VersionNumber        version(AutoVersion::STATUS, AutoVersion::MAJOR, AutoVersion::MINOR, AutoVersion::PATCH);
@@ -169,6 +189,11 @@ void Combat::Setup(string IPAddress, unsigned short addressPort)
 	{
 		errorReport("Can't send version information to server");
 	}
+
+	team1Control = controlTeam1;
+	team2Control = controlTeam2;
+
+	team1Fighters = yourTeam;
 
 	//Sends team's character vector to the server
 	createPacket(charactersPacket, team1Fighters, CTS_TEAM_DATA);
@@ -252,16 +277,17 @@ string Combat::endOfCombat()
 	return wonBattle ? "winner" : "loser";
 }
 
-void Combat::combatChecking()
+bool Combat::combatChecking()
 {
-	if (   team1Control == AI
-	    || team1Control == ONLINE
-	    || team1Control == FROM_FILE
-	    || team1Control == KEYBOARD && team2Control == KEYBOARD
-	    || team1Control == CONTROLLER && team2Control == CONTROLLER)
-	{
-		errorReport("Error in combat checking", true);
-	}
+	return !(team1Control == AI
+	      || team1Control == ONLINE
+	      || team1Control == FROM_FILE
+	      || team1Control == KEYBOARD && team2Control == KEYBOARD
+	      || team1Control == CONTROLLER && team2Control == CONTROLLER
+	      || team1Fighters.size() < 1
+	      || team1Fighters.size() > 5
+	      || team2Fighters.size() < 1
+	      || team2Fighters.size() > 5);
 }
 
 void Combat::teamInstructions(bool team1)
