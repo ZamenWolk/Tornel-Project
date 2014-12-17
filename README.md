@@ -1,3 +1,3 @@
 Tornel-Project
 ==============
-Lien de la documentation : [Ici](www.torneltales.olympe.in)
+Lien de la documentation : [Ici](http://www.torneltales.olympe.in)
