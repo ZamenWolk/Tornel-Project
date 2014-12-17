@@ -43,14 +43,14 @@ enum SpecialAttribute
 enum SentInfosType
 {
 	CTS_INTERACTION = 0, ///< Interaction sent to the server to describe an interaction between players
-	CTS_TEAM_DATA   = 1, ///< Data sent to the server to describe the client's team
+	TEAM_DATA       = 1, ///< Data sent to the server to describe the client's team
 	VERSION_NUMBER  = 2, ///< Data sent to the server to check if client and server version match
 	END_OF_COMBAT   = 3,
 	PONG            = 4,
 	TIME            = 5,
 	STC_ACTION      = 6,
 	PING            = 7,
-	DEBUT_TIME      = 8,
+	STC_DEBUT_TIME  = 8,
 };
 
 #endif

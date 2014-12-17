@@ -212,8 +212,8 @@ Packet &operator>>(Packet &packet, SentInfosType &infosType)
 		case CTS_INTERACTION:
 			infosType = CTS_INTERACTION;
 	        break;
-		case CTS_TEAM_DATA:
-			infosType = CTS_TEAM_DATA;
+		case TEAM_DATA:
+			infosType = TEAM_DATA;
 	        break;
 		case VERSION_NUMBER:
 			infosType = VERSION_NUMBER;

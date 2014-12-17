@@ -133,7 +133,7 @@ public:
 	* \param[in] addressPort Port to connect to on the server
 	*/
 
-	void Setup(std::vector<CombatEntity> &yourTeam, Controls controlTeam1, Controls controlTeam2, std::string IPAddress = "localhost", unsigned short addressPort = 2715);
+	int Setup(std::vector<CombatEntity> yourTeam, Controls controlTeam1, Controls controlTeam2, std::string IPAddress = "localhost", unsigned short addressPort = 2715);
 
 	/**
 	* \brief Handles end of combat after the actual fight ends

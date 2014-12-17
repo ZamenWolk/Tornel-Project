@@ -87,7 +87,7 @@ int main()
 								deconstructPacket(receivedPacket, eventsInfos.versEv, infosType);
 						        subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
 						        break;
-							case CTS_TEAM_DATA:
+							case TEAM_DATA:
 								deconstructPacket(receivedPacket, eventsInfos.teamEv, infosType);
 						        subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
 						        break;

@@ -222,11 +222,11 @@ sf::Packet &createPacket(sf::Packet &packet, const T &infos, SentInfosType type)
 	if (   (typeid(infos) == typeid(const VersionNumber) && type == VERSION_NUMBER)
 	    || (typeid(infos) == typeid(const InteractionInfos) && type == CTS_INTERACTION)
 	    || (typeid(infos) == typeid(const tm) && type == TIME)
-	    || (typeid(infos) == typeid(const std::vector<CombatEntity>) && type == CTS_TEAM_DATA)
+	    || (typeid(infos) == typeid(const std::vector<CombatEntity>) && type == TEAM_DATA)
 	    || (typeid(infos) == typeid(const int) && (type == PING || type == PONG))
 		|| (typeid(infos) == typeid(const FightAction) && type == STC_ACTION)
 	    || (typeid(infos) == typeid(const EOFStruct) && type == END_OF_COMBAT)
-		|| (typeid(infos) == typeid(const tm) && type == DEBUT_TIME))
+		|| (typeid(infos) == typeid(const tm) && type == STC_DEBUT_TIME))
 	{
 		return packet << type << infos;
 	}
@@ -245,11 +245,11 @@ sf::Packet &deconstructPacket(sf::Packet &packet, T &infos, SentInfosType type)
 	if (   (typeid(infos) == typeid(VersionNumber) && type == VERSION_NUMBER)
 	    || (typeid(infos) == typeid(InteractionInfos) && type == CTS_INTERACTION)
 	    || (typeid(infos) == typeid(tm) && type == TIME)
-	    || (typeid(infos) == typeid(std::vector<CombatEntity>) && type == CTS_TEAM_DATA)
+	    || (typeid(infos) == typeid(std::vector<CombatEntity>) && type == TEAM_DATA)
 	    || (typeid(infos) == typeid(int) && (type == PING || type == PONG))
 	    || (typeid(infos) == typeid(FightAction) && type == STC_ACTION)
 	    || (typeid(infos) == typeid(EOFStruct) && type == END_OF_COMBAT)
-        || (typeid(infos) == typeid(const tm) && type == DEBUT_TIME))
+        || (typeid(infos) == typeid(const tm) && type == STC_DEBUT_TIME))
 	{
 		return packet >> infos;
 	}

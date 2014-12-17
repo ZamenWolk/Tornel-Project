@@ -51,7 +51,7 @@ void Effects::operator+=(const Effects &a)
 
 WeaponEffects::WeaponEffects() :
 		baseDamage(3),
-		cooldownTime(sf::Time::milliseconds(1500))
+		cooldownTime(sf::milliseconds(1500))
 {
 
 }

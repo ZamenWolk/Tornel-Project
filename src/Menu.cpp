@@ -14,3 +14,8 @@ string Menu::Run(RenderWindow &app, std::map<string, Screen *> &screens)
 
 	return "stop";
 }
+
+void Menu::Reset()
+{
+
+}

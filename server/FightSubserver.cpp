@@ -72,13 +72,14 @@ ServerClient *FightSubserver::connect(TcpListener *listener, SocketSelector *soc
 	{
 		errorReport("The information received is not a VERSION_NUMBER");
 		concernedClient->disconnect();
+		return NULL;
 	}
 
 	if (eventsStructure.infos.versEv.status != AutoVersion::STATUS || eventsStructure.infos.versEv.major != AutoVersion::MAJOR)
 	{
 		disconnect(true);
 		eventsStructure.isEventTreated = true;
-		return 0;
+		return NULL;
 	}
 
 	concernedTeamVector = new vector<EntityInformations>;
@@ -88,10 +89,11 @@ ServerClient *FightSubserver::connect(TcpListener *listener, SocketSelector *soc
 		sleep(milliseconds(1000));
 	}
 
-	if (eventsStructure.typeOfEvent != CTS_TEAM_DATA)
+	if (eventsStructure.typeOfEvent != TEAM_DATA)
 	{
-		errorReport("The infformation received is not a CTS_TEAM_DATA");
+		errorReport("The infformation received is not a TEAM_DATA");
 		concernedClient->disconnect();
+		return NULL;
 	}
 
 	*concernedTeamVector = eventsStructure.infos.teamEv;
@@ -138,7 +140,7 @@ void FightSubserver::threadFunction()
 {
 	Packet teamsPacket;
 
-	teamsPacket << CTS_TEAM_DATA << *teams[1];
+	teamsPacket << TEAM_DATA << *teams[1];
 
 	while (isFull() && !stopSubServer)
 	{

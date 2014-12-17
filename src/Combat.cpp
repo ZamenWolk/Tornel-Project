@@ -170,7 +170,7 @@ void Combat::Reset()
 	aboutToStop = false;
 }
 
-void Combat::Setup(vector<CombatEntity> &yourTeam, Controls controlTeam1, Controls controlTeam2, string IPAddress, unsigned short addressPort)
+int Combat::Setup(vector<CombatEntity> yourTeam, Controls controlTeam1, Controls controlTeam2, string IPAddress, unsigned short addressPort)
 {
 	Packet               versionNumber, charactersPacket, packetFromServer, timePacket;
 	SentInfosType        type;
@@ -179,6 +179,7 @@ void Combat::Setup(vector<CombatEntity> &yourTeam, Controls controlTeam1, Contro
 	time_t               launchTime;
 
 	//Connects to the server
+	logReport("Connecting to server...", true);
 	onlineMutex.lock();
 	if (onlinePort.connect(IPAddress, addressPort) != Socket::Done)
 	{
@@ -186,6 +187,7 @@ void Combat::Setup(vector<CombatEntity> &yourTeam, Controls controlTeam1, Contro
 	}
 
 	//Sends version number to the server
+	logReport("Sending version number to server...", true);
 	createPacket(versionNumber, AutoVersion::VERSION, VERSION_NUMBER);
 	if (onlinePort.send(versionNumber) != Socket::Done)
 	{
@@ -198,35 +200,56 @@ void Combat::Setup(vector<CombatEntity> &yourTeam, Controls controlTeam1, Contro
 	team1Fighters = yourTeam;
 
 	//Sends team's character vector to the server
-	createPacket(charactersPacket, team1Fighters, CTS_TEAM_DATA);
+	logReport("Sending team information to server...", true);
+	createPacket(charactersPacket, team1Fighters, TEAM_DATA);
 	if (onlinePort.send(charactersPacket) != Socket::Done)
 	{
 		errorReport("Can't send team informations to server");
 	}
 
 	//Receives opposite team's character vector from the server
+	logReport("Waiting for enemy team informations...", true);
 	if (onlinePort.receive(packetFromServer) != Socket::Done)
 	{
 		errorReport("Can't receive team informations from server");
 	}
 	infoTypeInPacket(packetFromServer, type);
-	deconstructPacket(packetFromServer, teamFromServer, type);
 
+	if (type != TEAM_DATA)
+	{
+		errorReport("The packet received is not a TEAM_DATA");
+		Reset();
+		return 1;
+	}
+
+	deconstructPacket(packetFromServer, teamFromServer, type);
 	fillFightersVector(teamFromServer, false);
 
+	logReport("Waiting for launch time...", true);
 	if (onlinePort.receive(timePacket) != Socket::Done)
 	{
 		errorReport("Can't receive launch time from server");
 	}
 	infoTypeInPacket(timePacket, type);
+
+	if (type != STC_DEBUT_TIME)
+	{
+		errorReport("The packet received is not a STC_DEBUT_TIME");
+		Reset();
+		return 1;
+	}
+
 	deconstructPacket(timePacket, launchTM, type);
 
 	launchTime = mktime(&launchTM) + secondsAheadOfGMT();
 
+	logReport("Waiting for the fight to begin", true);
 	while (time(NULL) < launchTime)
 	{
 		sleep(milliseconds(50));
 	}
+
+	return 0;
 }
 
 string Combat::endOfCombat()
