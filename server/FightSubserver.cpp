@@ -136,19 +136,135 @@ bool FightSubserver::isLastEventTreated()
 	return eventsStructure.isEventTreated;
 }
 
-void FightSubserver::threadFunction()
+int FightSubserver::threadFunction()
 {
-	Packet teamsPacket;
+	sf::Packet teamPacket, timePacket;
+	time_t currentTime, debutTime;
+	tm     debutTM;
 
-	teamsPacket << TEAM_DATA << *teams[1];
+	createPacket(teamPacket, *teams[1], TEAM_DATA);
+	if (clients[0].send(teamPacket) != Socket::Done)
+	{
+		errorReport("Can't send team data to client 1");
+		disconnect(true);
+		return 1;
+	}
+
+	createPacket(teamPacket, *teams[0], TEAM_DATA);
+	if (clients[1].send(teamPacket) != Socket::Done)
+	{
+		errorReport("Can't send team data to client 2");
+		disconnect(false);
+		return 1;
+	}
+
+	time(&currentTime);
+	debutTime = currentTime + 10;
+	debutTM = *gmtime(&debutTime);
+	createPacket(timePacket, debutTM, STC_DEBUT_TIME);
+	if (clients[0].send(timePacket) != Socket::Done)
+	{
+		errorReport("Can't send debut time data to client 1");
+		disconnect(true);
+		return 1;
+	}
+	if (clients[1].send(timePacket) != Socket::Done)
+	{
+		errorReport("Can't send debut time data to client 2");
+		disconnect(false);
+		return 1;
+	}
 
 	while (isFull() && !stopSubServer)
 	{
 		if (!eventsStructure.isEventTreated)
 		{
+			if (eventsStructure.typeOfEvent != CTS_INTERACTION)
+			{
+				errorReport("The information received is not a CTS_INTERACTION");
+				disconnect(true);
+				disconnect(false);
+			}
+			else
+			{
+				Packet actionPacket;
+				FightAction action;
+				action.subjectID = eventsStructure.infos.intEv.attackerID;
+				action.targetID = eventsStructure.infos.intEv.targetID;
+				action.actionType = DEAL_DAMAGE;
+				action.attackType = eventsStructure.infos.intEv.type;
+				action.specialAttribute = NO_SPECIAL;
+				action.subject = NULL;
+				action.skill = NULL;
+				action.target = NULL;
+				action.skillName = eventsStructure.infos.intEv.spellName;
 
+				EntityInformations *subjectInfos = IDToInformations(action.subjectID, eventsStructure.team1),
+								   *targetInfos = IDToInformations(action.targetID, !eventsStructure.team1);
+				Skill *currentSkill;
+
+				switch (eventsStructure.infos.intEv.type)
+				{
+					case WEAPON_ATTACK:
+						action.attackDamage = (Int32)(((double)(eventsStructure.infos.intEv.baseDamage))*STRENGTH_TO_ATTACK_FACTOR.result(subjectInfos->effects.strength)*TOUGHNESS_TO_ATTACK_REDUCTION.result(targetInfos->effects.toughness));
+						break;
+					case SPELL:
+						currentSkill = indexes.skillIndex.searchByName(action.skillName);
+						action.attackDamage = (Int32)(((double)(currentSkill->baseDamage))*WISDOM_TO_ATTACK_FACTOR.result(subjectInfos->effects.wisdom)*MENTAL_RESISTANCE_TO_ATTACK_REDUCTION.result(targetInfos->effects.mentalResistance));
+						break;
+					case ABILITY:
+						currentSkill = indexes.skillIndex.searchByName(action.skillName);
+				        action.attackDamage = (Int32)(((double)(currentSkill->baseDamage))*STRENGTH_TO_ATTACK_FACTOR.result(subjectInfos->effects.strength)*TOUGHNESS_TO_ATTACK_REDUCTION.result(targetInfos->effects.toughness));
+						break;
+				}
+
+				createPacket(actionPacket, action, STC_ACTION);
+				if (clients[0].send(actionPacket) != Socket::Done)
+				{
+					errorReport("Can't send action to client 1");
+					disconnect(true);
+					return 1;
+				}
+				if (clients[1].send(actionPacket) != Socket::Done)
+				{
+					errorReport("Can't send action to client 2");
+					disconnect(false);
+					return 1;
+				}
+			}
+
+			eventsStructure.isEventTreated = true;
+		}
+
+		sleep(milliseconds(100));
+	}
+}
+
+EntityInformations *FightSubserver::IDToInformations(sf::Uint32 searchID, bool isTeam1)
+{
+	if (isTeam1)
+	{
+		for (vector<EntityInformations>::iterator it = teams[0]->begin(); it != teams[0]->end(); it++)
+		{
+			if (it->ID == searchID)
+			{
+				return &*it;
+			}
 		}
 	}
+	else
+	{
+		for (vector<EntityInformations>::iterator it = teams[1]->begin(); it != teams[1]->end(); it++)
+		{
+			if (it->ID == searchID)
+			{
+				return &*it;
+			}
+		}
+	}
+
+	errorReport("EntityInformations data doesn't exist for this ID");
+	return &teams[0]->at(0);
 }
 
 

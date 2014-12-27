@@ -47,10 +47,9 @@ enum SentInfosType
 	VERSION_NUMBER  = 2, ///< Data sent to the server to check if client and server version match
 	END_OF_COMBAT   = 3,
 	PONG            = 4,
-	TIME            = 5,
+	STC_DEBUT_TIME  = 5,
 	STC_ACTION      = 6,
 	PING            = 7,
-	STC_DEBUT_TIME  = 8,
 };
 
 #endif

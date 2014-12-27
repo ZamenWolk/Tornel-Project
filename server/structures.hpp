@@ -27,7 +27,6 @@ struct EventsUnion
 	InteractionInfos                intEv;
 	std::vector<EntityInformations> teamEv;
 	VersionNumber                   versEv;
-	std::tm                         timeEv;
 };
 
 struct EventsStructure

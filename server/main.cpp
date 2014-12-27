@@ -91,10 +91,6 @@ int main()
 								deconstructPacket(receivedPacket, eventsInfos.teamEv, infosType);
 						        subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
 						        break;
-							case TIME:
-								deconstructPacket(receivedPacket, eventsInfos.timeEv, infosType);
-						        subservers[i/2]->newEvent(infosType, eventsInfos, (i%2 == 0));
-						        break;
 							case PING:
 							{
 								Packet pong;

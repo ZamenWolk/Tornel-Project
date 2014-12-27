@@ -79,6 +79,8 @@ public:
 
 	bool isLastEventTreated();
 
+	EntityInformations *IDToInformations(sf::Uint32 searchID, bool isTeam1);
+
 protected:
 
 	EventsStructure                 eventsStructure; ///< Structure of possible interactions between server and client
@@ -88,8 +90,7 @@ protected:
 private:
 
 	/// \todo Finish that
-	/// \todo Create the sending of time of combat debut
-	void threadFunction();
+	int threadFunction();
 
 	sf::Thread serverThread; ///< Thread running the subserver
 };

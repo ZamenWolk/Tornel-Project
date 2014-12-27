@@ -488,7 +488,8 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 		//If user wants to attack
 	else if (K_WEAPATK)
 	{
-		sendToServer(*currentCharacter, *currentCharacter->getTarget(), WEAPON_ATTACK);
+		checkActionToSend(*currentCharacter, *currentCharacter->getTarget(),
+		WEAPON_ATTACK, currentCharacter->getEffects().baseDamage);
 	}
 		//If user wants to go back to main menu
 	else if (K_MAINMENU)
@@ -618,6 +619,7 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 					checkActionToSend(*currentCharacter,
 									  *currentCharacter->getTarget(),
 					           		  ABILITY,
+						              0,
 									  currentCharacter->getEntity()->getKnownAbilities().at((unsigned int)(abilityPage*6 + selectorVariable)));
 				}
 		        break;
@@ -628,6 +630,7 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 					checkActionToSend(*currentCharacter,
 							          *currentCharacter->getTarget(),
 					                  SPELL,
+					                  0,
 					                  currentCharacter->getEntity()->getKnownSpells().at((unsigned int)(spellPage*6 + selectorVariable)));
 				}
 		        break;
@@ -644,7 +647,7 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
 	}
 }
 
-void Combat::checkActionToSend(CombatEntity &attacker, CombatEntity &target, AttackType type, Skill *skill)
+void Combat::checkActionToSend(CombatEntity &attacker, CombatEntity &target, AttackType type, int baseDamage, Skill *skill)
 {
 	bool canBeSent = true;
 	
@@ -681,14 +684,14 @@ void Combat::checkActionToSend(CombatEntity &attacker, CombatEntity &target, Att
 	
 	if (canBeSent)
 	{
-		sendToServer(attacker, target, type, skill->name);
+		sendToServer(attacker, target, type, baseDamage, skill->name);
 	}
 }
 
-void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, string skillName)
+void Combat::sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, int baseDamage, string skillName)
 {
 	Packet           packetToSend;
-	InteractionInfos informationsToSend{attacker.getEntity()->getID(), target.getEntity()->getID(), type, skillName};
+	InteractionInfos informationsToSend{attacker.getEntity()->getID(), target.getEntity()->getID(), type, baseDamage, skillName};
 
 	createPacket(packetToSend, informationsToSend, CTS_INTERACTION);
 

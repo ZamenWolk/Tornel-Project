@@ -5,8 +5,6 @@ project(${PROJECT_NAME})
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/Debug")
-else()
-    set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/Release")
 endif()
 
 

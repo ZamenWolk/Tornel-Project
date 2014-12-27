@@ -38,7 +38,7 @@ Packet &operator>>(Packet &packet, ActionType &action)
 			action = HEAL;
 	        break;
 		default:
-			errorReport("Server sent an unknown action", false);
+			errorReport("Unknown action", true);
 	}
 
 	return packet;
@@ -67,7 +67,7 @@ Packet &operator>>(Packet &packet, SpecialAttribute &attribute)
 			attribute = CRITICAL;
 	        break;
 		default:
-			errorReport("Server sent an unknown attribute", 0);
+			errorReport("Unknown attribute", true);
 	}
 
 	return packet;
@@ -90,7 +90,7 @@ Packet &operator>>(Packet &packet, AttackType &attackType)
 			attackType = ABILITY;
 	        break;
 		default:
-			errorReport("Unknown action type", 0);
+			errorReport("Unknown action type", true);
 	}
 
 	return packet;
@@ -117,8 +117,6 @@ Packet &operator>>(Packet &packet, EntityInformations &entity)
 	packet >> entity.ID;
 	packet >> entity.name;
 	packet >> entity.life;
-	packet >> entity.mana;
-	packet >> entity.stamina;
 
 	int vectorSize;
 	packet >> vectorSize;
@@ -169,8 +167,6 @@ Packet &operator<<(Packet &packet, const CombatEntity &entity)
 	packet << (Uint32)(entity.getEntity()->getID());
 	packet << entity.getEntity()->getName();
 	packet << entity.getEntity()->getLife();
-	packet << entity.getEntity()->getMana();
-	packet << entity.getEntity()->getStamina();
 	packet << entity.getEntity()->getKnownAbilities();
 	packet << entity.getEntity()->getKnownSpells();
 	packet << entity.getEffects();
@@ -183,8 +179,6 @@ Packet &operator<<(Packet &packet, const EntityInformations &entity)
 	packet << entity.ID;
 	packet << entity.name;
 	packet << entity.life;
-	packet << entity.mana;
-	packet << entity.stamina;
 	packet << entity.knownAbilities;
 	packet << entity.knownSpells;
 	packet << entity.effects;
@@ -194,12 +188,12 @@ Packet &operator<<(Packet &packet, const EntityInformations &entity)
 
 Packet &operator<<(Packet &packet, const InteractionInfos &infos)
 {
-	return packet << infos.attackerID << infos.targetID << infos.type << infos.spellName;
+	return packet << infos.attackerID << infos.targetID << infos.type << infos.baseDamage << infos.spellName;
 }
 
 Packet &operator>>(Packet &packet, InteractionInfos &infos)
 {
-	return packet >> infos.attackerID >> infos.targetID >> infos.type >> infos.spellName;
+	return packet >> infos.attackerID >> infos.targetID >> infos.type >> infos.baseDamage >> infos.spellName;
 }
 
 Packet &operator>>(Packet &packet, SentInfosType &infosType)
@@ -224,17 +218,17 @@ Packet &operator>>(Packet &packet, SentInfosType &infosType)
 		case PONG:
 			infosType = PONG;
 	        break;
-		case TIME:
-			infosType = TIME;
-	        break;
 		case STC_ACTION:
 			infosType = STC_ACTION;
 			break;
 		case END_OF_COMBAT:
 			infosType = END_OF_COMBAT;
 			break;
+		case STC_DEBUT_TIME:
+			infosType = STC_DEBUT_TIME;
+			break;
 		default:
-			errorReport("Server tried to send an unknown information type");
+			errorReport("Unknown information type", true);
 	}
 
 	return packet;

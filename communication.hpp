@@ -8,6 +8,7 @@
 
 #include "src/Equipment.hpp"
 #include "src/operators.hpp"
+#include "communication.cpp"
 
 class Skill;
 
@@ -78,11 +79,12 @@ struct InteractionInfos
 	* \param[in] spellName Name of the spell, if used
 	*/
 
-	InteractionInfos(sf::Uint32 attackerID, sf::Uint32 targetID, AttackType type, std::string spellName) :
+	InteractionInfos(sf::Uint32 attackerID, sf::Uint32 targetID, AttackType type, sf::Uint32 baseDamage, std::string spellName) :
 			attackerID(attackerID),
 			targetID(targetID),
 			type(type),
-			spellName(spellName)
+			spellName(spellName),
+			baseDamage(baseDamage)
 	{
 
 	}
@@ -91,7 +93,8 @@ struct InteractionInfos
 			attackerID(0),
 			targetID(0),
 			type(WEAPON_ATTACK),
-			spellName("")
+			spellName(""),
+			baseDamage(0)
 	{
 
 	}
@@ -102,7 +105,8 @@ struct InteractionInfos
 	}
 
 	sf::Uint32 attackerID, ///< ID of the attacker
-	            targetID; ///< ID of the target
+	            targetID, ///< ID of the target
+				baseDamage;
 	AttackType  type; ///< Type of the interaction
 	std::string spellName; ///< Name of the spell, if used
 };
@@ -116,8 +120,6 @@ struct EntityInformations
 	EntityInformations() :
 			name(""),
 			life(0),
-			mana(0),
-			stamina(0),
 			knownAbilities(),
 			knownSpells(),
 			effects()
@@ -135,8 +137,6 @@ struct EntityInformations
 	                   sf::Uint32 ID) :
 			name(name),
 			life((sf::Int16)life),
-			mana((sf::Int16)mana),
-			stamina((sf::Int16)stamina),
 			knownAbilities(knownAbilities),
 			knownSpells(knownSpells),
 			effects(effects),
@@ -145,11 +145,9 @@ struct EntityInformations
 
 	}
 
-	sf::Uint32  ID;
-	std::string name; ///< Name of the entity
-	sf::Int16   life, ///< Current life of the entity
-	            mana, ///< Current mana of the entity
-	                     stamina; ///< Current stamina of the entity
+	sf::Uint32           ID;
+	std::string          name; ///< Name of the entity
+	sf::Int16            life; ///< Current life of the entity
 	std::vector<Skill *> knownAbilities, ///< Known abilities of the entity
 	                     knownSpells; ///< Known spells of the entity
 	CombatEffects        effects; ///< Current effects of the entity
@@ -208,6 +206,8 @@ struct EOFStruct
 
 };
 
+sf::Packet &emptyPacket(sf::Packet &packet);
+
 /**
 * \brief Creates a packet with a some info and the SentInfosType going with it
 * \param[in] packet Packet to flux the informations to
@@ -221,13 +221,14 @@ sf::Packet &createPacket(sf::Packet &packet, const T &infos, SentInfosType type)
 {
 	if (   (typeid(infos) == typeid(const VersionNumber) && type == VERSION_NUMBER)
 	    || (typeid(infos) == typeid(const InteractionInfos) && type == CTS_INTERACTION)
-	    || (typeid(infos) == typeid(const tm) && type == TIME)
 	    || (typeid(infos) == typeid(const std::vector<CombatEntity>) && type == TEAM_DATA)
 	    || (typeid(infos) == typeid(const int) && (type == PING || type == PONG))
 		|| (typeid(infos) == typeid(const FightAction) && type == STC_ACTION)
 	    || (typeid(infos) == typeid(const EOFStruct) && type == END_OF_COMBAT)
-		|| (typeid(infos) == typeid(const tm) && type == STC_DEBUT_TIME))
+		|| (typeid(infos) == typeid(const tm) && type == STC_DEBUT_TIME)
+		|| (typeid(infos) == typeid(const FightAction) && type == STC_ACTION))
 	{
+		emptyPacket(packet);
 		return packet << type << infos;
 	}
 	else
@@ -244,12 +245,12 @@ sf::Packet &deconstructPacket(sf::Packet &packet, T &infos, SentInfosType type)
 {
 	if (   (typeid(infos) == typeid(VersionNumber) && type == VERSION_NUMBER)
 	    || (typeid(infos) == typeid(InteractionInfos) && type == CTS_INTERACTION)
-	    || (typeid(infos) == typeid(tm) && type == TIME)
 	    || (typeid(infos) == typeid(std::vector<CombatEntity>) && type == TEAM_DATA)
 	    || (typeid(infos) == typeid(int) && (type == PING || type == PONG))
 	    || (typeid(infos) == typeid(FightAction) && type == STC_ACTION)
 	    || (typeid(infos) == typeid(EOFStruct) && type == END_OF_COMBAT)
-        || (typeid(infos) == typeid(const tm) && type == STC_DEBUT_TIME))
+        || (typeid(infos) == typeid(tm) && type == STC_DEBUT_TIME)
+        || (typeid(infos) == typeid(FightAction) && type == STC_ACTION))
 	{
 		return packet >> infos;
 	}
@@ -259,8 +260,6 @@ sf::Packet &deconstructPacket(sf::Packet &packet, T &infos, SentInfosType type)
 		return packet;
 	}
 }
-
-sf::Packet &emptyPacket(sf::Packet &packet);
 
 /// @}
 

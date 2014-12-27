@@ -120,7 +120,6 @@ public:
 	* \param[in] IPAddress Address of the server to connect to
 	* \param[in] addressPort Port to connect to on the server
 	* \return 1 if team 1 won, 0 if team 2 won
-	* \todo Edit main loop so it considers inputs to other Screen
 	*/
 
 	virtual std::string Run(sf::RenderWindow &app, std::map<std::string, Screen *> &screens);
@@ -175,7 +174,7 @@ protected:
 
 	void keyboardInstructions(std::vector<CombatEntity> *currentTeam, std::vector<CombatEntity> *currentEnemies);
 
-	void checkActionToSend(CombatEntity &attacker, CombatEntity &target, AttackType type, Skill* skill = indexes.skillIndex.searchByName());
+	void checkActionToSend(CombatEntity &attacker, CombatEntity &target, AttackType type, int baseDamage, Skill* skill = indexes.skillIndex.searchByName());
 
 	/**
 	* \brief Send an interaction to the server to be handled
@@ -185,7 +184,7 @@ protected:
 	* \param[in] spellName Name of the spell for the server to find in the indexes
 	*/
 
-	void sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, std::string skillName = "");
+	void sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, int baseDamage, std::string skillName = "");
 
 	std::vector<CombatEntity> team1Fighters, ///< Array of the members of Team 1
 	                          team2Fighters; ///< Array of the members of Team 2
