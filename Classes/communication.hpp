@@ -37,8 +37,8 @@ struct InteractionInfos
     sf::Uint32 attackerID,
             targetID,
             baseDamage;
-    AttackType  type; 
-    std::string spellName; ///< Name of the spell, if used
+    AttackType  type;
+    std::string spellName;
 };
 
 struct EntityInformations
@@ -72,8 +72,8 @@ struct EntityInformations
     }
 
     sf::Uint32           ID;
-    std::string          name; ///< Name of the entity
-    sf::Int16            life; ///< Current life of the entity
+    std::string          name;
+    sf::Int16            life;
     std::vector<Skill *> knownAbilities,
             knownSpells;
     CombatEffects        effects;

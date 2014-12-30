@@ -2,25 +2,25 @@
 
 enum AttackType
 {
-    WEAPON_ATTACK = 0, ///< Weapon attack
-    SPELL         = 1, ///< Mana-oriented skill
-    ABILITY       = 2, ///< Stamina-oriented skill
+    WEAPON_ATTACK = 0,
+    SPELL         = 1,
+    ABILITY       = 2,
 };
 
 enum ActionType
 {
-    NONE         = 0, ///< Do nothing
-    DEAL_DAMAGE  = 1, ///< Deal damage to the target
-    HEAL         = 2, ///< Heal the target
+    NONE         = 0,
+    DEAL_DAMAGE  = 1,
+    HEAL         = 2,
 };
 
 enum SpecialAttribute
 {
-    NO_SPECIAL    = 0, ///< Nothing special
-    MISSED        = 1, ///< Missed the interaction
-    DODGED        = 2, ///< Target dodged the interaction
-    BLOCKED       = 3, ///< Target blocked the interaction
-    CRITICAL      = 4, ///< Critical output for interaction
+    NO_SPECIAL    = 0,
+    MISSED        = 1,
+    DODGED        = 2,
+    BLOCKED       = 3,
+    CRITICAL      = 4,
 };
 
 enum SentInfosType
