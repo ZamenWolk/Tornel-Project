@@ -65,8 +65,8 @@ set(SERVER_FILES
     server.cpp
     Enums/serverEvents.hpp
     Enums/serverEvents.cpp
-    Classes/Server/Subserver.cpp
-    Classes/Server/Subserver.hpp
+    Classes/Server/Subservers.cpp
+    Classes/Server/Subservers.hpp
     Classes/Server/ServerClient.cpp
     Classes/Server/ServerClient.hpp
     Classes/Server/fonctor.cpp
