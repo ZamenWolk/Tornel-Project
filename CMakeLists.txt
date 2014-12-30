@@ -62,7 +62,15 @@ set(CLIENT_FILES
     Enums/Equipment.hpp)
 
 set(SERVER_FILES
-    server.cpp)
+    server.cpp
+    Enums/serverEvents.hpp
+    Enums/serverEvents.cpp
+    Classes/Server/Subserver.cpp
+    Classes/Server/Subserver.hpp
+    Classes/Server/ServerClient.cpp
+    Classes/Server/ServerClient.hpp
+    Classes/Server/fonctor.cpp
+    Classes/Server/fonctor.hpp)
 
 find_package(SFML COMPONENTS network audio graphics window system REQUIRED)
 
