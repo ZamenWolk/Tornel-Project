@@ -33,8 +33,6 @@ public:
 
 protected:
 
-    void teamInstructions(bool team1);
-
     void serverHandling();
 
     CombatEntity *IDToEntity(unsigned long entityID);
@@ -53,9 +51,6 @@ protected:
             team2EventProcessed,
             aboutToStop,
             launched;
-    sf::Thread                team1Thread,
-            team2Thread,
-            serverThread;
     sf::TcpSocket             onlinePort;
     sf::Mutex                 onlineMutex;
 };

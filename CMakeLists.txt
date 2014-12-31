@@ -44,7 +44,8 @@ set(COMMON_FILES
     Classes/Indexes/IndexesIndex.hpp
     Classes/Indexes/IndexesIndex.cpp
     Classes/communication.hpp
-    Classes/communication.cpp)
+    Classes/communication.cpp
+    Enums/Equipment.hpp)
 
 set(CLIENT_FILES
     client.cpp
@@ -58,8 +59,7 @@ set(CLIENT_FILES
     Classes/CharEntities/CombatEntity.hpp
     Classes/CharEntities/Hero.cpp
     Classes/CharEntities/Hero.hpp
-    Enums/Combat.hpp
-    Enums/Equipment.hpp)
+    Enums/Combat.hpp)
 
 set(SERVER_FILES
     server.cpp

@@ -32,9 +32,6 @@ Combat::Combat() :
         team1EventProcessed(true),
         team2EventProcessed(true),
         aboutToStop(false),
-        team1Thread(bind(&Combat::teamInstructions, this, true)),
-        team2Thread(bind(&Combat::teamInstructions, this, false)),
-        serverThread(&Combat::serverHandling, this),
         onlineMutex(),
         launched(false)
 {
@@ -54,34 +51,36 @@ Combat::Combat() :
     eventsMap["selector6"]     = thor::Action(Keyboard::Numpad3, thor::Action::PressOnce);
     eventsMap["charSelector"]  = eventsMap["selector1"] || eventsMap["selector2"] || eventsMap["selector3"] || eventsMap["selector4"] || eventsMap["selector5"];
     eventsMap["selector"]      = eventsMap["selector6"] || eventsMap["charSelector"];
+
+    onlinePort.setBlocking(false);
 }
 
 int Combat::fillFightersVector(vector<CombatEntity> &teamVector, bool isTeam1)
 {
-int deletedEntities(0);
-if (isTeam1)
-{
-team1Fighters = teamVector;
-while (team1Fighters.size() > 5)
-{
-team1Fighters.pop_back();
-deletedEntities++;
-}
-}
-else
-{
-team2Fighters = teamVector;
-while (team2Fighters.size() > 5)
-{
-team2Fighters.pop_back();
-deletedEntities++;
-}
+    int deletedEntities(0);
+    if (isTeam1)
+    {
+        team1Fighters = teamVector;
+        while (team1Fighters.size() > 5)
+        {
+            team1Fighters.pop_back();
+            deletedEntities++;
+        }
+    }
+    else
+    {
+        team2Fighters = teamVector;
+        while (team2Fighters.size() > 5)
+        {
+            team2Fighters.pop_back();
+            deletedEntities++;
+        }
+    }
+
+    return deletedEntities;
 }
 
-return deletedEntities;
-}
-
-string Combat::Run(RenderWindow &app, map<string, App *> &screens)
+string Combat::Run(RenderWindow &window, map<string, App *> &apps)
 {
     if (!combatChecking())
     {
@@ -91,11 +90,7 @@ string Combat::Run(RenderWindow &app, map<string, App *> &screens)
 
     if (!launched)
     {
-        //Launches the threads
         logReport("The game begins !");
-        team1Thread.launch();
-        team2Thread.launch();
-        serverThread.launch();
 
         launched = true;
     }
@@ -104,15 +99,19 @@ string Combat::Run(RenderWindow &app, map<string, App *> &screens)
     //Catches events to be processed by the threads until the fight stops
     while (!aboutToStop)
     {
-        eventsMap.update(app);
+        eventsMap.update(window);
 
-        team1EventProcessed = false;
-        team2EventProcessed = false;
-
-        while (!team1EventProcessed && !team2EventProcessed)
+        if (team1Control == KEYBOARD)
         {
-            sleep(milliseconds(25));
+            keyboardInstructions(&team1Fighters, &team2Fighters);
         }
+
+        if (team2Control == KEYBOARD)
+        {
+            keyboardInstructions(&team2Fighters, &team1Fighters);
+        }
+
+        serverHandling();
     }
 
     return endOfCombat();
@@ -120,82 +119,82 @@ string Combat::Run(RenderWindow &app, map<string, App *> &screens)
 
 int Combat::setupServer(vector<CombatEntity> yourTeam, Controls controlTeam1, Controls controlTeam2, string IPAddress, unsigned short addressPort)
 {
-Packet               versionNumber, charactersPacket, packetFromServer, timePacket;
-SentInfosType        type;
-vector<CombatEntity> teamFromServer;
-tm                   launchTM;
-time_t               launchTime;
+    Packet               versionNumber, charactersPacket, packetFromServer, timePacket;
+    SentInfosType        type;
+    vector<CombatEntity> teamFromServer;
+    tm                   launchTM;
+    time_t               launchTime;
 
-//Connects to the server
-logReport("Connecting to server...", true);
-onlineMutex.lock();
-if (onlinePort.connect(IPAddress, addressPort) != Socket::Done)
-{
-errorReport("Can't connect to the server");
-}
+    //Connects to the server
+    logReport("Connecting to server...", true);
+    onlineMutex.lock();
+    if (onlinePort.connect(IPAddress, addressPort) != Socket::Done)
+    {
+        errorReport("Can't connect to the server");
+    }
 
-//Sends version number to the server
-logReport("Sending version number to server...", true);
-createPacket(versionNumber, Version::VERSION, VERSION_NUMBER);
-if (onlinePort.send(versionNumber) != Socket::Done)
-{
-errorReport("Can't send version information to server");
-}
+    //Sends version number to the server
+    logReport("Sending version number to server...", true);
+    createPacket(versionNumber, Version::VERSION, VERSION_NUMBER);
+    if (onlinePort.send(versionNumber) != Socket::Done)
+    {
+        errorReport("Can't send version information to server");
+    }
 
-team1Control = controlTeam1;
-team2Control = controlTeam2;
+    team1Control = controlTeam1;
+    team2Control = controlTeam2;
 
-team1Fighters = yourTeam;
+    team1Fighters = yourTeam;
 
-//Sends team's character vector to the server
-logReport("Sending team information to server...", true);
-createPacket(charactersPacket, team1Fighters, TEAM_DATA);
-if (onlinePort.send(charactersPacket) != Socket::Done)
-{
-errorReport("Can't send team informations to server");
-}
+    //Sends team's character vector to the server
+    logReport("Sending team information to server...", true);
+    createPacket(charactersPacket, team1Fighters, TEAM_DATA);
+    if (onlinePort.send(charactersPacket) != Socket::Done)
+    {
+        errorReport("Can't send team informations to server");
+    }
 
-//Receives opposite team's character vector from the server
-logReport("Waiting for enemy team informations...", true);
-if (onlinePort.receive(packetFromServer) != Socket::Done)
-{
-errorReport("Can't receive team informations from server");
-}
-infoTypeInPacket(packetFromServer, type);
+    //Receives opposite team's character vector from the server
+    logReport("Waiting for enemy team informations...", true);
+    if (onlinePort.receive(packetFromServer) != Socket::Done)
+    {
+        errorReport("Can't receive team informations from server");
+    }
+    infoTypeInPacket(packetFromServer, type);
 
-if (type != TEAM_DATA)
-{
-errorReport("The packet received is not a TEAM_DATA");
-return 1;
-}
+    if (type != TEAM_DATA)
+    {
+        errorReport("The packet received is not a TEAM_DATA");
+        return 1;
+    }
 
-deconstructPacket(packetFromServer, teamFromServer, type);
-fillFightersVector(teamFromServer, false);
+    deconstructPacket(packetFromServer, teamFromServer, type);
+    fillFightersVector(teamFromServer, false);
 
-logReport("Waiting for launch time...", true);
-if (onlinePort.receive(timePacket) != Socket::Done)
-{
-errorReport("Can't receive launch time from server");
-}
-infoTypeInPacket(timePacket, type);
+    logReport("Waiting for launch time...", true);
+    if (onlinePort.receive(timePacket) != Socket::Done)
+    {
+        errorReport("Can't receive launch time from server");
+    }
+    infoTypeInPacket(timePacket, type);
 
-if (type != STC_DEBUT_TIME)
-{
-errorReport("The packet received is not a STC_DEBUT_TIME");
-return 1;
-}
+    if (type != STC_DEBUT_TIME)
+    {
+        errorReport("The packet received is not a STC_DEBUT_TIME");
+        return 1;
+    }
 
-deconstructPacket(timePacket, launchTM, type);
+    deconstructPacket(timePacket, launchTM, type);
 
-launchTime = mktime(&launchTM) + secondsAheadOfGMT();
+    launchTime = mktime(&launchTM) + secondsAheadOfGMT();
 
-logReport("Waiting for the fight to begin", true);
-while (time(NULL) < launchTime)
-{
-sleep(milliseconds(50));
-}
+    logReport("Waiting for the fight to begin", true);
+    while (time(NULL) < launchTime)
+    {
+        sleep(milliseconds(50));
+    }
 
-return 0;
+    return 0;
 }
 
 string Combat::endOfCombat()
@@ -203,11 +202,6 @@ string Combat::endOfCombat()
     aboutToStop = true;
     Packet packetFromServer;
     bool   wonBattle;
-
-    //Terminates all server threads
-    team1Thread.wait();
-    team2Thread.wait();
-    serverThread.wait();
 
     //Receives winner information from server
     onlineMutex.lock();
@@ -236,144 +230,103 @@ bool Combat::combatChecking()
             || team2Fighters.size() > 5);
 }
 
-void Combat::teamInstructions(bool team1)
+void Combat::serverHandling()
 {
-    vector<CombatEntity> *currentTeam(nullptr), *currentEnemies(nullptr);
-    const Controls       *currentControl(nullptr);
-    bool                 *currentTeamEventProcessed(nullptr);
+    Packet           packetFromServer;
+    SentInfosType    infoType;
+    FightAction      action;
+    Socket::Status   result;
 
-    //Sets up all the pointers so the program can be the same for both team
-    if (team1)
+    //Receives packet of information from the server
+    onlineMutex.lock();
+    result = onlinePort.receive(packetFromServer);
+    onlineMutex.unlock();
+
+    if (result != Socket::Done && result != Socket::NotReady)
     {
-        currentTeam               = &team1Fighters;
-        currentEnemies            = &team2Fighters;
-        currentControl            = &team1Control;
-        currentTeamEventProcessed = &team1EventProcessed;
+        errorReport("Can't receive informations from server");
     }
     else
     {
-        currentTeam               = &team2Fighters;
-        currentEnemies            = &team1Fighters;
-        currentControl            = &team2Control;
-        currentTeamEventProcessed = &team2EventProcessed;
-    }
-
-    //Processes every event that comes by
-    while (!aboutToStop)
-    {
-        if (!*currentTeamEventProcessed && *currentControl == KEYBOARD)
+        infoTypeInPacket(packetFromServer, infoType);
+        if(infoType != STC_ACTION && infoType != END_OF_COMBAT)
         {
-            keyboardInstructions(currentTeam, currentEnemies);
+            errorReport("Information from server is not a STC_ACTION");
         }
-
-        *currentTeamEventProcessed = true;
-
-        sleep(milliseconds(25));
-    }
-}
-
-void Combat::serverHandling()
-{
-    while (!aboutToStop)
-    {
-        Packet           packetFromServer;
-        SentInfosType    infoType;
-        FightAction      action;
-        Socket::Status   result;
-
-        //Receives packet of information from the server
-        onlineMutex.lock();
-        result = onlinePort.receive(packetFromServer);
-        onlineMutex.unlock();
-
-        if (result != Socket::Done && result != Socket::NotReady)
+        else if (infoType == END_OF_COMBAT)
         {
-            errorReport("Can't receive informations from server");
+            aboutToStop = true;
         }
         else
         {
-            infoTypeInPacket(packetFromServer, infoType);
-            if(infoType != STC_ACTION && infoType != END_OF_COMBAT)
-            {
-                errorReport("Information from server is not a STC_ACTION");
-            }
-            else if (infoType == END_OF_COMBAT)
-            {
-                aboutToStop = true;
-            }
-            else
-            {
-                deconstructPacket(packetFromServer, action, infoType);
-                action.subject = IDToEntity(action.subjectID);
+            deconstructPacket(packetFromServer, action, infoType);
+            action.subject = IDToEntity(action.subjectID);
 
-                switch (action.actionType)
-                {
-                    case NONE:
-                        switch (action.specialAttribute)
-                        {
-                            case NO_SPECIAL:
-                            case MISSED:
-                            case DODGED:
-                            case BLOCKED:
-                            case CRITICAL:
-                            default:
-                                errorReport(
-                                        "The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
-                        }
-                        break;
-                    case DEAL_DAMAGE:
-                        action.target = IDToEntity(action.targetID);
+            switch (action.actionType)
+            {
+                case NONE:
+                    switch (action.specialAttribute)
+                    {
+                        case NO_SPECIAL:
+                        case MISSED:
+                        case DODGED:
+                        case BLOCKED:
+                        case CRITICAL:
+                        default:
+                            errorReport(
+                                    "The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
+                    }
+                    break;
+                case DEAL_DAMAGE:
+                    action.target = IDToEntity(action.targetID);
 
-                        if (action.attackType != WEAPON_ATTACK)
-                        {
-                            action.skill = singleton<IndexesIndex>().skillIndex.searchByName(action.skillName);
-                        }
-                        action.target->getEntity()->changeLife(-action.attackDamage);
+                    if (action.attackType != WEAPON_ATTACK)
+                    {
+                        action.skill = singleton<IndexesIndex>().skillIndex.searchByName(action.skillName);
+                    }
+                    action.target->getEntity()->changeLife(-action.attackDamage);
 
-                        switch (action.specialAttribute)
-                        {
-                            case NO_SPECIAL:
-                                if (action.attackType == WEAPON_ATTACK)
-                                {
-                                    string message(action.subject->getEntity()->getName());
-                                    message += " attacked ";
-                                    message += action.target->getEntity()->getName();
-                                    message += ", dealing ";
-                                    message += action.attackDamage;
-                                    message += " damage";
-                                    logReport(message);
-                                }
-                                else
-                                {
-                                    string message(action.subject->getEntity()->getName());
-                                    message += " used ";
-                                    message += action.skill->name;
-                                    message += " on ";
-                                    message += action.target->getEntity()->getName();
-                                    message += ", dealing ";
-                                    message += action.attackDamage;
-                                    message += " damage";
-                                    logReport(message);
-                                }
-                                break;
-                            case MISSED:
-                            case DODGED:
-                            case BLOCKED:
-                            case CRITICAL:
-                            default:
-                                errorReport(
-                                        "The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
-                        }
-                        break;
-                    case HEAL:
-                    default:
-                        errorReport(
-                                "The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
-                }
+                    switch (action.specialAttribute)
+                    {
+                        case NO_SPECIAL:
+                            if (action.attackType == WEAPON_ATTACK)
+                            {
+                                string message(action.subject->getEntity()->getName());
+                                message += " attacked ";
+                                message += action.target->getEntity()->getName();
+                                message += ", dealing ";
+                                message += action.attackDamage;
+                                message += " damage";
+                                logReport(message);
+                            }
+                            else
+                            {
+                                string message(action.subject->getEntity()->getName());
+                                message += " used ";
+                                message += action.skill->name;
+                                message += " on ";
+                                message += action.target->getEntity()->getName();
+                                message += ", dealing ";
+                                message += action.attackDamage;
+                                message += " damage";
+                                logReport(message);
+                            }
+                            break;
+                        case MISSED:
+                        case DODGED:
+                        case BLOCKED:
+                        case CRITICAL:
+                        default:
+                            errorReport(
+                                    "The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
+                    }
+                    break;
+                case HEAL:
+                default:
+                    errorReport(
+                            "The request sent by the server is handled by the receiving function, but not by serverHandling(). Please contact the developpers");
             }
         }
-
-        sleep(milliseconds(25));
     }
 }
 
