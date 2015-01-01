@@ -1,4 +1,5 @@
 #include <SFML/Network.hpp>
+#include <typeinfo>
 
 #include "../Enums/communication.hpp"
 #include "../version.hpp"

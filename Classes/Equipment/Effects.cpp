@@ -2,18 +2,6 @@
 
 using namespace sf;
 
-Effects::Effects() :
-        life(0),
-        mana(0),
-        stamina(0),
-        strength(0),
-        wisdom(0),
-        toughness(0),
-        mentalResistance(0)
-{
-
-}
-
 Effects::Effects(const Effects &equipmentEffects) :
         life(equipmentEffects.life),
         mana(equipmentEffects.mana),
@@ -55,13 +43,6 @@ void Effects::operator+=(const Effects &a)
     mentalResistance += a.mentalResistance;
 }
 
-WeaponEffects::WeaponEffects() :
-        baseDamage(3),
-        cooldownTime(milliseconds(1500))
-{
-
-}
-
 WeaponEffects::WeaponEffects(const WeaponEffects &weaponEffects) :
         baseDamage(weaponEffects.baseDamage),
         cooldownTime(weaponEffects.cooldownTime)
@@ -72,13 +53,6 @@ WeaponEffects::WeaponEffects(const WeaponEffects &weaponEffects) :
 WeaponEffects::WeaponEffects(int baseDamage, sf::Time cooldownTime) :
         baseDamage(baseDamage),
         cooldownTime(cooldownTime)
-{
-
-}
-
-CombatEffects::CombatEffects() :
-        Effects(),
-        WeaponEffects()
 {
 
 }

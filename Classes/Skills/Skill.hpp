@@ -1,3 +1,6 @@
+#ifndef CLASSES_SKILL_SKILL
+#define CLASSES_SKILL_SKILL
+
 #include <string>
 #include <SFML/Network.hpp>
 #include "../../Enums/communication.hpp"
@@ -28,3 +31,5 @@ struct LevelingSkill
 sf::Packet &operator<<(sf::Packet &packet, const Skill &source);
 
 sf::Packet &operator<<(sf::Packet &packet, const std::vector<Skill *> &source);
+
+#endif

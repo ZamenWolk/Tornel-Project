@@ -1,3 +1,6 @@
+#ifndef ENUMS_COMMUNICATION
+#define ENUMS_COMMUNICATION
+
 #include <SFML/Network.hpp>
 
 enum AttackType
@@ -42,3 +45,5 @@ sf::Packet &operator>>(sf::Packet &packet, SpecialAttribute &attribute);
 sf::Packet &operator>>(sf::Packet &packet, AttackType &attackType);
 
 sf::Packet &operator>>(sf::Packet &packet, SentInfosType &infosType);
+
+#endif

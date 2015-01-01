@@ -1,3 +1,6 @@
+#ifndef CLASSES_MATH_MATH
+#define CLASSES_MATH_MATH
+
 class MathFunction
 {
 public:
@@ -115,3 +118,5 @@ protected:
            horizontalTranslater,
            verticalTranslater;
 };
+
+#endif

@@ -1,10 +1,10 @@
 #include "IndexClasses.hpp"
 #include "../../global/functions.hpp"
+#include "IndexesIndex.hpp"
+#include "../Singleton.hpp"
 
 using namespace std;
 using namespace sf;
-
-extern IndexesIndex indexes;
 
 EntityClass::EntityClass(string name,
         ThirdPowerFunction maxLifeIncrement,
@@ -37,35 +37,35 @@ bool UsableEquipTypes::addUsableType(string &typeName, EquipmentType equipmentTy
     switch (equipmentType)
     {
         case HELMET:
-            if (indexes.helmetIndex.doesTypeExist(typeName))
+            if (singleton<IndexesIndex>().helmetIndex.doesTypeExist(typeName))
             {
                 usableHelmetTypes.push_back(typeName);
                 isAdded = true;
             }
             break;
         case CHESTPLATE:
-            if (indexes.chestplateIndex.doesTypeExist(typeName))
+            if (singleton<IndexesIndex>().chestplateIndex.doesTypeExist(typeName))
             {
                 usableChestTypes.push_back(typeName);
                 isAdded = true;
             }
             break;
         case LEGGINGS:
-            if (indexes.leggingsIndex.doesTypeExist(typeName))
+            if (singleton<IndexesIndex>().leggingsIndex.doesTypeExist(typeName))
             {
                 usableLeggingsTypes.push_back(typeName);
                 isAdded = true;
             }
             break;
         case BOOTS:
-            if (indexes.bootsIndex.doesTypeExist(typeName))
+            if (singleton<IndexesIndex>().bootsIndex.doesTypeExist(typeName))
             {
                 usableBootsTypes.push_back(typeName);
                 isAdded = true;
             }
             break;
         case WEAPON:
-            if (indexes.weaponIndex.doesTypeExist(typeName))
+            if (singleton<IndexesIndex>().weaponIndex.doesTypeExist(typeName))
             {
                 usableWeaponTypes.push_back(typeName);
                 isAdded = true;

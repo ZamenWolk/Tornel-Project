@@ -40,6 +40,4 @@ private:
 
     void bootsInit();
 
-    void mapsInit();
-
 };

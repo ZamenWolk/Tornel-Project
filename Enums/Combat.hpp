@@ -1,3 +1,6 @@
+#ifndef ENUMS_COMBAT
+#define ENUMS_COMBAT
+
 enum Controls
 {
     NO_CONTROL,
@@ -16,3 +19,5 @@ enum CombatMenu
     SPELL_CHOOSING,
     ABILITY_CHOOSING,
 };
+
+#endif

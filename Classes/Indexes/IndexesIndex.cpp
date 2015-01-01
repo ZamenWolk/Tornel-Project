@@ -22,7 +22,6 @@ IndexesIndex::IndexesIndex() :
     abilityInit();
     heroClassInit();
     monsterInit();
-    mapsInit();
 }
 
 void IndexesIndex::heroClassInit()

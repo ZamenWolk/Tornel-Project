@@ -1,10 +1,14 @@
+#ifndef CLASSES_COMMUNICATION
+#define CLASSES_COMMUNICATION
+
 #include <string>
 #include <SFML/Network.hpp>
 
 #include "../Enums/communication.hpp"
 #include "Skills/Skill.hpp"
 #include "Equipment/Effects.hpp"
-#include "CharEntities/CombatEntity.hpp"
+
+class CombatEntity;
 
 struct InteractionInfos
 {
@@ -147,3 +151,5 @@ sf::Packet &operator<<(sf::Packet &packet, const FightAction &action);
 sf::Packet &operator>>(sf::Packet &packet, FightAction &action);
 
 sf::Packet &operator<<(sf::Packet &packet, const std::vector<EntityInformations> &team);
+
+#endif

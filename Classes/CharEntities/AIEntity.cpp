@@ -1,4 +1,7 @@
 #include "AIEntity.hpp"
+#include "../../global/define.hpp"
+#include "../Indexes/IndexesIndex.hpp"
+#include "../Singleton.hpp"
 
 using namespace std;
 using namespace sf;
@@ -52,7 +55,7 @@ EntityModel::EntityModel(EntityInformations &entity) :
         mana(0),
         stamina(0),
         effects(entity.effects),
-        entityClass(indexes.heroClassIndex.searchByName("default")),
+        entityClass(singleton<IndexesIndex>().heroClassIndex.searchByName("default")),
         knownAbilities(entity.knownAbilities),
         knownSpells(entity.knownSpells),
         ID(entity.ID)

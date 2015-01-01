@@ -1,9 +1,10 @@
+#ifndef CLASSES_EQUIPMENT_EFFECTS
+#define CLASSES_EQUIPMENT_EFFECTS
+
 #include <SFML/Network.hpp>
 
 struct Effects
 {
-    Effects();
-
     Effects(const Effects &equipmentEffects);
 
     Effects(int lifeGain = 0,
@@ -33,8 +34,6 @@ bool operator>(Effects const &a, Effects const &b);
 
 struct WeaponEffects
 {
-    WeaponEffects();
-
     WeaponEffects(const WeaponEffects &weaponEffects);
 
     WeaponEffects(int baseDamage = 0, sf::Time cooldownTime = sf::seconds(1));
@@ -45,8 +44,6 @@ struct WeaponEffects
 
 struct CombatEffects : public Effects, public WeaponEffects
 {
-    CombatEffects();
-
     CombatEffects(const Effects &equipmentEffects, const WeaponEffects &weaponEffects);
 
     CombatEffects(int lifeGain = 0,
@@ -63,3 +60,5 @@ struct CombatEffects : public Effects, public WeaponEffects
 sf::Packet &operator<<(sf::Packet &packet, const CombatEffects &source);
 
 sf::Packet &operator>>(sf::Packet &packet, CombatEffects &source);
+
+#endif
