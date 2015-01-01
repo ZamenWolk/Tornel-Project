@@ -1,3 +1,6 @@
+#ifndef CLASSES_INDEXES_INDEXCLASSES_HPP
+#define CLASSES_INDEXES_INDEXCLASSES_HPP
+
 #include <string>
 #include <vector>
 
@@ -100,3 +103,5 @@ struct MonsterClass : public EntityClass
     WeaponEffects        effects;
     std::vector<Skill *> skills;
 };
+
+#endif

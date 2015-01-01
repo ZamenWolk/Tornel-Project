@@ -1,3 +1,6 @@
+#ifndef ENUMS_EQUIPMENT_HPP
+#define ENUMS_EQUIPMENT_HPP
+
 enum EquipmentType
 {
     HELMET,
@@ -6,3 +9,5 @@ enum EquipmentType
     BOOTS,
     WEAPON,
 };
+
+#endif

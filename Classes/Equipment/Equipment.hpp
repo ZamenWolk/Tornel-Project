@@ -1,3 +1,6 @@
+#ifndef CLASSES_EQUIPMENT_EQUIPMENT_HPP
+#define CLASSES_EQUIPMENT_EQUIPMENT_HPP
+
 #include <string>
 #include <SFML/System.hpp>
 
@@ -48,3 +51,5 @@ protected:
     WeaponEffects weaponEffects;
 
 };
+
+#endif

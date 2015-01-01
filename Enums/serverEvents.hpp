@@ -1,3 +1,6 @@
+#ifndef ENUMS_SERVEREVENTS_HPP
+#define ENUMS_SERVEREVENTS_HPP
+
 #include "communication.hpp"
 #include "../version.hpp"
 #include "../Classes/communication.hpp"
@@ -22,3 +25,5 @@ struct EventsStructure
 	EventsUnion   infos;
 
 };
+
+#endif

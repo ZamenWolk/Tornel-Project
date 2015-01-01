@@ -1,3 +1,6 @@
+#ifndef CLASSES_EQUIPMENT_EFFECTS_HPP
+#define CLASSES_EQUIPMENT_EFFECTS_HPP
+
 #include <SFML/Network.hpp>
 
 struct Effects
@@ -63,3 +66,5 @@ struct CombatEffects : public Effects, public WeaponEffects
 sf::Packet &operator<<(sf::Packet &packet, const CombatEffects &source);
 
 sf::Packet &operator>>(sf::Packet &packet, CombatEffects &source);
+
+#endif

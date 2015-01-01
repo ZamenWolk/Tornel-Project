@@ -1,3 +1,6 @@
+#ifndef CLASSES_INDEXES_INDEX_HPP
+#define CLASSES_INDEXES_INDEX_HPP
+
 #include <string>
 #include <vector>
 
@@ -119,5 +122,7 @@ public:
 
 protected:
 
-    std::vector<std::string> typeIndex; ///< Index of all the types of entries
+    std::vector<std::string> typeIndex;
 };
+
+#endif

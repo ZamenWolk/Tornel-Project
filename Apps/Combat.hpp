@@ -1,3 +1,6 @@
+#ifndef APPS_COMBAT_HPP
+#define APPS_COMBAT_HPP
+
 #include <string>
 #include <SFML/Graphics.hpp>
 
@@ -44,13 +47,15 @@ protected:
     void sendToServer(CombatEntity &attacker, CombatEntity &target, AttackType type, int baseDamage, std::string skillName = "");
 
     std::vector<CombatEntity> team1Fighters,
-            team2Fighters;
+                              team2Fighters;
     Controls                  team1Control,
-            team2Control;
+                              team2Control;
     bool                      team1EventProcessed,
-            team2EventProcessed,
-            aboutToStop,
-            launched;
+                              team2EventProcessed,
+                              aboutToStop,
+                              launched;
     sf::TcpSocket             onlinePort;
     sf::Mutex                 onlineMutex;
 };
+
+#endif

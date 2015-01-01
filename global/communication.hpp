@@ -1,3 +1,6 @@
+#ifndef GLOBAL_COMMUNICATION_HPP
+#define GLOBAL_COMMUNICATION_HPP
+
 #include <SFML/Network.hpp>
 
 #include "../Enums/communication.hpp"
@@ -59,3 +62,5 @@ sf::Packet &operator>>(sf::Packet &packet, sf::Time &time);
 sf::Packet &operator<<(sf::Packet &packet, const tm &time);
 
 sf::Packet &operator>>(sf::Packet &packet, tm &time);
+
+#endif

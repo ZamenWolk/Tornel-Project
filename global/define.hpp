@@ -1,5 +1,5 @@
-#ifndef  DEFINE_HPP
-#define DEFINE_HPP
+#ifndef GLOBAL_DEFINE_HPP
+#define GLOBAL_DEFINE_HPP
 
 #ifdef SERVER
 #define SOFT "Server"

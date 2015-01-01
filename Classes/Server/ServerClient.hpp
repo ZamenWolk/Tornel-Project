@@ -1,3 +1,6 @@
+#ifndef CLASSES_SERVER_SERVERCLIENT_HPP
+#define CLASSES_SERVER_SERVERCLIENT_HPP
+
 #include <SFML/Network.hpp>
 
 class ServerClient : public sf::TcpSocket
@@ -24,3 +27,5 @@ protected:
     sf::SocketSelector *socketSelector;
     sf::Clock          lastInteractionClock;
 };
+
+#endif

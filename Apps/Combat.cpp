@@ -95,8 +95,6 @@ string Combat::Run(RenderWindow &window, map<string, App *> &apps)
         launched = true;
     }
 
-
-    //Catches events to be processed by the threads until the fight stops
     while (!aboutToStop)
     {
         eventsMap.update(window);
@@ -125,7 +123,6 @@ int Combat::setupServer(vector<CombatEntity> yourTeam, Controls controlTeam1, Co
     tm                   launchTM;
     time_t               launchTime;
 
-    //Connects to the server
     logReport("Connecting to server...", true);
     onlineMutex.lock();
     if (onlinePort.connect(IPAddress, addressPort) != Socket::Done)
@@ -133,7 +130,6 @@ int Combat::setupServer(vector<CombatEntity> yourTeam, Controls controlTeam1, Co
         errorReport("Can't connect to the server");
     }
 
-    //Sends version number to the server
     logReport("Sending version number to server...", true);
     createPacket(versionNumber, Version::VERSION, VERSION_NUMBER);
     if (onlinePort.send(versionNumber) != Socket::Done)
@@ -146,7 +142,6 @@ int Combat::setupServer(vector<CombatEntity> yourTeam, Controls controlTeam1, Co
 
     team1Fighters = yourTeam;
 
-    //Sends team's character vector to the server
     logReport("Sending team information to server...", true);
     createPacket(charactersPacket, team1Fighters, TEAM_DATA);
     if (onlinePort.send(charactersPacket) != Socket::Done)
@@ -154,7 +149,6 @@ int Combat::setupServer(vector<CombatEntity> yourTeam, Controls controlTeam1, Co
         errorReport("Can't send team informations to server");
     }
 
-    //Receives opposite team's character vector from the server
     logReport("Waiting for enemy team informations...", true);
     if (onlinePort.receive(packetFromServer) != Socket::Done)
     {
@@ -203,7 +197,6 @@ string Combat::endOfCombat()
     Packet packetFromServer;
     bool   wonBattle;
 
-    //Receives winner information from server
     onlineMutex.lock();
     if (onlinePort.receive(packetFromServer) != Socket::Done)
     {
@@ -220,24 +213,23 @@ string Combat::endOfCombat()
 bool Combat::combatChecking()
 {
     return !(team1Control == AI
-            || team1Control == ONLINE
-            || team1Control == FROM_FILE
-            || team1Control == KEYBOARD && team2Control == KEYBOARD
-            || team1Control == CONTROLLER && team2Control == CONTROLLER
-            || team1Fighters.size() < 1
-            || team1Fighters.size() > 5
-            || team2Fighters.size() < 1
-            || team2Fighters.size() > 5);
+          || team1Control == ONLINE
+          || team1Control == FROM_FILE
+          || team1Control == KEYBOARD && team2Control == KEYBOARD
+          || team1Control == CONTROLLER && team2Control == CONTROLLER
+          || team1Fighters.size() < 1
+          || team1Fighters.size() > 5
+          || team2Fighters.size() < 1
+          || team2Fighters.size() > 5);
 }
 
 void Combat::serverHandling()
 {
-    Packet           packetFromServer;
-    SentInfosType    infoType;
-    FightAction      action;
-    Socket::Status   result;
+    Packet         packetFromServer;
+    SentInfosType  infoType;
+    FightAction    action;
+    Socket::Status result;
 
-    //Receives packet of information from the server
     onlineMutex.lock();
     result = onlinePort.receive(packetFromServer);
     onlineMutex.unlock();
@@ -359,74 +351,60 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
     static int          spellPage(0), abilityPage(0), selectorVariable(-1);
     static CombatEntity *currentCharacter(&currentTeam->at(0));
 
-    //Reads keypresses
-    //If user wants to go to the character menu
     if (K_CHARMENU)
     {
         currentMenu = CHARACTER_CHOOSING;
         logReport("Current menu : Character choosing");
     }
-        //If user wants to go to the target menu
     else if (K_TARGMENU)
     {
         currentMenu = TARGET_CHOOSING;
         logReport("Current menu : Target choosing");
     }
-        //If user wants to go to the ability menu
     else if (K_ABILMENU)
     {
         currentMenu = ABILITY_CHOOSING;
         logReport("Current menu : Ability choosing");
     }
-        //If user wants to go to the spell menu
     else if (K_SPELLMENU)
     {
         currentMenu = SPELL_CHOOSING;
         logReport("Current menu : Spell choosing");
     }
-        //If user wants to attack
     else if (K_WEAPATK)
     {
         checkActionToSend(*currentCharacter, *currentCharacter->getTarget(),
                 WEAPON_ATTACK, currentCharacter->getEffects().baseDamage);
     }
-        //If user wants to go back to main menu
     else if (K_MAINMENU)
     {
         currentMenu = MAIN;
         logReport("Current menu : Main");
     }
-        //If user selects the number 1
     else if (K_SELEC1)
     {
         selectorVariable = 0;
     }
-        //If user selects the number 2
     else if (K_SELEC2)
     {
         selectorVariable = 1;
     }
-        //If user selects the number 3
     else if (K_SELEC3)
     {
         selectorVariable = 2;
     }
-        //If user selects the number 4
     else if (K_SELEC4)
     {
         selectorVariable = 3;
     }
-        //If user selects the number 5
     else if (K_SELEC5)
     {
         selectorVariable = 4;
     }
-        //If user selects the number 6
     else if (K_SELEC6)
     {
         selectorVariable = 5;
     }
-        //If user wants to go to the previous page
     else if (K_PREVPAGE)
     {
         switch (currentMenu)
@@ -451,7 +429,6 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
         }
     }
 
-        //If user wants to go to the next page
     else if (K_NEXTPAGE)
     {
         switch (currentMenu)
@@ -476,16 +453,13 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
         }
     }
 
-    //If a selector key was pressed
     if (K_SELEC && selectorVariable != -1)
     {
-        //Only runs tests for Character and target choosing if selector 6 was not pressed
         if (K_CHARSELEC)
         {
             switch (currentMenu)
             {
                 case CHARACTER_CHOOSING:
-                    //Only changes the chosen character if he is still alive
                     if (currentTeam->at((unsigned int)selectorVariable).getEntity()->isAlive())
                     {
                         currentCharacter = &currentTeam->at((unsigned int)selectorVariable);
@@ -494,7 +468,6 @@ void Combat::keyboardInstructions(vector<CombatEntity> *currentTeam, vector<Comb
                     break;
 
                 case TARGET_CHOOSING:
-                    //Only changes the target if he is still alive
                     if (currentEnemies->at((unsigned int)selectorVariable).getEntity()->isAlive())
                     {
                         currentCharacter->changeTarget(&currentEnemies->at((unsigned int)selectorVariable));

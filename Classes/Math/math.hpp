@@ -1,3 +1,6 @@
+#ifndef CLASSES_MATH_MATH_HPP
+#define CLASSES_MATH_MATH_HPP
+
 class MathFunction
 {
 public:
@@ -115,3 +118,5 @@ protected:
            horizontalTranslater,
            verticalTranslater;
 };
+
+#endif

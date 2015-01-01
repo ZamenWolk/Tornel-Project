@@ -37,36 +37,30 @@ void Hero::actualizeCharacteristics()
 {
     int newMaxLife(0), oldMaxLife(effects.life), newMaxMana(0), oldMaxMana(effects.mana), newMaxStamina(0), oldMaxStamina(effects.stamina);
 
-    //Resets the effects
     effects = Effects();
 
-    //Counts the 4 basic effects back from the base level
     effects.strength         = entityClass->strengthIncrement.iresult(level);
     effects.wisdom           = entityClass->wisdomIncrement.iresult(level);
     effects.toughness        = entityClass->toughnessIncrement.iresult(level);
     effects.mentalResistance = entityClass->mentalResistanceIncrement.iresult(level);
 
-    //Adds the effects of the equipments
     effects += weapon->getEquipmentEffects();
     effects += helmet->getEquipmentEffects();
     effects += chestplate->getEquipmentEffects();
     effects += leggings->getEquipmentEffects();
     effects += boots->getEquipmentEffects();
 
-    //Changes the max life
     newMaxLife = entityClass->maxLifeIncrement.iresult(level);
     newMaxLife += TOUGHNESS_TO_LIFE.result(effects.toughness);
     newMaxLife += MENTAL_RESISTANCE_TO_LIFE.result(effects.mentalResistance);
     effects.life += newMaxLife;
     life += effects.life - oldMaxLife;
 
-    //Changes the max mana
     newMaxMana = entityClass->maxManaIncrement.iresult(level);
     newMaxMana += WISDOM_TO_MANA.result(effects.wisdom);
     effects.mana += newMaxMana;
     mana += effects.mana - oldMaxMana;
 
-    //Changes the max stamina
     newMaxStamina = entityClass->maxStaminaIncrement.iresult(level);
     newMaxStamina += STRENGTH_TO_STAMINA.result(effects.strength);
     effects.stamina += newMaxStamina;
@@ -75,7 +69,6 @@ void Hero::actualizeCharacteristics()
 
 void Hero::changeEquipment(EquipmentType type, Equipment *newEquipment)
 {
-    //Resets the equipment if set to NULL
     if (newEquipment == NULL)
     {
         switch (type)

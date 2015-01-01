@@ -1,3 +1,6 @@
+#ifndef CLASSES_INDEXES_INDEXESINDEX_HPP
+#define CLASSES_INDEXES_INDEXESINDEX_HPP
+
 #include "../Skills/Skill.hpp"
 #include "Index.hpp"
 #include "IndexClasses.hpp"
@@ -43,3 +46,5 @@ private:
     void mapsInit();
 
 };
+
+#endif

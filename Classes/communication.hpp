@@ -1,3 +1,6 @@
+#ifndef CLASSES_COMMUNICATION_HPP
+#define CLASSES_COMMUNICATION_HPP
+
 #include <string>
 #include <SFML/Network.hpp>
 
@@ -147,3 +150,5 @@ sf::Packet &operator<<(sf::Packet &packet, const FightAction &action);
 sf::Packet &operator>>(sf::Packet &packet, FightAction &action);
 
 sf::Packet &operator<<(sf::Packet &packet, const std::vector<EntityInformations> &team);
+
+#endif
