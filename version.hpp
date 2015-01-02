@@ -1,3 +1,6 @@
+#ifndef VERSION_HPP
+#define VERSION_HPP
+
 #include <iostream>
 #include <SFML/Network.hpp>
 
@@ -45,3 +48,5 @@ namespace Version
 sf::Packet &operator<<(sf::Packet &packet, const VersionNumber &version);
 
 sf::Packet &operator>>(sf::Packet &packet, VersionNumber &version);
+
+#endif

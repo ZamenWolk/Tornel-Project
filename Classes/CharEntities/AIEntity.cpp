@@ -94,13 +94,11 @@ void EntityModel::actualizeCharacteristics()
 {
     int newMaxLife(0), newMaxMana(0), newMaxStamina(0);
 
-    //Actualizes base characteristics from level
     effects.strength         = entityClass->strengthIncrement.iresult(level);
     effects.wisdom           = entityClass->wisdomIncrement.iresult(level);
     effects.toughness        = entityClass->toughnessIncrement.iresult(level);
     effects.mentalResistance = entityClass->mentalResistanceIncrement.iresult(level);
 
-    //Calculates the new max life and changes the current life accordingly
     newMaxLife = entityClass->maxLifeIncrement.iresult(level);
     newMaxLife += TOUGHNESS_TO_LIFE.result(effects.toughness);
     newMaxLife += MENTAL_RESISTANCE_TO_LIFE.result(effects.mentalResistance);
@@ -109,7 +107,6 @@ void EntityModel::actualizeCharacteristics()
         life   = 0;
     effects.life = newMaxLife;
 
-    //Calculates the new max mana and changes the current mana accordingly
     newMaxMana = entityClass->maxManaIncrement.iresult(level);
     newMaxMana += WISDOM_TO_MANA.result(effects.wisdom);
     mana += newMaxMana - effects.mana;
@@ -117,7 +114,6 @@ void EntityModel::actualizeCharacteristics()
         mana   = 0;
     effects.mana = newMaxMana;
 
-    //Calculates the new max stamina and changes the current stamina accordingly
     newMaxStamina = entityClass->maxStaminaIncrement.iresult(level);
     newMaxStamina += STRENGTH_TO_STAMINA.result(effects.strength);
     stamina += newMaxStamina - effects.stamina;
@@ -173,7 +169,6 @@ vector<Skill *> EntityModel::getKnownSpells() const
 
 void EntityModel::getKnownSkillsFromLevel()
 {
-    //Put the skills vectors back to 0 so they can be filled again
     while (knownAbilities.size() > 0)
     {
         knownAbilities.pop_back();
@@ -184,7 +179,6 @@ void EntityModel::getKnownSkillsFromLevel()
         knownSpells.pop_back();
     }
 
-    //Adds every skill that meets level requirement to the appropriate vector
     for (vector<LevelingSkill>::iterator it = entityClass->getSkills().begin(); it != entityClass->getSkills().end(); it++)
     {
         if (level >= it->learnLevel)

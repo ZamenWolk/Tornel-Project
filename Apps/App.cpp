@@ -11,6 +11,7 @@ App::App():
 void App::Start()
 {
     isRunning = true;
+    clock.restart();
 }
 
 void App::Exit()

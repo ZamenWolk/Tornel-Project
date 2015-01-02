@@ -1,3 +1,6 @@
+#ifndef CLASSES_CHARENTITIES_AIENTITY_HPP
+#define CLASSES_CHARENTITIES_AIENTITY_HPP
+
 #include <string>
 #include <SFML/System.hpp>
 
@@ -78,3 +81,5 @@ protected:
 
     WeaponEffects weaponEffects;
 };
+
+#endif

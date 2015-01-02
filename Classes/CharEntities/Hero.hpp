@@ -1,3 +1,6 @@
+#ifndef CLASSES_CHARENTITIES_HERO_HPP
+#define CLASSES_CHARENTITIES_HERO_HPP
+
 #include "AIEntity.hpp"
 #include "../Equipment/Equipment.hpp"
 #include "../../Enums/Equipment.hpp"
@@ -29,3 +32,5 @@ protected:
             *leggings,
             *boots;
 };
+
+#endif

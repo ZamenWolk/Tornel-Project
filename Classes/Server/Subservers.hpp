@@ -1,3 +1,6 @@
+#ifndef CLASSES_SERVER_SUBSERVERS_HPP
+#define CLASSES_SERVER_SUBSERVERS_HPP
+
 #include <SFML/Network.hpp>
 
 #include "../../Enums/communication.hpp"
@@ -43,3 +46,5 @@ private:
 };
 
 bool findOpenSubserver(std::vector<FightSubserver *> &serverVector, FightSubserver **returnedSubserver);
+
+#endif

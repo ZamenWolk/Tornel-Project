@@ -1,3 +1,6 @@
+#ifndef CLASSES_CHARENTITIES_COMBATENTITY_HPP
+#define CLASSES_CHARENTITIES_COMBATENTITY_HPP
+
 #include "AIEntity.hpp"
 
 class CombatEntity
@@ -40,3 +43,5 @@ sf::Packet &operator<<(sf::Packet &packet, const CombatEntity &entity);
 sf::Packet &operator<<(sf::Packet &packet, const std::vector<CombatEntity> &team);
 
 sf::Packet &operator>>(sf::Packet &packet, std::vector<CombatEntity> &team);
+
+#endif

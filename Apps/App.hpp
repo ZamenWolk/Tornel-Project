@@ -1,3 +1,6 @@
+#ifndef APPS_APP_HPP
+#define APPS_APP_HPP
+
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <Thor/Input.hpp>
@@ -15,8 +18,10 @@ public:
 
 protected:
 
-    bool isRunning;
+    bool                         isRunning;
     thor::ActionMap<std::string> eventsMap;
-    sf::Clock clock;
+    sf::Clock                    clock;
 
 };
+
+#endif

@@ -1,5 +1,5 @@
-#ifndef OUTPUTS_HPP
-#define OUTPUTS_HPP
+#ifndef GLOBAL_FUNCTIONS_HPP
+#define GLOBAL_FUNCTIONS_HPP
 
 #include <iostream>
 #include <ctime>
